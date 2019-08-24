@@ -10,6 +10,13 @@
 
 
 // Custom definitions may go here
+task remoteHotLoad(type: Exec) {
+    commandLine "${(new File('..')).getAbsolutePath()}/ftc_http", "-u", "-b"
+}
+
+task cleanHotLoad(type: Exec) {
+    commandLine "${(new File('..')).getAbsolutePath()}/ftc_http", "-w", "-b"
+}
 
 // Include common definitions from above.
 apply from: '../build.common.gradle'
