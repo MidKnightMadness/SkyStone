@@ -15,7 +15,7 @@ public class Methods {
         double result = doubleAvg(num0, num1, 200);
 
         // And print out the variables, your value, and the average using printf
-        System.out.printf("values: %d, %d, %d, result: %d",num0,num1,200,result);
+        System.out.printf("values: %d, %d, %d, result: %d\n",num0,num1,200, (int) result);
 
         // Try it again using println
         System.out.println("values: "+num0+", "+num1+", "+200+", result: "+result);
