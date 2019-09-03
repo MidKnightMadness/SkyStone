@@ -4,6 +4,15 @@ package org.firstinspires.ftc.teamcode.challenges;
 
 public class Methods {
     public static void main(String[] args) {
+        int x =9;
+        int y =8;
+
+        threeaverage();
+
+
+
+
+
         // Initialize two integer variable with two numbers
 
 
@@ -18,4 +27,11 @@ public class Methods {
 
         // Try it again using println
     }
+    private static void threeaverage(int num, int num1, int num2){System.out.println((num+num1+num2)/3*2);}
+
+    private static void twoaverage(int num, int num1){System.out.println(num+num1/2);
+
+    }
+
+
 }

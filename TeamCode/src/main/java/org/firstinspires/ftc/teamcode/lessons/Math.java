@@ -20,16 +20,16 @@ public class Math {
         (Its useful for telling if something is even or odd cause x % 2 is always 0 for evens and 1 for odds)
          */
 
-        int apples = 14;
+        int apples = 20;
         int oranges = 3;
 
         int applesAndOranges = apples + oranges;
 
-        System.out.println("We have our " + apples + " and our " + oranges + " oranges.");
+        System.out.println(" we have our " + apples + " apples and our " + oranges + " oranges.");
         System.out.println("That's like " + applesAndOranges + " fruits!");
 
 
-        int halfOfTheFruit = applesAndOranges / 2;
+        int halfOfTheFruit =  applesAndOranges / 2;
 
         System.out.println("Oh no! We spilled half of it! We only have " + halfOfTheFruit + " left!");
         System.out.println();
