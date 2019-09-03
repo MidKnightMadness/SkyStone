@@ -25,11 +25,12 @@ public class Math {
 
         int applesAndOranges = apples + oranges;
 
-        System.out.println(" we have our " + apples + " apples and our " + oranges + " oranges.");
+        System.out.println("We have our " + apples + " and our " + oranges + " oranges.");
+
         System.out.println("That's like " + applesAndOranges + " fruits!");
 
 
-        int halfOfTheFruit =  applesAndOranges / 2;
+        int halfOfTheFruit = applesAndOranges / 2;
 
         System.out.println("Oh no! We spilled half of it! We only have " + halfOfTheFruit + " left!");
         System.out.println();
