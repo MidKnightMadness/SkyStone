@@ -26,6 +26,7 @@ public class Math {
         int applesAndOranges = apples + oranges;
 
         System.out.println("We have our " + apples + " and our " + oranges + " oranges.");
+
         System.out.println("That's like " + applesAndOranges + " fruits!");
 
 
