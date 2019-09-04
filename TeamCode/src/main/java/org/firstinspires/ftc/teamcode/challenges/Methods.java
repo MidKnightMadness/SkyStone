@@ -23,6 +23,8 @@ public class Methods {
         // Use the average method to average the two variables and one constant value
         double result = doubleAvg(num0, num1, 200);
 
+        System.out.print("IM ALIVE!!");
+
         // And print out the variables, your value, and the average using printf
         System.out.printf("values: %d, %d, %d, result: %d\n",num0,num1,200, (int) result);
 
