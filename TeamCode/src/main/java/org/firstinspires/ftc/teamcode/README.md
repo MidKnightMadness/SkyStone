@@ -1,4 +1,4 @@
-# Welcome to the Robotics Programming Club!
+# Welcome to the Robotics Team!
  - If you want, you can click the `install plugins` button in the yellow bar above (if in android studio) to install the markdown plugin.
  - To make this easier to read, you can click View > Active Editor > Soft Wrap to wrap the text to the editor.
 
@@ -19,6 +19,9 @@
  - If you look in the file tree, you'll notice it made a new folder in teamcode with your name and placed a copy of the sample OpMode in there.
 
 ## Running the OpMode
+ - Make sure the "Remote Hot Load" run configuration is selected between the green hammer and the green play button in the menu bar. If not, choose it from the dropdown menu.
+ - Connect to the phone's wifi-direct signal by clicking the three dots and going to program and manage in the dropdown list
+ - Hit the play button. Make sure the (mostly) last line says Building......... when it finishes. It will say build successful even if the build failed. I know, it's annoying.
 
 ## Dissecting the OpMode
- - There's a lot in here.
+ - There's a lot in here. Read the comments for now. Maybe I'll write more later.
