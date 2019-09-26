@@ -76,7 +76,7 @@ public final class Config {
     }
     public static final boolean isLocalSoundOn()
     {
-        return PreferenceManager.getDefaultSharedPreferences(AppUtil.getDefContext()).getBoolean(AppUtil.getDefContext().getString(com.qualcomm.ftccommon.R.string.pref_sound_on_off), true);
+        return false; //PreferenceManager.getDefaultSharedPreferences(AppUtil.getDefContext()).getBoolean(AppUtil.getDefContext().getString(com.qualcomm.ftccommon.R.string.pref_sound_on_off), true);
     }
 }
 
