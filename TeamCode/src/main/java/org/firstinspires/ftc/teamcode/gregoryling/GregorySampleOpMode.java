@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 @Autonomous  // must have @Autonomous or @Teleop for the opMode to appear on the driver station
 @Disabled  // remove or comment out @Disabled for this opMode to appear on the driver station
-public class GregorysSampleOpMode extends OpMode {
+public class GregorySampleOpMode extends OpMode {
 
     // One of the only two required methods in an opMode.
     // This is run when the init button is pressed.
