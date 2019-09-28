@@ -44,7 +44,6 @@ public class SampleOpMode extends OpMode {
     //   the OpMode.
     @Override
     public void loop() {
-
     }
 
     // Optional method that runs when the stop button is pressed. Good for tearing down anything that needs
