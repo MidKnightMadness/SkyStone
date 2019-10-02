@@ -12,13 +12,16 @@ public class CarnivalBotJP extends OpMode {
 
     @Override
     public void init() {
-        leftMotor=hardwareMap.dcMotor.get("leftmotor");
-        rightMotor=hardwareMap.dcMotor.get("rightmotor");
+        leftMotor = hardwareMap.dcMotor.get("leftmotor");
+        rightMotor = hardwareMap.dcMotor.get("rightmotor");
     }
 
     @Override
     public void loop() {
-        leftMotor.setPower(1);
-        rightMotor.setPower(1);
+        leftMotor.setPower(gamepad1.left_stick_y);
+        rightMotor.setPower(-gamepad1.right_stick_y);
+        telemetry.addData("left joystick vertical", gamepad1.left_stick_y);
+        telemetry.addData("right joystick veertical", gamepad1.right_stick_y);
+        telemetry.update();
     }
 }
