@@ -19,8 +19,10 @@ public class CarnivalBotYL extends OpMode {
 
     @Override
     public void loop() {
-        leftMotor.setPower(1);
-        rightMotor.setPower(1);
+        leftMotor.setPower(gamepad1.left_stick_y);
+        rightMotor.setPower(-gamepad1.right_stick_y);
+        telemetry.addData("leftY", gamepad1.left_stick_y);
+        telemetry.addData("rightY", gamepad1.right_stick_y);
 
     }
 }
