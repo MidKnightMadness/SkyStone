@@ -12,7 +12,7 @@ public class ServoYL extends OpMode {
     private CRServo crServo;
     private DcMotor motor;
     private double position = 0;
-    private boolean current;
+    private boolean pressed;
 
 
     @Override
@@ -21,7 +21,7 @@ public class ServoYL extends OpMode {
         crServo = hardwareMap.crservo.get("crServo");
         motor = hardwareMap.dcMotor.get("motor");
         position = 1;
-        current = true;
+        pressed = false;
 
 
     }
@@ -32,10 +32,14 @@ public class ServoYL extends OpMode {
 //        if (position > 1){
 //            position = 0;
 //        }
-
         telemetry.addData("before:", position);
-        if (!gamepad1.y) {
+
+        while (!gamepad1.y){
+            pressed = true;
+        }
+        if (pressed) {
             position *= -1;
+            pressed = false;
         }
 
         telemetry.addData("after:", position);

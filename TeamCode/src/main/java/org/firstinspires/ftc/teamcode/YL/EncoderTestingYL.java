@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import java.nio.channels.DatagramChannel;
 
-@TeleOp
+//@TeleOp
 public class EncoderTestingYL extends OpMode {
     private DcMotor leftmotor;
 

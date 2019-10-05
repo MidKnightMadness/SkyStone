@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 
-@TeleOp
+//@TeleOp
 public class KenMoriCarnivalBot extends OpMode {
 
     private DcMotor leftMotor;

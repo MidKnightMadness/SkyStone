@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.YL;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp
+//@TeleOp
 public class TelemetryYL extends OpMode {
     @Override
     public void init() {
