@@ -24,44 +24,24 @@ public class ServoTestingKM extends OpMode {
     @Override
     public void loop() {
 
-//
+
 
         crservo.setPower(gamepad1.right_stick_y/1);
         servo.setPosition(gamepad1.left_stick_y/1);
         if (gamepad1.y){
             if (position == motor.getPower()) {
-
                 motor.setPower(1);
-            }
-            else{
-                if (position != motor.getPower()) {
+                if (gamepad1.y == true){
                     motor.setPower(0);
                 }
-                else{
-                    if(position == motor.getPower()) {
-                            motor.setPower(-1);
-                        }
-                    else{
-                        if(position != motor.getPower()){
-                                motor.setPower(0);
-                            }
-                        else{
-                            if(position != motor.getPower()){
-                                    motor.setPower(-1);
-                                }
-                            else{
-                                if(position == motor.getPower()){
-                                        motor.setPower(0);
-                                    }
-                                }
-
-                        }
-                    }
-
-
-                }
             }
+
         }
+
+
+
+
+
         telemetry.addData("position", gamepad1.left_stick_y);
         telemetry.addData("position", gamepad1.right_stick_y);
         telemetry.addData("position", gamepad1.left_trigger);
