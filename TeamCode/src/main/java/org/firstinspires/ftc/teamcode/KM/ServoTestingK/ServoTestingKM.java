@@ -12,7 +12,8 @@ public class ServoTestingKM extends OpMode {
     private Servo servo;
     private CRServo crservo;
     private DcMotor motor;
-    private double position = 0;
+    private boolean yisdown;
+    private boolean motorrunning;
 
     @Override
     public void init() {
@@ -23,31 +24,39 @@ public class ServoTestingKM extends OpMode {
 
     @Override
     public void loop() {
-
-
-
         crservo.setPower(gamepad1.right_stick_y/1);
         servo.setPosition(gamepad1.left_stick_y/1);
-        if (gamepad1.y){
-            if (position == motor.getPower()) {
-                motor.setPower(1);
-                if (gamepad1.y == true){
-                    motor.setPower(0);
-                }
-            }
+        if (gamepad1.y) {
+           if(yisdown){
 
+           } else{
+               yisdown = true;
+               motorrunning = !motorrunning;
+           }
+
+        } else {
+            yisdown = false;
+        }
+
+        if (motorrunning){
+            motor.setPower(1);
+        } else {
+            motor.setPower(0);
         }
 
 
 
 
 
-        telemetry.addData("position", gamepad1.left_stick_y);
-        telemetry.addData("position", gamepad1.right_stick_y);
-        telemetry.addData("position", gamepad1.left_trigger);
-        telemetry.addData("position", gamepad1.right_trigger);
-        telemetry.addData("position", gamepad1.y);
+
+
+        telemetry.addData("positionleftsticky", gamepad1.left_stick_y);
+        telemetry.addData("positionrightsticky", gamepad1.right_stick_y);
+        telemetry.addData("positionlefttrigger", gamepad1.left_trigger);
+        telemetry.addData("positionrighttrigger", gamepad1.right_trigger);
+        telemetry.addData("positiony", gamepad1.y);
         telemetry.addData("power", motor.getPower());
+
 
 
 
