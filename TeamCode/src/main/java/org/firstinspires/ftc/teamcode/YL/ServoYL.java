@@ -23,34 +23,26 @@ public class ServoYL extends OpMode {
         position = 1;
         pressed = false;
 
-
     }
 
     @Override
     public void loop() {
-//        position += 0.01;
-//        if (position > 1){
-//            position = 0;
-//        }
-        telemetry.addData("before:", position);
-
-        while (!gamepad1.y){
+        if (gamepad1.y && !pressed) {
             pressed = true;
         }
-        if (pressed) {
+        else if (!gamepad1.y && pressed){
             position *= -1;
             pressed = false;
         }
 
-        telemetry.addData("after:", position);
         servo.setPosition(gamepad1.right_trigger);
         crServo.setPower(position);
         motor.setPower(gamepad1.left_stick_y);
+
+
         telemetry.addData("rightTrigger", gamepad1.right_trigger);
         telemetry.addData("leftTrigger", gamepad1.left_trigger);
-        telemetry.addData("leftY", gamepad1.left_stick_y);
-
-
+        telemetry.addData("y", gamepad1.y);
 
     }
 }
