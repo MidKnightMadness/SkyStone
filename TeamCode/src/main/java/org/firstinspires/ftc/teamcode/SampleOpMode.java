@@ -1,11 +1,12 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode; // the current package (folder-ish) this class is in.
 
+// import statements will be auto-added by android studio as you use different classes
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-@Autonomous
-@Disabled
+@Autonomous  // must have @Autonomous or @Teleop for the opMode to appear on the driver station
+@Disabled  // remove or comment out @Disabled for this opMode to appear on the driver station
 public class SampleOpMode extends OpMode {
 
     // One of the only two required methods in an opMode.
