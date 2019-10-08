@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode;
+package org.firstinspires.ftc.teamcode.KM;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-public class EncoderTestingJP extends OpMode {
+public class KMEncoderTesting extends OpMode {
 
     private DcMotor leftMotor;
 
@@ -14,12 +14,13 @@ public class EncoderTestingJP extends OpMode {
         leftMotor = hardwareMap.dcMotor.get("leftmotor");
         leftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         leftMotor.setPower(0);
-        leftMotor.setTargetPosition(1000+leftMotor.getCurrentPosition());
+        leftMotor.setTargetPosition(1000);
+        leftMotor.setTargetPosition(1000 + leftMotor.getCurrentPosition());
     }
 
     @Override
     public void loop() {
         leftMotor.setPower(1);
-        telemetry.addData("left motor position", leftMotor.getCurrentPosition());
+        telemetry.addData("Left motor position", leftMotor.getCurrentPosition());
     }
 }
