@@ -4,10 +4,15 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class Claw extends Grabber {
+
+public class Claw extends Grabber  {
     private Servo clawservo;
+    private boolean yPressed;
+    private boolean motorRunning;
+
     @Override
     protected void init() {
+
         clawservo = hardwareMap.servo.get("clawservo");
     }
 
@@ -15,6 +20,7 @@ public class Claw extends Grabber {
     protected void grab() {
 
     }
+
 
     @Override
     protected void release() {
@@ -26,3 +32,4 @@ public class Claw extends Grabber {
         return false;
     }
 }
+
