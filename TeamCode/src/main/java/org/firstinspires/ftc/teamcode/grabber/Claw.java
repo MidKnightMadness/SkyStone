@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Claw extends Grabber  {
     private Servo clawservo;
     private boolean yPressed;
-    private boolean motorRunning;
+    private boolean servoRunning;
 
     @Override
     protected void init() {
@@ -18,7 +18,22 @@ public class Claw extends Grabber  {
 
     @Override
     protected void grab() {
+        if(yPressed){
 
+        } else{
+            yPressed = true;
+            servoRunning = !servoRunning;
+        }
+
+    } else {
+        yPressed = false;
+    }
+
+        if (servoRunning){
+            clawservo.setPosition();
+    } else {
+        motor.setPower(0);
+    }
     }
 
 
