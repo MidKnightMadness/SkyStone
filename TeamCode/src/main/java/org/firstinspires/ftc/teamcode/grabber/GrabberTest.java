@@ -1,9 +1,12 @@
 package org.firstinspires.ftc.teamcode.grabber;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+@TeleOp
 public class GrabberTest extends OpMode {
-    private Grabber grabber;
+    private Grabber grabber = new Claw();
+
 
     @Override
     public void init() {
@@ -17,7 +20,10 @@ public class GrabberTest extends OpMode {
         if (gamepad1.x) {
             grabber.grab();
         }
-        grabber.release();
+        else{
+            grabber.release();
+        }
+
         grabber.update();//end of loop
     }
 }

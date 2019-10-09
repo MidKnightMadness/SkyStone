@@ -11,35 +11,20 @@ public class Claw extends Grabber  {
     private boolean servoRunning;
 
     @Override
-    protected void init() {
+    public void init() {
 
         clawservo = hardwareMap.servo.get("clawservo");
     }
 
     @Override
     protected void grab() {
-        if(yPressed){
-
-        } else{
-            yPressed = true;
-            servoRunning = !servoRunning;
-        }
-
-    } else {
-        yPressed = false;
-    }
-
-        if (servoRunning){
-            clawservo.setPosition();
-    } else {
-        motor.setPower(0);
-    }
+        clawservo.setPosition(1);
     }
 
 
     @Override
     protected void release() {
-
+        clawservo.setPosition(0.6);
     }
 
     @Override
