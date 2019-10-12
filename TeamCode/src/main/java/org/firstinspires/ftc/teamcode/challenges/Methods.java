@@ -10,9 +10,6 @@ public class Methods {
         threeaverage(1, 2, 3);
 
 
-
-
-
         // Initialize two integer variable with two numbers
         int num0 = 0;
         int num1 = 21;
