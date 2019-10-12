@@ -3,10 +3,15 @@ package org.firstinspires.ftc.teamcode.visual;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.vuforia.State;
+import com.vuforia.TrackableResult;
+import com.vuforia.TrackerManager;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraImpl;
@@ -15,6 +20,8 @@ import org.firstinspires.ftc.robotcore.internal.camera.CameraImpl;
 public class VuforiaTest extends OpMode {
 
     private VuforiaLocalizer vuforia;
+    private VuforiaTrackables trackables;
+    private VuforiaListener listener = new VuforiaListener();
 
     public VuforiaTest() {
         RobotLog.d("qwertyuiopasdfghjklzxcvbnm");
@@ -33,12 +40,23 @@ public class VuforiaTest extends OpMode {
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
 
-        VuforiaTrackables trackables = vuforia.loadTrackablesFromAsset("Skystone");
+        trackables = vuforia.loadTrackablesFromAsset("Skystone");
         trackables.activate();
+
+        for (VuforiaTrackable skyStone : trackables) {
+            listener.addTrackable(skyStone);
+        }
     }
 
     @Override
     public void loop() {
+        State state = TrackerManager.getInstance().getStateUpdater().getLatestState();
+        for (int i = 0; i < state.getNumTrackableResults(); i++) {
+            if(state.getTrackableResult(i).getStatus()== 3) {
+               telemetry.addLine(state.getTrackableResult(i).getTrackable().getName());
+            }
+        }
 
+        telemetry.update();
     }
 }
