@@ -6,25 +6,31 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class TeleMotorTest extends TeleMotor {
 
-    DcMotor motor;
+    DcMotor motor1;
+    DcMotor motor2;
+
 
     @Override
     public void init() {
-        motor = hardwareMap.dcMotor.get("motor1");
-        motor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor1 = hardwareMap.dcMotor.get("motor1");
+        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor2 = hardwareMap.dcMotor.get("motor2");
+        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
     public void loop() {
-        if(gamepad1.dpad_left){
-            motor.setPower(-1);
+        if(gamepad1.left_stick_y > 0){
+            motor1.setPower(0.7);
+            motor2.setPower(-0.5);
         }
-        if(gamepad1.dpad_right){
-            motor.setPower(1);
-
+        if(gamepad1.left_stick_y < 0){
+            motor1.setPower(-0.7);
+            motor2.setPower(0.5);
         }
-        if(gamepad1.dpad_down){
-            motor.setPower(0);
+        if(gamepad1.left_stick_button){
+            motor1.setPower(0);
+            motor2.setPower(0);
         }
     }
 }
