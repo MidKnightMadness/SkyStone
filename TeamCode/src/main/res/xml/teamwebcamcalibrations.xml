@@ -52,6 +52,15 @@
 -->
 <Calibrations>
 
+    <Camera vid="Unknown" pid="0x9230">
+        <Calibration
+            size="1920 1080"
+            focalLength="1045.426f, 1048.978f"
+            principalPoint="976.612f, 539.319f"
+            distortionCoefficients="-0.359646f, 0.101702f, 0.000535f, 0.001449f, 0f, 0f, 0f, 0f"
+            />
+    </Camera>
+
     <!-- ======================================================================================= -->
 
     <!-- Microsoft Lifecam HD 3000 v1, Calibrated by PTC using unknown tooling -->

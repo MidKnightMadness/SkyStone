@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.visual;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
 import com.vuforia.State;
 import com.vuforia.Tool;
@@ -29,11 +30,6 @@ public class VuforiaFieldTest extends OpMode {
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables trackables;
 
-    public VuforiaFieldTest() {
-        RobotLog.d("qwertyuiopasdfghjklzxcvbnm");
-        msStuckDetectInit = 20000;
-    }
-
     @Override
     public void init() {
 
@@ -50,6 +46,7 @@ public class VuforiaFieldTest extends OpMode {
         trackables = vuforia.loadTrackablesFromAsset("Skystone");
         trackables.activate();
 
+        CameraDevice.getInstance().getCameraCalibration();
     }
 
     @Override
@@ -58,7 +55,11 @@ public class VuforiaFieldTest extends OpMode {
         for (int i = 0; i < state.getNumTrackableResults(); i++) {
             if(state.getTrackableResult(i).getStatus()== 3) {
                 telemetry.addLine(state.getTrackableResult(i).getTrackable().getName());
-                //((VuforiaTrackableDefaultListener)((VuforiaTrackable)state.getTrackable(i)).getListener()).get
+
+
+                OpenGLMatrix location = ((VuforiaTrackableDefaultListener)((VuforiaTrackable)state.getTrackable(i)).getListener()).getRobotLocation();
+                telemetry.addData("xPosition", location.getTranslation().get(0));
+
                 //telemetry.addData(state.getTrackableResult(i).getTrackable().getName(),state.getTrackableResult(i).getStatus());
             }
         }

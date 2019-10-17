@@ -33,11 +33,6 @@ public class VuforiaTest extends OpMode {
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables trackables;
 
-    public VuforiaTest() {
-        RobotLog.d("qwertyuiopasdfghjklzxcvbnm");
-        msStuckDetectInit = 20000;
-    }
-
     @Override
     public void init() {
 
