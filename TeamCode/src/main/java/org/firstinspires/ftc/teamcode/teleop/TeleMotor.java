@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import org.firstinspires.ftc.teamcode.common.AssemblyManager.Implementation;
 
 
-@Implementation(TeleMotorTest.class)
+@Implementation(TeleOpDriveMZ.class)
 
 public abstract class TeleMotor extends OpMode {
 
