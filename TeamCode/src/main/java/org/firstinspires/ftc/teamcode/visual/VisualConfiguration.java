@@ -29,6 +29,7 @@ public class VisualConfiguration {
     private static float stoneZ = 2.00f * mmPerInch;
 
     void init() {
+        /*
 
         //trackables and their names
         VuforiaTrackables targetsSkyStone = this.vuforia.loadTrackablesFromAsset("Skystone");
@@ -114,5 +115,7 @@ public class VisualConfiguration {
         rear2.setLocation(OpenGLMatrix
                 .translation(halfField, -quadField, mmTargetHeight)
                 .multiplied(Orientation.getRotationMatrix(EXTRINSIC, XYZ, DEGREES, 90, 0, -90)));
+
+         */
     }
 }
