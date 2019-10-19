@@ -3,6 +3,8 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import java.security.Policy;
+
 @TeleOp
 public class TeleMotorTest extends TeleMotor {
 
@@ -30,36 +32,49 @@ public class TeleMotorTest extends TeleMotor {
 
     @Override
     public void loop() {
-        if (gamepad1.left_bumper) {
+        //turn left (counter-clockwise)
+        if (gamepad1.left_trigger != 0) {
             motor1.setPower(POWER_CONSTANT);
             motor2.setPower(POWER_CONSTANT);
             motor3.setPower(POWER_CONSTANT);
             motor4.setPower(POWER_CONSTANT);
         }
+        //turn right (clockwise)
+        if (gamepad1.right_trigger != 0) {
+            motor1.setPower(-POWER_CONSTANT);
+            motor2.setPower(-POWER_CONSTANT);
+            motor3.setPower(-POWER_CONSTANT);
+            motor4.setPower(-POWER_CONSTANT);
+        }
+        //scoot left
         if (gamepad1.dpad_left) {
             motor1.setPower(POWER_CONSTANT);
             motor2.setPower(POWER_CONSTANT);
             motor3.setPower(-POWER_CONSTANT);
             motor4.setPower(-POWER_CONSTANT);
         }
+        //scoot right
         if (gamepad1.dpad_right) {
             motor1.setPower(-POWER_CONSTANT);
             motor2.setPower(-POWER_CONSTANT);
             motor3.setPower(POWER_CONSTANT);
             motor4.setPower(POWER_CONSTANT);
         }
+        //forward
         if (gamepad1.dpad_up) {
             motor1.setPower(-POWER_CONSTANT);
             motor2.setPower(POWER_CONSTANT);
             motor3.setPower(-POWER_CONSTANT);
             motor4.setPower(POWER_CONSTANT);
         }
+        //backward
         if (gamepad1.dpad_down) {
             motor1.setPower(POWER_CONSTANT);
             motor2.setPower(-POWER_CONSTANT);
             motor3.setPower(POWER_CONSTANT);
             motor4.setPower(-POWER_CONSTANT);
         }
+        //stop
         if (gamepad1.a){
             motor1.setPower(0);
             motor2.setPower(0);
