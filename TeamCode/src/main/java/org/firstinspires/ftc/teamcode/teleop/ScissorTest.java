@@ -25,6 +25,8 @@ public class ScissorTest extends TeleMotor {
             motor.setPower(SCISSOR_POWER);
         } else if (gamepad1.right_trigger>0){
             motor.setPower(-SCISSOR_POWER);
+        } else {
+            motor.setPower(0);
         }
         telemetry.addLine(String.valueOf(motor.getCurrentPosition()));
         telemetry.update();
