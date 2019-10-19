@@ -26,7 +26,7 @@ public class Autonomous extends LinearOpMode {
         //Position(x, y, -90)//Robot is facing the foundation
         //********NOTE*********//
             // The foundation height is set to 2)
-        //Delivery.setHeight(9)//Move the grabber up until is it 5 inches above the foundation
+        //Delivery.setHeight(9)//Move the grabber up until it is 5 inches above the foundation
         //Delivery.setDepth(10)//Move the grabber until it is 8 inches from the robot
         //Grabber.release()//Release stone on the foundation
         //Delivery.setHeight(0)//Reset delivery system
