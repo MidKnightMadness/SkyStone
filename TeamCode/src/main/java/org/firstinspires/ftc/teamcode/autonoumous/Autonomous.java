@@ -39,8 +39,8 @@ public class Autonomous extends LinearOpMode {
         //Delivery.setHeight(13)//Move the grabber up until it is 11 inches away from the foundation
         //Delivery.setDepth(10)//Move the grabber until it is 8 inches from the robot
         //Grabber.release()//Release stone onto the foundation
-        //Delivery.setHeight(7)//Reset delivery system
-        //Delivery.setDepth(10)//Reset delivery system
+        //Delivery.setHeight(0)//Reset delivery system
+        //Delivery.setDepth(0)//Reset delivery system
         //Position(x, y, 180)//Robot is now facing opposite direction from Foundation
         //MoveTo(Position target)//Robot must park under the alliance bridge
      //********AUTONOMOUS END***********/
