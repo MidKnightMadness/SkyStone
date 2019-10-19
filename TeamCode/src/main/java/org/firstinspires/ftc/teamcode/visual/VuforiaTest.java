@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.visual;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
+import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
 import com.vuforia.Matrix34F;
 import com.vuforia.State;
@@ -27,15 +28,26 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefau
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraImpl;
 
+import java.io.File;
+
 @TeleOp
 public class VuforiaTest extends OpMode {
+
+    public VuforiaTest() {
+        msStuckDetectInit = 20000;
+    }
 
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables trackables;
 
     @Override
-    public void init() {
+    public void internalPreInit() {
+        super.internalPreInit();
+        msStuckDetectInit = 20000;
+    }
 
+    @Override
+    public void init() {
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId",
                 "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -43,6 +55,8 @@ public class VuforiaTest extends OpMode {
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.cameraName = hardwareMap.get(WebcamName.class,"Webcam 1");
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
+parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrations/teamwebcamcalibrations.xml");
+
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
@@ -70,6 +84,13 @@ public class VuforiaTest extends OpMode {
 
                 //telemetry.addData(state.getTrackableResult(i).getTrackable().getName(),state.getTrackableResult(i).getStatus());
             }
+        }
+
+        float[] items = CameraDevice.getInstance().getCameraCalibration().getDistortionParameters().getData();
+        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getWidth() + "");
+        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getHeight() + "");
+        for (float item : items) {
+            telemetry.addLine(Float.toString(item));
         }
 
         telemetry.update();

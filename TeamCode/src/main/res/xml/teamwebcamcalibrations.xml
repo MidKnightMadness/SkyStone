@@ -52,9 +52,11 @@
 -->
 <Calibrations>
 
-    <Camera vid="Unknown" pid="0x9230">
+    <!-- <Camera vid="1443" pid="0x9230"> -->
+    <Camera vid="0x5A3" pid="0x9230">
+    <!-- <Camera vid="1443" pid="37424"> -->
         <Calibration
-            size="1920 1080"
+            size="1280 960"
             focalLength="1045.426f, 1048.978f"
             principalPoint="976.612f, 539.319f"
             distortionCoefficients="-0.359646f, 0.101702f, 0.000535f, 0.001449f, 0f, 0f, 0f, 0f"
