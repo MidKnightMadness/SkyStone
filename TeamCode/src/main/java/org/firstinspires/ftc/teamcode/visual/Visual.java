@@ -7,4 +7,5 @@ public abstract class Visual extends Assembly {
 
     public abstract VectorF GetPosition();
 
+
 }
