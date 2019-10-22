@@ -10,12 +10,12 @@ public class ScissorTest extends TeleMotor {
 
     @Override
     public void init() {
-
+        motor1 = hardwareMap.dcMotor.get("motor1");
+        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
     public void loop() {
-
 
     }
 }
