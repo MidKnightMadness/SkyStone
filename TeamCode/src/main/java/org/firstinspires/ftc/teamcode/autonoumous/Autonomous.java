@@ -79,7 +79,7 @@ private FoundationMover foundationMover;
     /*******MOVING TO THE FOUNDATION*********/
         Position faceFoundationSideFront = AutonomousConstants.FACE_FOUNDATION_SIDE_FRONT;//Move the robot so its facing the side with the foundation
         drive.moveTo(faceFoundationSideFront);//Move the robot to the foundation(Specific Location)
-        Position faceFoundationInitialPlace = AutonomousConstants.FACE_FOUNDATION_INITIAL_PLACE//Robot is facing the foundation
+        Position faceFoundationInitialPlace = AutonomousConstants.FACE_FOUNDATION_INITIAL_PLACE;//Robot is facing the foundation
         drive.moveTo(faceFoundationInitialPlace);//Moves to the foundation
 
 
