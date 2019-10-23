@@ -86,6 +86,11 @@ public class TeleMotorTest extends TeleMotor {
             motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
         }
         telemetry.addLine(String.valueOf(motor1.getCurrentPosition()));
         telemetry.addLine(String.valueOf(motor2.getCurrentPosition()));
