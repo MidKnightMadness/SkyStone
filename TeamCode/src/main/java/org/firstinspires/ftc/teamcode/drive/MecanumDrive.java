@@ -16,16 +16,16 @@ public class MecanumDrive extends Drive {
 
     @Override
     public void init() {
-        motor1 = hardwareMap.dcMotor.get("motor1");
+        motor1 = hardwareMap.dcMotor.get("fl");
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motor1 is front left
-        motor2 = hardwareMap.dcMotor.get("motor2");
+        motor2 = hardwareMap.dcMotor.get("fr");
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motor2 is front right
-        motor3 = hardwareMap.dcMotor.get("motor3");
+        motor3 = hardwareMap.dcMotor.get("bl");
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motor3 is back left
-        motor4 = hardwareMap.dcMotor.get("motor4");
+        motor4 = hardwareMap.dcMotor.get("br");
         motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motor4 is back right
     }

@@ -14,12 +14,9 @@ import org.firstinspires.ftc.teamcode.lift.Lift;
  *
  * Runs many Assemblies for the Tournament
  *
- * Created by Gregory on 9/10/18.
+ * Copied by Albert on 10/22/19.
  */
 
-/* ************************ */
-/* ***** DO NOT EDIT ****** */
-/* ************************ */
 
 @TeleOp(name = "Main Robot", group = "Main")
 public class Main extends OpMode {
