@@ -19,6 +19,8 @@ public class MecanumWheels extends Drive{
     private DcMotor wheelBL;
     private DcMotor wheelBR;
 
+    //temp variable; maybe this could be placed elsewhere
+
 
 
     @Override
@@ -38,10 +40,10 @@ public class MecanumWheels extends Drive{
         Vy = speed*Math.cos(theta);
         Vx = speed*Math.sin(theta);
 
-        powerFL = Vy + Vx;
-        powerFR = Vy - Vx;
-        powerBL = Vy - Vx;
-        powerBR = Vy + Vx;
+        powerFL = Vy + Vx + rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
+        powerFR = Vy - Vx - rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
+        powerBL = Vy - Vx - rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
+        powerBR = Vy + Vx + rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
 
         wheelBL.setPower(powerBL);
         wheelBR.setPower(powerBR);
