@@ -8,6 +8,7 @@ import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
 import com.vuforia.Image;
+import com.vuforia.PIXEL_FORMAT;
 import com.vuforia.State;
 import com.vuforia.Tool;
 import com.vuforia.TrackerManager;
@@ -40,7 +41,7 @@ public class VuforiaCallibration extends OpMode {
     private VuforiaTrackables trackables;
 
     private boolean aPressed;
-    private String line;
+    private int captures;
 
     @Override
     public void internalPreInit() {
@@ -61,7 +62,9 @@ public class VuforiaCallibration extends OpMode {
 //parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrations/teamwebcamcalibrations.xml");
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        vuforia.setFrameQueueCapacity(1);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
+        Vuforia.setFrameFormat(RGB565,true);
 
         trackables = vuforia.loadTrackablesFromAsset("Skystone");
         trackables.activate();
@@ -78,6 +81,8 @@ public class VuforiaCallibration extends OpMode {
                     VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
                     RobotLog.e("-1");
                     for (int i = 0; i < frame.getNumImages(); i++)
+                    {
+                        RobotLog.e(frame.getImage(i).getFormat() + " format");
                         if (frame.getImage(i).getFormat() == RGB565) {
                             RobotLog.e("0");
                             Image image = frame.getImage(i);
@@ -86,14 +91,15 @@ public class VuforiaCallibration extends OpMode {
                             RobotLog.e("2");
                             bmp.copyPixelsFromBuffer(image.getPixels());
                             RobotLog.e("3");
-                            FileOutputStream output = new FileOutputStream(new File("/storage/self/primary/" + Math.random() + ".png"));
+                            FileOutputStream output = new FileOutputStream(new File("/storage/self/primary/captures/" + Math.random() + ".png"));
                             RobotLog.e("4");
                             bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
                             RobotLog.e("success");
-                            line = "capture taken";
+                            captures++;
                         }
+                    }
                 } catch (Exception exception) {
-                    line = exception.getMessage();
+                    telemetry.addLine(exception.getMessage());
                 }
             }
             aPressed = true;
@@ -103,7 +109,7 @@ public class VuforiaCallibration extends OpMode {
 
         telemetry.addData("a",gamepad1.a);
         telemetry.addData("aPressed", aPressed);
-        telemetry.addLine(line);
+        telemetry.addData("captures:", captures);
         telemetry.update();
     }
 }

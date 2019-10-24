@@ -52,14 +52,12 @@
 -->
 <Calibrations>
 
-    <!-- <Camera vid="1443" pid="0x9230"> -->
     <Camera vid="0x5A3" pid="0x9230">
-    <!-- <Camera vid="1443" pid="37424"> -->
         <Calibration
-            size="1280 960"
-            focalLength="1045.426f, 1048.978f"
-            principalPoint="976.612f, 539.319f"
-            distortionCoefficients="-0.359646f, 0.101702f, 0.000535f, 0.001449f, 0f, 0f, 0f, 0f"
+            size="640 480"
+            focalLength="467.584f, 467.659f"
+            principalPoint="336.027f, 236.457f"
+            distortionCoefficients="-0.395213f, 0.148814f, -0.000612f, -0.001310f, 0f, 0f, 0f, 0f"
             />
     </Camera>
 

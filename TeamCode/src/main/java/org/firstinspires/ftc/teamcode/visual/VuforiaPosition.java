@@ -8,6 +8,7 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.common.Position;
 
 import java.util.concurrent.ExecutionException;
 
@@ -33,7 +34,11 @@ public class VuforiaPosition extends Visual {
 
     @Override
     public VectorF GetPosition() {
+        return null;
+    }
 
+    @Override
+    public Position findSkystone() {
         return null;
     }
 }
