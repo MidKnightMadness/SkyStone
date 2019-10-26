@@ -18,16 +18,16 @@ public class YummyDriveWheel extends YummyOpMode {
 
     @Override
     public void init() {
-        motor1 = hardwareMap.dcMotor.get("FL");
+        motor1 = hardwareMap.dcMotor.get("fl");
         motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor2 = hardwareMap.dcMotor.get("FR");
+        motor2 = hardwareMap.dcMotor.get("fr");
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor3 = hardwareMap.dcMotor.get("BL");
+        motor3 = hardwareMap.dcMotor.get("bl");
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor4 = hardwareMap.dcMotor.get("BR");
+        motor4 = hardwareMap.dcMotor.get("br");
         motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
