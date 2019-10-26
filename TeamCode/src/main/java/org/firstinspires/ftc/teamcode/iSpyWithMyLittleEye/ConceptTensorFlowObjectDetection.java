@@ -168,5 +168,5 @@ public class ConceptTensorFlowObjectDetection extends LinearOpMode {
 //    public void returnOrientationPattern(){
 //        if (gamepad1.)
 //    }
-    //Hi
+    //Hi Albert
 }
