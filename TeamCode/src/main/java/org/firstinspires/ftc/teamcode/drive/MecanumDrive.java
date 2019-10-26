@@ -29,6 +29,14 @@ public class MecanumDrive extends Drive {
         motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //motor4 is back right
     }
+    @Override
+    public void init_loop() {
+
+    }
+    @Override
+    public void start() {
+
+    }
 
     @Override
     public void loop() {
