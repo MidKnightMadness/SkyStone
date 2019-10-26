@@ -17,16 +17,16 @@ public class TeleMotorTest extends TeleMotor {
     @Override
     public void init() {
         motor1 = hardwareMap.dcMotor.get("motor1");
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //motor1 is front left
         motor2 = hardwareMap.dcMotor.get("motor2");
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //motor2 is front right
         motor3 = hardwareMap.dcMotor.get("motor3");
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //motor3 is back left
         motor4 = hardwareMap.dcMotor.get("motor4");
-        motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         //motor4 is back right
     }
 
@@ -81,10 +81,21 @@ public class TeleMotorTest extends TeleMotor {
             motor3.setPower(0);
             motor4.setPower(0);
         }
-        telemetry.addLine(String.valueOf(motor1.getPower()));
-        telemetry.addLine(String.valueOf(motor2.getPower()));
-        telemetry.addLine(String.valueOf(motor3.getPower()));
-        telemetry.addLine(String.valueOf(motor4.getPower()));
+        if (gamepad1.b){
+            motor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+        telemetry.addLine(String.valueOf(motor1.getCurrentPosition()));
+        telemetry.addLine(String.valueOf(motor2.getCurrentPosition()));
+        telemetry.addLine(String.valueOf(motor3.getCurrentPosition()));
+        telemetry.addLine(String.valueOf(motor4.getCurrentPosition()));
         telemetry.update();
     }
 }
