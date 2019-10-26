@@ -1,13 +1,15 @@
 package org.firstinspires.ftc.teamcode.lift;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@TeleOp
+@Disabled
 public class ScissorLift extends Lift {
 
     DcMotor motor;
     public double SCISSOR_POWER = 0.1;
+
 
     @Override
     public void init() {
@@ -17,6 +19,14 @@ public class ScissorLift extends Lift {
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setPower(0);
+    }
+    @Override
+    public void init_loop() {
+
+    }
+    @Override
+    public void start() {
+
     }
 
     @Override
