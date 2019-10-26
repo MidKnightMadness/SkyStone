@@ -27,7 +27,7 @@
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.iSpyWithMyLittleEye;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -108,8 +108,7 @@ public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
      * Once you've obtained a license key, copy the string from the Vuforia web site
      * and paste it in to your code on the next line, between the double quotes.
      */
-    private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+    private static final String VUFORIA_KEY = "AdzRBfL/////AAABmTxJR1+nWU8kkEUvugm7u7tJWHaY7xP7g/bGfkQyu3DCO/SQG6w+f5CXpGaDjmjbssT1G0sbJh4aOl2yRdp9G5W/ruD777Kw2bbYV6njaHT70TLzeYIElz28gmSr88dyYhOWADANhI15+Kb7u2ZLx3ridm1IFxNBgCBLfdIN9TwD0n7PVY8cH4VTZIQcGScpCHXZ52bcYuBoAZ6Rk0J3g/SxxpvmnupxaU1wl9YjvnHQ4a+jUf3APuhUDz+cSpbXAOuD9Rpq5SYp2oFIjFifMkkb63qAqhfpU0W/s0VQqSfk/hvwXTcoQatv8IAAiLF6AeqsRwzMHNsurfGYNDSA5tNyvkM3pRurdeItOSXlLZoV";
 
     // Since ImageTarget trackables use mm to specifiy their dimensions, we must use mm for all the physical dimension.
     // We will define some constants and conversions here

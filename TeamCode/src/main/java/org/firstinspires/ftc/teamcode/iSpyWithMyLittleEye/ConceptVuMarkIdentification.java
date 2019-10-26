@@ -26,14 +26,13 @@
  * OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
  * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode.iSpyWithMyLittleEye;
 
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -50,11 +49,11 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 /**
  * This OpMode illustrates the basics of using the Vuforia engine to determine
  * the identity of Vuforia VuMarks encountered on the field. The code is structured as
- * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigationWebcam}; we do not here
+ * a LinearOpMode. It shares much structure with {@link ConceptVuforiaNavigation}; we do not here
  * duplicate the core Vuforia documentation found there, but rather instead focus on the
  * differences between the use of Vuforia for navigation vs VuMark identification.
  *
- * @see ConceptVuforiaNavigationWebcam
+ * @see ConceptVuforiaNavigation
  * @see VuforiaLocalizer
  * @see VuforiaTrackableDefaultListener
  * see  ftc_app/doc/tutorial/FTC_FieldCoordinateSystemDefinition.pdf
@@ -63,12 +62,12 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
  *
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained in {@link ConceptVuforiaNavigationWebcam}.
+ * is explained in {@link ConceptVuforiaNavigation}.
  */
 
-@TeleOp(name="Concept: VuMark Id Webcam", group ="Concept")
+@TeleOp(name="Concept: VuMark Id", group ="Concept")
 @Disabled
-public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
+public class ConceptVuMarkIdentification extends LinearOpMode {
 
     public static final String TAG = "Vuforia VuMark Sample";
 
@@ -80,22 +79,10 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
      */
     VuforiaLocalizer vuforia;
 
-    /**
-     * This is the webcam we are to use. As with other hardware devices such as motors and
-     * servos, this device is identified using the robot configuration tool in the FTC application.
-     */
-    WebcamName webcamName;
-
     @Override public void runOpMode() {
 
         /*
-         * Retrieve the camera we are to use.
-         */
-        webcamName = hardwareMap.get(WebcamName.class, "Webcam 1");
-
-        /*
          * To start up Vuforia, tell it the view that we wish to use for camera monitor (on the RC phone);
-         * If no camera monitor is desired, use the parameterless constructor instead (commented out below).
          */
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -115,15 +102,20 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code on the next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+        parameters.vuforiaLicenseKey = "AdzRBfL/////AAABmTxJR1+nWU8kkEUvugm7u7tJWHaY7xP7g/bGfkQyu3DCO/SQG6w+f5CXpGaDjmjbssT1G0sbJh4aOl2yRdp9G5W/ruD777Kw2bbYV6njaHT70TLzeYIElz28gmSr88dyYhOWADANhI15+Kb7u2ZLx3ridm1IFxNBgCBLfdIN9TwD0n7PVY8cH4VTZIQcGScpCHXZ52bcYuBoAZ6Rk0J3g/SxxpvmnupxaU1wl9YjvnHQ4a+jUf3APuhUDz+cSpbXAOuD9Rpq5SYp2oFIjFifMkkb63qAqhfpU0W/s0VQqSfk/hvwXTcoQatv8IAAiLF6AeqsRwzMHNsurfGYNDSA5tNyvkM3pRurdeItOSXlLZoV";
 
+        /*
+         * We also indicate which camera on the RC that we wish to use.
+         * Here we chose the back (HiRes) camera (for greater range), but
+         * for a competition robot, the front camera might be more convenient.
+         */
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         /**
-         * We also indicate which camera on the RC we wish to use. For pedagogical purposes,
-         * we use the same logic as in {@link ConceptVuforiaNavigationWebcam}.
+         * Instantiate the Vuforia engine
          */
-        parameters.cameraName = webcamName;
-        this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
 
         /**
          * Load the data set containing the VuMarks for Relic Recovery. There's only one trackable
@@ -160,7 +152,7 @@ public class ConceptVuMarkIdentificationWebcam extends LinearOpMode {
                 /* For fun, we also exhibit the navigational pose. In the Relic Recovery game,
                  * it is perhaps unlikely that you will actually need to act on this pose information, but
                  * we illustrate it nevertheless, for completeness. */
-                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getFtcCameraFromTarget();
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener)relicTemplate.getListener()).getPose();
                 telemetry.addData("Pose", format(pose));
 
                 /* We further illustrate how to decompose the pose into useful rotational and
