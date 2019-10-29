@@ -8,6 +8,7 @@ import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.common.Config;
 import org.firstinspires.ftc.teamcode.drive.Drive;
 import org.firstinspires.ftc.teamcode.lift.Lift;
+import org.firstinspires.ftc.teamcode.visual.SkystoneVisual;
 
 /**
  * Main TeleOp for Tournament

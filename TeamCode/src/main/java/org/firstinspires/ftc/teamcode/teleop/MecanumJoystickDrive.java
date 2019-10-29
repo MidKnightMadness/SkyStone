@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 @TeleOp
-public class YummyDriveWheel extends YummyOpMode {
+public class MecanumJoystickDrive extends JoystickDrive {
 
     private DcMotor motor1;
     private DcMotor motor2;
