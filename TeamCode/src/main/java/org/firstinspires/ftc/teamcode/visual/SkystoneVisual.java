@@ -9,7 +9,7 @@ import org.firstinspires.ftc.teamcode.visualtests.ConceptVuforiaSkyStoneNavigati
  * Created by Gregory on 9/14/18.
  */
 
-@Implementation(ConceptVuforiaSkyStoneNavigation.class)
+@Implementation(SkystoneVisualImpl.class)
 public abstract class SkystoneVisual extends OpMode {
     public enum SkystonePosition {
         LEFT,

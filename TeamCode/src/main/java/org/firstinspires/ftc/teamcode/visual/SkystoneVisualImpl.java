@@ -49,7 +49,7 @@ public class SkystoneVisualImpl extends SkystoneVisual {
         params.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         // License Key obtained from Vuforia website
-        params.vuforiaLicenseKey = "ATqSvW7/////AAAAGSbUe3emc0NmiwFnhuicf+c4388daBpHukK2NzjANrVvP6h1rJRTExnNRD8RBZJqsu5tuVVn+AuayqO2UEZbxp0+ZUbFnXPssyKkV4q8YmYB4AkxHwaJCIxCdd1cCWR9F0xuvve5OOzddkh13v/3T1DSh7vrBuFHurMZF8SLQrwQqMf5ubyit0BRHbtX5GLWwm6hCEOX8ZykrK0UbA8+kyGwSqkWbb5IjUMQrlQpItk1emrxo0S2Mj7z+LCNXBNw9wPvTs4TXnpHvcA/7W0vGFxnbXUcUArUBztNHywpD+rVHjFZYuGJwMsWfHAFKH/OfePAstqGnl3GSJjCrEJqVujQo1cqmC7NmyWd2gxPnqHK";
+        params.vuforiaLicenseKey = "AW4kxuX/////AAABmWnW0/DqgEs8kRwViHNSLjQlrOE4Ex3RORgHderUeAWaZPXghelag4YUic5m3tlzcOEkQj2rPEzLVdfOODR8jfCq6Prwn4boVu2VkjTjWw8jaEWc6R/1VaO3pCaBIFBpOVpJFbXR3Pj3wyTF1W++C9xQOlrU8frWAYQPXGIwJrPy8GH2cFeOHx45F3FPw8cNX2qCldOS+PCHXXmuCfLihbUIfCI2S6+i89czmPLvzN4NTfeknNEbj6XG9/sj7SU5tYECuCToREkzEUjQU91zkPAvvCV1c1A4+CA7+TUNw7yUYyGgTlAEqg9+UiHkslxtYDr1kJMb9Fec8guAs8c4ZS472fMTTLix+CNbCdlJsDvY";
 
         // Display axes on top of visual matches
         params.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
@@ -126,7 +126,7 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                 //telemetry.addLine("Height: " + srcBmp.getHeight());
                 //telemetry.addLine("Width: " + srcBmp.getWidth());
                 int WIDTH = 30;
-                int HEIGHT = 12;
+                int HEIGHT = 20;
                 //telemetry.addLine("Modified Width: " + WIDTH);
                 //telemetry.addLine("Modified Height: " + HEIGHT);
 
@@ -139,8 +139,8 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                 resBmp.eraseColor(Color.BLACK);
 
                 // Left, Right
-                int[] yellowCount = {1, 1}, whiteCount = {1, 1};
-                boolean[] areYellow = {false, false};
+                int[] yellowCount = {1, 1, 1}, whiteCount = {1, 1, 1};
+                boolean[] areYellow = {false, false, false};
                 double[] hsv = new double[3];
                 for (int y = 0; y < HEIGHT; y++) {
                     for (int x = 0; x < WIDTH; x++) {
@@ -149,35 +149,40 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                         if (hsv[0] >= minYellow[0] && hsv[0] <= maxYellow[0] &&
                                 hsv[1] >= minYellow[1] && hsv[1] <= maxYellow[1] &&
                                 hsv[2] >= minYellow[2] && hsv[2] <= maxYellow[2]) {
-                            yellowCount[1 - (x / (WIDTH/2))]++;
+                            yellowCount[(x / (WIDTH/3))]++;
                             resBmp.setPixel(x, y, Color.YELLOW);
 
-                        } else if (hsv[0] >= minBlack[0] && hsv[0] <= minBlack[0] &&
-                                hsv[1] >= minBlack[1] && hsv[1] <= minBlack[1] &&
-                                hsv[2] >= minBlack[2] && hsv[2] <= minBlack[2]) {
-                            whiteCount[1 - (x / (WIDTH/2))]++;
-                            resBmp.setPixel(x, y, Color.WHITE);
                         } else {
-                            if (x < (WIDTH / 2)) {
-                                resBmp.setPixel(x, y, Color.GREEN);
+                            if (x < (WIDTH / 3)) {
+                                resBmp.setPixel(x, y, Color.DKGRAY);
+                            } else if (x >= (2*WIDTH/3)){
+                                resBmp.setPixel(x, y, Color.DKGRAY);
+                            } else {
+                                resBmp.setPixel(x, y, Color.BLUE);
                             }
                         }
                     }
                 }
 
                 telemetry.addData("Yellow Left", yellowCount[0]);
-                telemetry.addData("Yellow Right", yellowCount[1]);
-                telemetry.addData("White Left", whiteCount[0]);
-                telemetry.addData("White Right", whiteCount[1]);
+                telemetry.addData("Yellow Center", yellowCount[1]);
+                telemetry.addData("Yellow Right", yellowCount[2]);
+
 
                 Log.d("Yellow Left", yellowCount[0] + "");
-                Log.d("Yellow Right", yellowCount[1] + "");
-                Log.d("White Left", whiteCount[0] + "");
-                Log.d("White Right", whiteCount[1] + "");
+                Log.d("Yellow Center", yellowCount[1] + "");
+                Log.d("Yellow Right", yellowCount[2] + "");
+
+                if(yellowCount[0]<yellowCount[1]&&yellowCount[0]<yellowCount[2]){
+                    pos = SkystonePosition.RIGHT;
+                } else if (yellowCount[1]<yellowCount[0]&&yellowCount[1]<yellowCount[2]){
+                    pos = SkystonePosition.CENTER;
+                } else {
+                    pos = SkystonePosition.LEFT;
+                }
 
 
-
-                for (int j = 0; j < 2; j++) {
+                /*for (int j = 0; j < 3; j++) {
                     areYellow[j] = (yellowCount[j] / whiteCount[j] > 1);
                 }
 
@@ -185,10 +190,10 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                     pos = (yellowCount[0] > yellowCount[1] ? SkystonePosition.LEFT : SkystonePosition.CENTER);
                 } else {
                     pos = (areYellow[0] ? SkystonePosition.LEFT : (areYellow[1] ? SkystonePosition.CENTER : ((yellowCount[0] + whiteCount[0] < 5 || yellowCount[1] + whiteCount[1] < 5) ? SkystonePosition.UNKNOWN : SkystonePosition.RIGHT)));
-                }
+                }*/
 
-                telemetry.addData("The Gold mineral is on the", pos.toString());
-                Log.d("The Gold mineral is on", pos.toString());
+                telemetry.addData("The Skystone is on the", pos.toString());
+                Log.d("The Skystone is on", pos.toString());
                 telemetry.update();
 
 
