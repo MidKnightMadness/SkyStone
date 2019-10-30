@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.visual.webcam;
 
-import android.graphics.Bitmap;
-
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -14,9 +12,8 @@ public class WebcamTest extends OpMode {
 
     @Override
     public void init() {
-        webcamManager.startCapture(hardwareMap.get(WebcamName.class, "Webcam 1"));
+        webcamManager.startCaptureWithViews(hardwareMap.get(WebcamName.class, "Webcam 1"), hardwareMap.appContext);
         //Bitmap currentFrame = webcamManager.getCurrentFrame();
-
     }
 
     @Override
