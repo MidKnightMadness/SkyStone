@@ -15,7 +15,6 @@ public class WebcamTest extends OpMode {
     @Override
     public void init() {
         webcamManager.startCapture(hardwareMap.get(WebcamName.class, "Webcam 1"));
-
         //Bitmap currentFrame = webcamManager.getCurrentFrame();
 
     }
