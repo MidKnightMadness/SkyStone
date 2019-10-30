@@ -1,8 +1,11 @@
 package org.firstinspires.ftc.teamcode.visual.webcam;
 
 import android.graphics.Bitmap;
+import android.graphics.ImageFormat;
 import android.graphics.PixelFormat;
+import android.media.Image;
 
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -25,18 +28,30 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
     private Camera camera;
     private CameraManager cameraManager;
     private final Size FRAME_SIZE = new Size(1920, 1080);
-    private final int FPS = 5;
+    private final int FPS = 6;
+    private CameraCaptureSession captureSession;
 
     public void startCapture(WebcamName webcam) {
+
+        RobotLog.d("MAX FPS"+webcam.getCameraCharacteristics().getMaxFramesPerSecond(ImageFormat.YUY2,FRAME_SIZE));
         cameraManager = ClassFactory.getInstance().getCameraManager();
         camera = cameraManager.requestPermissionAndOpenCamera(new Deadline(1, TimeUnit.MINUTES), webcam, null);
         try {
-            camera.createCaptureSession(Continuation.create(((CameraManagerInternal) cameraManager).getSerialThreadPool(), this));
+           captureSession = camera.createCaptureSession(Continuation.create(((CameraManagerInternal) cameraManager).getSerialThreadPool(), this));
 
         } catch (Exception e) {
             RobotLog.ee("ERROR CREATING CAPTURE!", e.getMessage());
         }
 
+    }
+
+    public void stopCapture()
+    {
+        if(captureSession != null)
+        {
+            captureSession.stopCapture();
+            captureSession.close();
+        }
     }
 
     /**** Camera Capture Session ****/
@@ -51,21 +66,23 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
     public void onConfigured(CameraCaptureSession session) {
         try {
 
-            CameraCaptureRequest captureRequest = camera.createCaptureRequest(PixelFormat.RGB_565, FRAME_SIZE, FPS);
+            CameraCaptureRequest captureRequest = camera.createCaptureRequest(ImageFormat.YUY2, FRAME_SIZE, FPS);
             session.startCapture(captureRequest, new CameraCaptureSession.CaptureCallback() {
                 @Override
                 public void onNewFrame(CameraCaptureSession session, CameraCaptureRequest request, CameraFrame cameraFrame) {
-                    cameraFrame.copyToBitmap(currentFrame);
+                    //cameraFrame.copyToBitmap(currentFrame);
+                    //cameraFrame.
                 }
             }, Continuation.create(((CameraManagerInternal) cameraManager).getSerialThreadPool(), new CameraCaptureSession.StatusCallback()
             {
                 @Override public void onCaptureSequenceCompleted(CameraCaptureSession session, CameraCaptureSequenceId cameraCaptureSequenceId, long lastFrameNumber)
                 {
-                    Tracer.create("WebcamManager", true).trace("capture sequence %s reports completed: lastFrame=%d", cameraCaptureSequenceId, lastFrameNumber);
+                    RobotLog.d("capture sequence %s reports completed: lastFrame=%d", cameraCaptureSequenceId, lastFrameNumber);
                 }
             }));
         } catch (Exception e) {
-            RobotLog.ee("ERROR CREATING CAPTURE!", e.getMessage());
+            RobotLog.e("ERROR CREATING CAPTURE!");
+            RobotLog.e(e.getMessage());
         }
 
     }
