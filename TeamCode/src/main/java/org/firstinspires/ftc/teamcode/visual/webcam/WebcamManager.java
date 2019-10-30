@@ -68,7 +68,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
         camera = cameraManager.requestPermissionAndOpenCamera(new Deadline(1, TimeUnit.MINUTES), webcam, null);
 
         try {
-            // attempt to create a capture session. This could throw a CameraException (as we know well)
+            // attempt to create a capture session. This could throw a CameraException
             // This is a bit complicated. Essentially we ask the camera manager for it's thread pool (the collection of threads it's currently running)
             // We then create a continuation (a callback that will be called on a thread from that thread pool) using ourself as the callback class
             // That's why we implement StateCallback
@@ -92,7 +92,11 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
             // We don't need to stop the capture because that's handled in onClosed below
             captureSession.close();        // close the capture (indicate to java we don't care about the data any more)
         }
+
+        cleanUpViews(); // Clean up the views if necessary
     }
+
+
 
     /**** Camera Capture Session ****/
 
@@ -122,7 +126,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
             // Create a capture request for images in the android format YUY2 with the frame size FRAME_SIZE at the fps FPS
             // These parameters need to be compatible with the camera. Check with camera.getCameraName().getCameraCharacteristics()
             // For a list of conversions, see ImageFormatMapper
-            // Can throw.
+            // Can throw. (we've experienced this a lot)
             CameraCaptureRequest captureRequest = camera.createCaptureRequest(ImageFormat.YUY2, FRAME_SIZE, FPS);
 
             // Start the capture! (requires a capture request and a callback)
@@ -180,6 +184,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
 
     /**** Views ****/
 
+    private ViewGroup parentView; // The parent view which holds the two image views
     private ImageView cameraView; // The ImageView which will hold the current camera frame
     private ImageView userView; // The ImageView which will hold a user-supplied camera frame
 
@@ -202,7 +207,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
                         // Find the view in the current activity by its id we can find from the hardwareMap's appContext.
                         // This is why we need the appContext to make the views
                         // The resource name is "cameraMonitorViewId", the same as with Vuforia
-                        ViewGroup parentView = Objects.requireNonNull(AppUtil.getInstance().getActivity()).findViewById(appContext.getResources().getIdentifier("cameraMonitorViewId", "id", appContext.getPackageName()));
+                        parentView = Objects.requireNonNull(AppUtil.getInstance().getActivity()).findViewById(appContext.getResources().getIdentifier("cameraMonitorViewId", "id", appContext.getPackageName()));
 
                         RobotLog.d("Found Parent View!" + parentView.toString()); // logging
 
@@ -249,6 +254,16 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
             });
         }
 
+    }
+
+    /**
+     * Remove the views so we don't add multiple to the screen and so other programs can run
+     */
+    private void cleanUpViews() {
+        if (showsViews) {
+            parentView.removeView(cameraView);
+            parentView.removeView(userView);
+        }
     }
 
     /**
