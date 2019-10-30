@@ -41,9 +41,4 @@ public class VuforiaPosition extends Visual {
     public Position findSkystone() {
         return null;
     }
-
-    @Override
-    public Position findSkystone() {
-        return null;
-    }
 }

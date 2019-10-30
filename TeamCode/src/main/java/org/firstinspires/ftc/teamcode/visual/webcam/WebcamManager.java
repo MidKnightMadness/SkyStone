@@ -207,7 +207,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
                         // Find the view in the current activity by its id we can find from the hardwareMap's appContext.
                         // This is why we need the appContext to make the views
                         // The resource name is "cameraMonitorViewId", the same as with Vuforia
-                        parentView = Objects.requireNonNull(AppUtil.getInstance().getActivity()).findViewById(appContext.getResources().getIdentifier("cameraMonitorViewId", "id", appContext.getPackageName()));
+                        parentView = (ViewGroup) Objects.requireNonNull(AppUtil.getInstance().getActivity()).findViewById(appContext.getResources().getIdentifier("cameraMonitorViewId", "id", appContext.getPackageName()));
 
                         RobotLog.d("Found Parent View!" + parentView.toString()); // logging
 
@@ -261,8 +261,13 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
      */
     private void cleanUpViews() {
         if (showsViews) {
-            parentView.removeView(cameraView);
-            parentView.removeView(userView);
+            AppUtil.getInstance().synchronousRunOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    parentView.removeView(cameraView);
+                    parentView.removeView(userView);
+                }
+            });
         }
     }
 
