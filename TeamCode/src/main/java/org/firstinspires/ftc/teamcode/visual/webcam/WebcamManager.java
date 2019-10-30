@@ -288,60 +288,101 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
 
     /**** SAVE IMAGES ****/
 
-    private int framesToSkip = 0;
-    private int framesSaved = 0;
-    private int userFramesSaved = 0;
-    private boolean shouldSaveFrames = false;
-    private File folder;
-    private File originals;
-    private File userSupplied;
+    private int framesToSkip = 5;              // The number of frames to skip in between saving (we probably don't want to save every frame)
+    private int framesSaved = 0;               // The total number of frames saved (so we can increment the file names and keep track of if we should save this one or not
+    private int userFramesSaved = 0;           // The total number of user frames saved (for incrementing file names)
+    private boolean shouldSaveFrames = false;  // Whether or not we should save frames (depends upon folders existing and if anyone's told us to start saving the frames
+    private File folder;                       // the root folder to save the frames in
+    private File originals;                    // the subfolder to put the original frames in
+    private File userSupplied;                 // the subfolder to put processed user frames in
 
+    /**
+     * Start saving the frames from now on to the folder.
+     * @param framesToSkip the number of frames to skip between saving the frames. I don't suggest 0.
+     * @return true if it succeeded in starting, false if it failed.
+     */
     public boolean startSavingImages(int framesToSkip) {
-        shouldSaveFrames = initFolder();
-        return shouldSaveFrames;
+        shouldSaveFrames = initFolder(); // Should I save the frames? Only if the folders are ready for them.
+        return shouldSaveFrames;         // Return whether or not we succeeded in starting to save the frames
     }
 
+    /**
+     * Initialize the folders and add another one each time this runs,
+     *   incrementing the name by one to keep the runs separate
+     * @return true if it succeeded in making the folders, false if it failed.
+     */
     private boolean initFolder() {
-        File pictures = new File(Environment.DIRECTORY_PICTURES);
-        File[] oldFolders = pictures.listFiles(new FilenameFilter() {
+        File pictures = new File(Environment.DIRECTORY_PICTURES, "webcam");         // the Pictures/webcam folder on the RC phone (/storage/self/primary/Pictures/webcam)
+
+        // Get an array of the old folders we've made so we can find the last number we've used.
+        File[] oldFolders = pictures.listFiles(new FilenameFilter() { // filter by the filename
             @Override
-            public boolean accept(File file, String s) {
-                return s.startsWith("webcamManager");
+            public boolean accept(File folder, String name) {
+                return name.startsWith("webcamManager"); // if the name starts with webcamManager, it's probably ours.
             }
         });
-        int maxFolderIndex = -1;
-        for (File folder : oldFolders) {
-            if (Integer.parseInt(folder.getName().split("-")[1]) > maxFolderIndex) {
-                maxFolderIndex = Integer.parseInt(folder.getName().split("-")[1]);
-            }
-        }
-        folder = new File(pictures, "webcamManager" + (maxFolderIndex + 1));
-        originals = new File(folder, "originals");
-        userSupplied = new File(folder, "user");
-        return folder.mkdir() && originals.mkdir() && userSupplied.mkdir();
+
+        // find the last number we used
+        int maxFolderIndex = -1; // -1 since we're adding 1 later and want to start at 0 if we find no old folders
+        for (File folder : oldFolders) // loop through all the folders that matched our search
+            if (Integer.parseInt(folder.getName().split("_")[1]) > maxFolderIndex) // parse the int following the hyphen and compare with the maxFolderIndex
+                maxFolderIndex = Integer.parseInt(folder.getName().split("_")[1]); // If it's bigger than the max, save it
+
+        // the current folder we're working in; Pictures/webcam/webcamManager_#
+        folder = new File(pictures, "webcamManager_" + (maxFolderIndex + 1));
+        originals = new File(folder, "originals"); // the originals subfolder
+        userSupplied = new File(folder, "user");   // the user subfolder
+
+        // now we need to make these fictional folders if they don't exist...
+        return pictures.mkdir() && folder.mkdir() && originals.mkdir() && userSupplied.mkdir();
     }
 
+
+    /**
+     * Internal. Save the bitmap to a specified folder (originals or userSupplied) using the counter specified
+     * @param folder  the folder to save to
+     * @param counter the counter for the filename
+     * @param bitmap  the bitmap to save
+     */
     private void saveBitmapInternal(File folder, int counter, Bitmap bitmap) {
-        if (shouldSaveFrames) {
+        // make sure we should be doing this...
+        if (shouldSaveFrames)
             try {
-                FileOutputStream srcStream = new FileOutputStream(new File(folder, counter + ".png"));
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, srcStream);
-                srcStream.close();
+                // Create an output stream to the png file in the folder using the counter for the filename
+                FileOutputStream outStream = new FileOutputStream(new File(folder, counter + ".png"));
+
+                // Compress the bitmap into a PNG image to the FileOutputStream outStream
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, outStream);
+
+                outStream.close(); // Close the stream.
+
             } catch (Exception e) {
                 RobotLog.d("Error saving bitmap!");
                 RobotLog.d(e.getMessage());
             }
-        }
     }
 
+    /**
+     * Save a frame direct from the webcam
+     * @param frame the frame to save
+     */
     private void saveFrame(Bitmap frame) {
+        // increment and check if we should save this frame
+        // (framesToSkip + 1 % framesSaved should give us 0 if we should save this one
+        // eg. framesToSkip is 5, we'll save 0, 6, 12, 18, skipping 5 each time.
         if ((framesToSkip + 1) % (framesSaved++) == 0) {
+            // Save the frame to the originals folder using the counter framesSaved
             saveBitmapInternal(originals, framesSaved, frame);
         }
     }
 
+
+    /**
+     * Save a publicly-supplied bitmap
+     * @param bitmap the bitmap to save
+     */
     public void saveBitmap(Bitmap bitmap) {
+        // Save it to the userSupplied folder using and incrementing the userFramesSaved file counter.
         saveBitmapInternal(userSupplied, userFramesSaved++, bitmap);
     }
-
 }
