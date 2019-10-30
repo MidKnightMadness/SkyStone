@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.os.Environment;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -24,6 +25,9 @@ import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FilenameFilter;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -89,6 +93,8 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
                     cameraFrame.copyToBitmap(currentFrame);
                     if (showsViews)
                         showBitmap(cameraView, currentFrame);
+                    if (shouldSaveFrames)
+                        saveFrame(currentFrame);
 
                 }
             }, Continuation.create(((CameraManagerInternal) cameraManager).getSerialThreadPool(), new CameraCaptureSession.StatusCallback()
@@ -110,7 +116,11 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
         session.stopCapture();
     }
 
-    /** Preview image **/
+
+
+
+
+    /**** Preview image ****/
 
     private ImageView cameraView;
     private ImageView resultView;
@@ -157,7 +167,71 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
         });
     }
 
-    public void showProcessedBitmap(final Bitmap bitmap) {
+    public void updatePreviewBitmap(final Bitmap bitmap) {
         showBitmap(resultView, bitmap);
     }
+
+
+
+
+
+
+    /**** SAVE IMAGES ****/
+
+    private int framesToSkip = 0;
+    private int framesSaved = 0;
+    private int userFramesSaved = 0;
+    private boolean shouldSaveFrames = false;
+    private File folder;
+    private File originals;
+    private File userSupplied;
+
+    public boolean startSavingImages(int framesToSkip) {
+        shouldSaveFrames = initFolder();
+        return shouldSaveFrames;
+    }
+
+    private boolean initFolder() {
+        File pictures = new File(Environment.DIRECTORY_PICTURES);
+        File[] oldFolders = pictures.listFiles(new FilenameFilter() {
+            @Override
+            public boolean accept(File file, String s) {
+                return s.startsWith("webcamManager");
+            }
+        });
+        int maxFolderIndex = -1;
+        for (File folder : oldFolders) {
+            if (Integer.parseInt(folder.getName().split("-")[1]) > maxFolderIndex) {
+                maxFolderIndex = Integer.parseInt(folder.getName().split("-")[1]);
+            }
+        }
+        folder = new File(pictures, "webcamManager" + (maxFolderIndex + 1));
+        originals = new File(folder, "originals");
+        userSupplied = new File(folder, "user");
+        return folder.mkdir() && originals.mkdir() && userSupplied.mkdir();
+    }
+
+    private void saveBitmapInternal(File folder, int counter, Bitmap bitmap) {
+        if (shouldSaveFrames) {
+            try {
+                FileOutputStream srcStream = new FileOutputStream(new File(folder, counter + ".png"));
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, srcStream);
+                srcStream.close();
+            } catch (Exception e) {
+                RobotLog.d("Error saving bitmap!");
+                RobotLog.d(e.getMessage());
+            }
+        }
+    }
+
+    private void saveFrame(Bitmap frame) {
+        if ((framesToSkip + 1) % (framesSaved++) == 0) {
+            saveBitmapInternal(originals, framesSaved, frame);
+        }
+    }
+
+    public void saveBitmap(Bitmap bitmap) {
+        saveBitmapInternal(userSupplied, userFramesSaved++, bitmap);
+    }
+
 }
