@@ -24,6 +24,7 @@ public class Angle {
         public double toDegrees() {
             return degrees;
         }
+        public double toRadians() { return getRadians(); }
 
         public int toEncoderTicks() {
             return (int) (degrees / Config.ROBOT_DEGREES_PER_TICK);
@@ -83,5 +84,4 @@ public class Angle {
         public double getRadians() {
             return getDegrees() * Math.PI / 180d;
         }
-
     }

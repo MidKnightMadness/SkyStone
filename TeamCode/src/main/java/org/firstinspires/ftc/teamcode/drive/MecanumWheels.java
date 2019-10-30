@@ -1,7 +1,13 @@
 package org.firstinspires.ftc.teamcode.drive;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
@@ -29,6 +35,11 @@ public class MecanumWheels extends Drive{
     private Position location;
     private Angle angle;
 
+    //imu
+    private BNO055IMU imu;
+    private double x;
+    private double y;
+    private double z;
 
 
     @Override
@@ -40,13 +51,36 @@ public class MecanumWheels extends Drive{
 
         angle = Angle.fromDegrees(0);
 
+        BNO055IMU.Parameters parameter = new BNO055IMU.Parameters();
+        parameter.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        imu = hardwareMap.get(BNO055IMU.class, "imu");
+        imu.initialize(parameter);
+        imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 50);
+
     }
 
     public void moveTo(Position target){
 
     }
 
+    public void loop(){
+        x = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).firstAngle;
+        y = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
+        z = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
+
+        telemetry.addData("x: ", x);
+        telemetry.addData("y: ", y);
+        telemetry.addData("z: ", z);
+
+    }
+
+    //theta in degrees, speed between -1 and 1
     public void setPower(double theta, double speed, double rotation){
+        //adjust theta
+        //theta = theta - offset;
+
+        //theta needs to be in radians
+        theta = theta / 180 * Math.PI;
         Vy = speed*Math.cos(theta);
         Vx = speed*Math.sin(theta);
 
@@ -55,6 +89,25 @@ public class MecanumWheels extends Drive{
         powerBL = Vy - Vx - rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
         powerBR = Vy + Vx + rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
 
+        //find max power
+        double maxPower = powerFL;
+        if (powerFR > maxPower){
+            maxPower = powerFR;
+        }
+        else if (powerBL > maxPower){
+            maxPower = powerBL;
+        }
+        else if (powerBR > maxPower){
+            maxPower = powerBR;
+        }
+
+        //scale all powers
+        powerFL = powerFL*speed/maxPower;
+        powerFR = powerFR*speed/maxPower;
+        powerBR = powerBR*speed/maxPower;
+        powerBL = powerBL*speed/maxPower;
+
+        //set power
         wheelBL.setPower(powerBL);
         wheelBR.setPower(powerBR);
         wheelFL.setPower(powerFL);
@@ -73,3 +126,5 @@ public class MecanumWheels extends Drive{
 
     }
 }
+
+
