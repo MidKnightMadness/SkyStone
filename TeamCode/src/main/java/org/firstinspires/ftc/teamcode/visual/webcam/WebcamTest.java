@@ -10,9 +10,15 @@ public class WebcamTest extends OpMode {
 
     private WebcamManager webcamManager = new WebcamManager();
 
+    public WebcamTest()
+    {
+        msStuckDetectStop = 20000;
+    }
+
     @Override
     public void init() {
         webcamManager.startCaptureWithViews(hardwareMap.get(WebcamName.class, "Webcam 1"), hardwareMap.appContext);
+        webcamManager.startSavingImages(6);
         //Bitmap currentFrame = webcamManager.getCurrentFrame();
     }
 

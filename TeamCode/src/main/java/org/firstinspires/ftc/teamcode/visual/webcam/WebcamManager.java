@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.qualcomm.robotcore.robot.Robot;
 import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -23,12 +24,17 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraManager;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.internal.camera.CameraManagerInternal;
+import org.firstinspires.ftc.robotcore.internal.camera.RenumberedCameraFrame;
+import org.firstinspires.ftc.robotcore.internal.camera.libuvc.api.UvcApiCameraFrame;
+import org.firstinspires.ftc.robotcore.internal.camera.libuvc.nativeobject.UvcFrame;
 import org.firstinspires.ftc.robotcore.internal.system.AppUtil;
 import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
+import java.lang.reflect.Field;
+import java.nio.ByteBuffer;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
@@ -103,7 +109,7 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
     // The bitmap in which to save the current frame. Must create it the same size as the frame recieved from the camera
     //   Use format ARGB_8888 because that's the only one supported for conversion from YUY2 format which is all the webcam supports.
     //   volatile means it can be edited from another thread and is not guaranteed to be the same as the code runs
-    private volatile Bitmap currentFrame = Bitmap.createBitmap(FRAME_SIZE.getWidth(), FRAME_SIZE.getHeight(), Bitmap.Config.ARGB_8888);
+    private volatile Bitmap currentFrame = Bitmap.createBitmap(FRAME_SIZE.getWidth(), FRAME_SIZE.getHeight(), Bitmap.Config.RGB_565);
 
     /**
      * Get the current frame
@@ -137,7 +143,27 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
                 @Override
                 public void onNewFrame(CameraCaptureSession session, CameraCaptureRequest request, CameraFrame cameraFrame) {
                     // Copy the camera frame to the currentFrame bitmap for later (MUST BE OF ARGB_8888 format)
-                    cameraFrame.copyToBitmap(currentFrame);
+                    RobotLog.e("I'M ALIVE!~~!~!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    RobotLog.d(cameraFrame.getClass().getCanonicalName());
+                    if(!(cameraFrame instanceof RenumberedCameraFrame))
+                        return;
+                    RobotLog.e("I'M PARTIALLY ALIVE!~~!~!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                    try {
+                        Field innerFrameField = RenumberedCameraFrame.class.getDeclaredField("innerFrame");
+                        innerFrameField.setAccessible(true);
+                        UvcApiCameraFrame uvcApiCameraFrame = (UvcApiCameraFrame)innerFrameField.get(cameraFrame);
+                        Field uvcField = UvcApiCameraFrame.class.getDeclaredField("uvcFrame");
+                        uvcField.setAccessible(true);
+                        UvcFrame uvcFrame = (UvcFrame)uvcField.get(uvcApiCameraFrame);
+                        ByteBuffer byteBuffer = uvcFrame.getImageByteBuffer();
+                        currentFrame.copyPixelsFromBuffer(byteBuffer);
+
+                    } catch (Exception e)
+                    {
+                        RobotLog.e("I'M DEAD!~~!~!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+                        RobotLog.e(e.getMessage());
+                    }
+                    RobotLog.e("I'M STILL ALIVE!~~!~!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
 
                     // If we need to show the view,
                     if (showsViews)
@@ -321,18 +347,18 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
      * @param framesToSkip the number of frames to skip between saving the frames. I don't suggest 0.
      * @return true if it succeeded in starting, false if it failed.
      */
-    public boolean startSavingImages(int framesToSkip) {
-        shouldSaveFrames = initFolder(); // Should I save the frames? Only if the folders are ready for them.
-        return shouldSaveFrames;         // Return whether or not we succeeded in starting to save the frames
+    public void startSavingImages(int framesToSkip) {
+        initFolder(); // Should I save the frames? Only if the folders are ready for them.
+        shouldSaveFrames = true;
     }
 
     /**
      * Initialize the folders and add another one each time this runs,
      *   incrementing the name by one to keep the runs separate
-     * @return true if it succeeded in making the folders, false if it failed.
      */
-    private boolean initFolder() {
-        File pictures = new File(Environment.DIRECTORY_PICTURES, "webcam");         // the Pictures/webcam folder on the RC phone (/storage/self/primary/Pictures/webcam)
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    private void initFolder() {
+        File pictures = new File("/storage/self/primary/Pictures/webcam");         // the Pictures/webcam folder on the RC phone (/storage/self/primary/Pictures/webcam)
 
         // Get an array of the old folders we've made so we can find the last number we've used.
         File[] oldFolders = pictures.listFiles(new FilenameFilter() { // filter by the filename
@@ -344,9 +370,10 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
 
         // find the last number we used
         int maxFolderIndex = -1; // -1 since we're adding 1 later and want to start at 0 if we find no old folders
-        for (File folder : oldFolders) // loop through all the folders that matched our search
-            if (Integer.parseInt(folder.getName().split("_")[1]) > maxFolderIndex) // parse the int following the hyphen and compare with the maxFolderIndex
-                maxFolderIndex = Integer.parseInt(folder.getName().split("_")[1]); // If it's bigger than the max, save it
+        if(oldFolders != null)
+            for (File folder : oldFolders) // loop through all the folders that matched our search
+                if (Integer.parseInt(folder.getName().split("_")[1]) > maxFolderIndex) // parse the int following the hyphen and compare with the maxFolderIndex
+                    maxFolderIndex = Integer.parseInt(folder.getName().split("_")[1]); // If it's bigger than the max, save it
 
         // the current folder we're working in; Pictures/webcam/webcamManager_#
         folder = new File(pictures, "webcamManager_" + (maxFolderIndex + 1));
@@ -354,7 +381,10 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
         userSupplied = new File(folder, "user");   // the user subfolder
 
         // now we need to make these fictional folders if they don't exist...
-        return pictures.mkdir() && folder.mkdir() && originals.mkdir() && userSupplied.mkdir();
+        pictures.mkdir();
+        folder.mkdir();
+        originals.mkdir();
+        userSupplied.mkdir();
     }
 
 
@@ -390,9 +420,11 @@ public class WebcamManager implements CameraCaptureSession.StateCallback {
         // increment and check if we should save this frame
         // (framesToSkip + 1 % framesSaved should give us 0 if we should save this one
         // eg. framesToSkip is 5, we'll save 0, 6, 12, 18, skipping 5 each time.
-        if ((framesToSkip + 1) % (framesSaved++) == 0) {
+        RobotLog.d("FRAMES SAVED:" + framesSaved);
+        if ((framesSaved++) % (framesToSkip + 1) == 0) {
             // Save the frame to the originals folder using the counter framesSaved
             saveBitmapInternal(originals, framesSaved, frame);
+            RobotLog.d("FRAME SAVED SUCCESSFUL!");
         }
     }
 
