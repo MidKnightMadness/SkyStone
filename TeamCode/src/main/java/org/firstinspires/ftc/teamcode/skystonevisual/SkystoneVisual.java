@@ -1,9 +1,8 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.skystonevisual;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
 import org.firstinspires.ftc.teamcode.common.AssemblyManager.Implementation;
-import org.firstinspires.ftc.teamcode.visualtests.ConceptVuforiaSkyStoneNavigation;
 
 /**
  * Created by Gregory on 9/14/18.
@@ -22,7 +21,7 @@ public abstract class SkystoneVisual extends OpMode {
             return this == LEFT ? "Left" : this == CENTER ? "Center" : this == RIGHT ? "Right" : "Unknown";
         }
     }
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
     public static boolean SAVE = false;
 
     public static double minYellow[] = {20, 0.5, 0.3};
@@ -35,4 +34,6 @@ public abstract class SkystoneVisual extends OpMode {
     public abstract int isSkystone(boolean save, int print_x, int print_y) throws InterruptedException;
     public abstract SkystonePosition findSkystone() throws InterruptedException;
     public abstract void stop();
+
+
 }

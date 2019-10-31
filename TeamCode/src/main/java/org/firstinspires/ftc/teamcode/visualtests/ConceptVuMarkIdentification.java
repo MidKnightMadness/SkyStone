@@ -28,6 +28,7 @@
  */
 package org.firstinspires.ftc.teamcode.visualtests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -63,7 +64,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained in {@link ConceptVuforiaNavigation}.
  */
-
+@Disabled
 @TeleOp(name="Concept: VuMark Id", group ="Concept")
 public class ConceptVuMarkIdentification extends LinearOpMode {
 

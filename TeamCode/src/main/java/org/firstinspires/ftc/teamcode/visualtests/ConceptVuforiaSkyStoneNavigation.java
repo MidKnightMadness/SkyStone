@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode.visualtests;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -80,7 +81,7 @@ import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocaliz
  * is explained below.
  */
 
-
+@Disabled
 @TeleOp(name="SKYSTONE Vuforia Nav", group ="Concept")
 public class ConceptVuforiaSkyStoneNavigation extends LinearOpMode {
 

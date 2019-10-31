@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.skystonevisual;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
  * Created by Gregory on 9/14/18.
  */
 
-//@TeleOp
+@TeleOp
 public class SkystoneVisualImpl extends SkystoneVisual {
 
     private VuforiaLocalizer vuforia;
@@ -158,20 +158,20 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                             } else if (x >= (2*WIDTH/3)){
                                 resBmp.setPixel(x, y, Color.DKGRAY);
                             } else {
-                                resBmp.setPixel(x, y, Color.BLUE);
+                                resBmp.setPixel(x, y, Color.GRAY);
                             }
                         }
                     }
                 }
 
-                telemetry.addData("Yellow Left", yellowCount[0]);
+                telemetry.addData("Yellow Left", yellowCount[2]);
                 telemetry.addData("Yellow Center", yellowCount[1]);
-                telemetry.addData("Yellow Right", yellowCount[2]);
+                telemetry.addData("Yellow Right", yellowCount[0]);
 
 
-                Log.d("Yellow Left", yellowCount[0] + "");
+                Log.d("Yellow Left", yellowCount[2] + "");
                 Log.d("Yellow Center", yellowCount[1] + "");
-                Log.d("Yellow Right", yellowCount[2] + "");
+                Log.d("Yellow Right", yellowCount[0] + "");
 
                 if(yellowCount[0]<yellowCount[1]&&yellowCount[0]<yellowCount[2]){
                     pos = SkystonePosition.RIGHT;
@@ -255,7 +255,13 @@ public class SkystoneVisualImpl extends SkystoneVisual {
     }
 
 
-    public void loop() {}
+    public void loop() {
+        try {
+            findSkystone();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void colorToHSV(int color, double[]hsv) {
         double r = Color.red(color) / 255d;
