@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 
-
 @TeleOp
 public class MotorFullSpeedTest extends OpMode {
 
@@ -14,6 +13,7 @@ public class MotorFullSpeedTest extends OpMode {
     private DcMotor motor2;
     private DcMotor motor3;
     private DcMotor motor4;
+
     @Override
     public void init() {
         motor1 = hardwareMap.dcMotor.get("Motor1");
@@ -25,10 +25,10 @@ public class MotorFullSpeedTest extends OpMode {
 
     @Override
     public void loop() {
-        motor1.setPower(1);
-        motor2.setPower(1);
-        motor3.setPower(1);
-        motor4.setPower(1);
+        motor1.setPower(.25);
+        motor2.setPower(.25);
+        motor3.setPower(-.25);
+        motor4.setPower(-.25);
 
     }
 }
