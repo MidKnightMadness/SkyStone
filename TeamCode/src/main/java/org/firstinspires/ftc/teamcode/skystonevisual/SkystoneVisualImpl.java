@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
  * Created by Gregory on 9/14/18.
  */
 
-@TeleOp
+@TeleOp(name="SkystoneSeer")
 public class SkystoneVisualImpl extends SkystoneVisual {
 
     private VuforiaLocalizer vuforia;

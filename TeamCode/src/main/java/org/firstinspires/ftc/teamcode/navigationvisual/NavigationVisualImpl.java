@@ -20,7 +20,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import java.util.ArrayList;
 import java.util.List;
 
-@TeleOp
+@TeleOp(name="Navigator")
 public class NavigationVisualImpl extends NavigationVisual {
 
     public static final String TAG = "Vuforia Navigation Sample";
