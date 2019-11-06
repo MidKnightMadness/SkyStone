@@ -58,7 +58,7 @@ public class NavigationVisualImpl extends NavigationVisual {
          * Once you've obtained a license key, copy the string from the Vuforia web site
          * and paste it in to your code on the next line, between the double quotes.
          */
-        parameters.vuforiaLicenseKey = "AdzRBfL/////AAABmTxJR1+nWU8kkEUvugm7u7tJWHaY7xP7g/bGfkQyu3DCO/SQG6w+f5CXpGaDjmjbssT1G0sbJh4aOl2yRdp9G5W/ruD777Kw2bbYV6njaHT70TLzeYIElz28gmSr88dyYhOWADANhI15+Kb7u2ZLx3ridm1IFxNBgCBLfdIN9TwD0n7PVY8cH4VTZIQcGScpCHXZ52bcYuBoAZ6Rk0J3g/SxxpvmnupxaU1wl9YjvnHQ4a+jUf3APuhUDz+cSpbXAOuD9Rpq5SYp2oFIjFifMkkb63qAqhfpU0W/s0VQqSfk/hvwXTcoQatv8IAAiLF6AeqsRwzMHNsurfGYNDSA5tNyvkM3pRurdeItOSXlLZoV";
+        parameters.vuforiaLicenseKey = "AVKiSbf/////AAABmawTH1MFd0D+nPDCVUTSs1gvHiCOMvUNMDoU5lVMN33vtlaVRLPcCY5mRDj/p3V1I8ST/rjxmS2vup12qVf4iKPtFQheDxEHshr5dr5+G7r+GXvf4o2rYjNEw7zD1F8aUeHD564GDCv70UTWWNOJy5fBTLDmUP3+IXpDATgdAbUivz9bON6E33cUdVKBsa9rBVWS5i//X0xVL7Er9oICjAp3D4of7prv3IxQnwsCnJnen3cdR1lBSNf7eHqS7v4W4aOka+8LVuHiUHhTPbkeDgMQ3UG4W0nTEESjQFwQGU4Lnyz2jr/zhD/HvdVpfZe2FZi2VwSmjAQwhPkwvda6lgiR5xfS9fIMTlCZ/EJowCVx";
 
         /*
          * We also indicate which camera on the RC that we wish to use.
@@ -80,16 +80,51 @@ public class NavigationVisualImpl extends NavigationVisual {
          * example "StonesAndChips", datasets can be found in in this project in the
          * documentation directory.
          */
-        VuforiaTrackables stonesAndChips = this.vuforia.loadTrackablesFromAsset("StonesAndChips");
-        VuforiaTrackable redTarget = stonesAndChips.get(0);
+        VuforiaTrackables YummyYumYumList = this.vuforia.loadTrackablesFromAsset("StonesAndChips");
+        VuforiaTrackable redTarget = YummyYumYumList.get(0);
         redTarget.setName("RedTarget");  // Stones
 
-        VuforiaTrackable blueTarget  = stonesAndChips.get(1);
-        blueTarget.setName("BlueTarget");  // Chips
+        VuforiaTrackable blueTarget  = YummyYumYumList.get(1);
+        blueTarget.setName("BlueTarget");  // Chip
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+
+        VuforiaTrackable target1  = YummyYumYumList.get(0);
+        target1.setName("Target1");  // Target1
+
+        VuforiaTrackable target2  = YummyYumYumList.get(1);
+        target2.setName("Target2");  // Target2
+
+        VuforiaTrackable target3  = YummyYumYumList.get(2);
+        target3.setName("Target3");  // Target3
+
+        VuforiaTrackable target4  = YummyYumYumList.get(3);
+        target4.setName("Target4");  // Target4
+
+        VuforiaTrackable target5  = YummyYumYumList.get(4);
+        target5.setName("Target5");  // Target5
+
+        VuforiaTrackable target6  = YummyYumYumList.get(5);
+        target6.setName("Target6");  // Target6
+
+        VuforiaTrackable target7  = YummyYumYumList.get(6);
+        target7.setName("Target7");  // Target7
+
+        VuforiaTrackable target8  = YummyYumYumList.get(7);
+        target8.setName("Target8");  // Target8
+
+        VuforiaTrackable[] targetArray = {target1, target2, target3, target4, target5, target6, target7, target8};
+        int lengthOfList = targetArray.length;
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
 
         /** For convenience, gather together all the trackable objects in one easily-iterable collection */
         allTrackables = new ArrayList<VuforiaTrackable>();
-        ((ArrayList<VuforiaTrackable>) allTrackables).addAll(stonesAndChips);
+        ((ArrayList<VuforiaTrackable>) allTrackables).addAll(YummyYumYumList);
 
         /**
          * We use units of mm here because that's the recommended units of measurement for the
@@ -101,6 +136,10 @@ public class NavigationVisualImpl extends NavigationVisual {
         float mmPerInch        = 25.4f;
         float mmBotWidth       = 18 * mmPerInch;            // ... or whatever is right for your robot
         float mmFTCFieldWidth  = (12*12 - 2) * mmPerInch;   // the FTC field is ~11'10" center-to-center of the glass panels
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
 
         /**
          * In order for localization to work, we need to tell the system where each target we
@@ -158,32 +197,53 @@ public class NavigationVisualImpl extends NavigationVisual {
          * - Then we rotate it  90 around the field's Z access to face it away from the audience.
          * - Finally, we translate it back along the X axis towards the red audience wall.
          */
-        OpenGLMatrix redTargetLocationOnField = OpenGLMatrix
-                /* Then we translate the target off to the RED WALL. Our translation here
-                is a negative translation in X.*/
-                .translation(-mmFTCFieldWidth/2, 0, 0)
-                .multiplied(Orientation.getRotationMatrix(
-                        /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
-                        AxesReference.EXTRINSIC, AxesOrder.XZX,
-                        AngleUnit.DEGREES, 90, 90, 0));
-        redTarget.setLocation(redTargetLocationOnField);
-        RobotLog.ii(TAG, "Red Target=%s", format(redTargetLocationOnField));
+//        OpenGLMatrix redTargetLocationOnField = OpenGLMatrix
+//                /* Then we translate the target off to the RED WALL. Our translation here
+//                is a negative translation in X.*/
+//                .translation(-mmFTCFieldWidth/2, 0, 0)
+//                .multiplied(Orientation.getRotationMatrix(
+//                        /* First, in the fixed (field) coordinate system, we rotate 90deg in X, then 90 in Z */
+//                        AxesReference.EXTRINSIC, AxesOrder.XZX,
+//                        AngleUnit.DEGREES, 90, 90, 0));
+//        redTarget.setLocation(redTargetLocationOnField);
+//        RobotLog.ii(TAG, "Red Target=%s", format(redTargetLocationOnField));
+//
+//        /*
+//         * To place the Stones Target on the Blue Audience wall:
+//         * - First we rotate it 90 around the field's X axis to flip it upright
+//         * - Finally, we translate it along the Y axis towards the blue audience wall.
+//         */
+//        OpenGLMatrix blueTargetLocationOnField = OpenGLMatrix
+//                /* Then we translate the target off to the Blue Audience wall.
+//                Our translation here is a positive translation in Y.*/
+//                .translation(0, mmFTCFieldWidth/2, 0)
+//                .multiplied(Orientation.getRotationMatrix(
+//                        /* First, in the fixed (field) coordinate system, we rotate 90deg in X */
+//                        AxesReference.EXTRINSIC, AxesOrder.XZX,
+//                        AngleUnit.DEGREES, 90, 0, 0));
+//        blueTarget.setLocation(blueTargetLocationOnField);
+//        RobotLog.ii(TAG, "Blue Target=%s", format(blueTargetLocationOnField));
 
-        /*
-         * To place the Stones Target on the Blue Audience wall:
-         * - First we rotate it 90 around the field's X axis to flip it upright
-         * - Finally, we translate it along the Y axis towards the blue audience wall.
-         */
-        OpenGLMatrix blueTargetLocationOnField = OpenGLMatrix
-                /* Then we translate the target off to the Blue Audience wall.
-                Our translation here is a positive translation in Y.*/
-                .translation(0, mmFTCFieldWidth/2, 0)
-                .multiplied(Orientation.getRotationMatrix(
-                        /* First, in the fixed (field) coordinate system, we rotate 90deg in X */
-                        AxesReference.EXTRINSIC, AxesOrder.XZX,
-                        AngleUnit.DEGREES, 90, 0, 0));
-        blueTarget.setLocation(blueTargetLocationOnField);
-        RobotLog.ii(TAG, "Blue Target=%s", format(blueTargetLocationOnField));
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+
+        for (int i = 0; i < lengthOfList; i++){
+            OpenGLMatrix targetLocationOnField = OpenGLMatrix
+                    /* Then we translate the target off to the Blue Audience wall.
+                    Our translation here is a positive translation in Y.*/
+                    .translation(0, mmFTCFieldWidth/2, 0)
+                    .multiplied(Orientation.getRotationMatrix(
+                            /* First, in the fixed (field) coordinate system, we rotate 90deg in X */
+                            AxesReference.EXTRINSIC, AxesOrder.XZX,
+                            AngleUnit.DEGREES, 90, 0, 0));
+            targetArray[i].setLocation(targetLocationOnField);
+            RobotLog.ii(TAG, targetArray[i].getName() + "=%s", format(targetLocationOnField));
+        }
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
 
         /**
          * Create a transformation matrix describing where the phone is on the robot. Here, we
@@ -209,8 +269,23 @@ public class NavigationVisualImpl extends NavigationVisual {
          * listener is a {@link VuforiaTrackableDefaultListener} and can so safely cast because
          * we have not ourselves installed a listener of a different type.
          */
-        ((VuforiaTrackableDefaultListener)redTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
-        ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+//        ((VuforiaTrackableDefaultListener)redTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+//        ((VuforiaTrackableDefaultListener)blueTarget.getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+
+        for (int i = 0; i < lengthOfList; i++){
+            ((VuforiaTrackableDefaultListener)targetArray[i].getListener()).setPhoneInformation(phoneLocationOnRobot, parameters.cameraDirection);
+        }
+
+        //***********************************************************************************************************
+        //***********************************************************************************************************
+        //***********************************************************************************************************
 
         /**
          * A brief tutorial: here's how all the math is going to work:
@@ -230,7 +305,7 @@ public class NavigationVisualImpl extends NavigationVisual {
          *
          * @see VuforiaTrackableDefaultListener#getRobotLocation()
          */
-        stonesAndChips.activate();
+        YummyYumYumList.activate();
 
     }
     
