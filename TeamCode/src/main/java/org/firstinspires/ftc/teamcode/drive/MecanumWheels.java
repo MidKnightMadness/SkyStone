@@ -19,10 +19,10 @@ public class MecanumWheels extends Drive{
     private double Vy;
 
     //power between 1 and -1
-    private double powerFL;
-    private double powerFR;
-    private double powerBL;
-    private double powerBR;
+    public double powerFL;
+    public double powerFR;
+    public double powerBL;
+    public double powerBR;
 
     private DcMotor wheelFL;
     private DcMotor wheelFR;
@@ -56,7 +56,6 @@ public class MecanumWheels extends Drive{
         imu = hardwareMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameter);
         imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 50);
-
     }
 
     public void moveTo(Position target){
@@ -68,10 +67,9 @@ public class MecanumWheels extends Drive{
         y = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).secondAngle;
         z = imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle;
 
-        telemetry.addData("x: ", x);
-        telemetry.addData("y: ", y);
-        telemetry.addData("z: ", z);
-
+        //telemetry.addData("x: ", x);
+        //telemetry.addData("y: ", y);
+        //telemetry.addData("z: ", z);
     }
 
     //theta in degrees, speed between -1 and 1
@@ -109,9 +107,10 @@ public class MecanumWheels extends Drive{
 
         //set power
         wheelBL.setPower(powerBL);
-        wheelBR.setPower(powerBR);
+        wheelBR.setPower(-powerBR);
         wheelFL.setPower(powerFL);
-        wheelFR.setPower(powerFR);
+        wheelFR.setPower(-powerFR);
+
     }
 
     public void findDistance(double theta, double speed, int dFL, int dFR, int dBL, int dBR){
@@ -123,7 +122,6 @@ public class MecanumWheels extends Drive{
         distanceY = (dFL + dFR + dBR + dBL)/4;
 
         location = new Position(Distance.fromEncoderTicks(distanceX), Distance.fromEncoderTicks(distanceY), angle);
-
     }
 }
 

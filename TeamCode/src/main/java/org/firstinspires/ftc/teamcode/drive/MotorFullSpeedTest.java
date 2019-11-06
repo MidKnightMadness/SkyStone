@@ -25,10 +25,10 @@ public class MotorFullSpeedTest extends OpMode {
 
     @Override
     public void loop() {
-        motor1.setPower(.25);
-        motor2.setPower(.25);
-        motor3.setPower(-.25);
-        motor4.setPower(-.25);
+        motor1.setPower(.5);
+        motor2.setPower(.5);
+        motor3.setPower(-.5);
+        motor4.setPower(-.5);
 
     }
 }
