@@ -6,6 +6,8 @@ import android.graphics.Color;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
+
 @TeleOp
 public class VuforiaPhoneCameraTest extends OpMode {
 
@@ -16,6 +18,12 @@ public class VuforiaPhoneCameraTest extends OpMode {
     private long frameStart;    //for calculating the time for a frame to be processed
     private float frameAvg;
     private long frameCount;
+    enum SkystonePos
+    {
+        LEFT,
+        CENTER,
+        RIGHT,
+    }
 
     public VuforiaPhoneCameraTest()
     {
@@ -40,13 +48,15 @@ public class VuforiaPhoneCameraTest extends OpMode {
 
             frameCooldown = frameCooldownMax;
             Bitmap currentFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565,true);
-            Bitmap scaledFrame = Bitmap.createScaledBitmap(currentFrame,200,50,false);
+            Bitmap scaledFrame = Bitmap.createScaledBitmap(
+                    Bitmap.createBitmap(currentFrame,0,240,1280,420),100,50,false);
 
             //center pixel
             double[] hsv = new double[3];
             VuforiaPhoneCameraManager.colorToHSV(currentFrame.getPixel(currentFrame.getWidth() /2, currentFrame.getHeight() /2), hsv);
             lines = "h: " + hsv[0] + ", s: " + hsv[1] + ", v: " + hsv[2] + "\n";
 
+            /*
             //highlight the spaces between pixels to red
             int prevGreenX = 0;
             //highlights yellow pixels to green
@@ -71,10 +81,40 @@ public class VuforiaPhoneCameraTest extends OpMode {
 
                         prevGreenX = x;
                     }
-                }
+                }*/
+
+            //find skystone
+            //counts the black pixels in a 3*3 area
+            double[] blackPixels = new double[3];
+            for (int i = 0; i < 3; i ++) {
+                for (int x = 0; x < 3; x++)
+                    for (int y = 0; y < 3; y++)
+                    {
+                        VuforiaPhoneCameraManager.colorToHSV(scaledFrame.getPixel(30 + i * 20 + x,25 + y), hsv);
+
+                        blackPixels[i] += hsv[1];
+                    }
+            }
+            //set other stones magenta
+            scaledFrame.setPixel(30,25,0xFF00FF);
+            scaledFrame.setPixel(50,25,0xFF00FF);
+            scaledFrame.setPixel(70,25,0xFF00FF);
+
+            //set the blacker stone green
+            if(blackPixels[0]<blackPixels[1])
+            {
+                if(blackPixels[0]<blackPixels[2])
+                { scaledFrame.setPixel(30,25,0x00FF00); lines += "LEFT\n"; }   //1st stone
+                else
+                { scaledFrame.setPixel(50,25,0x00FF00); lines += "CENTER\n"; }   //2nd stone
+            }
+            else if(blackPixels[1]<blackPixels[2])
+            { scaledFrame.setPixel(50,25,0x00FF00); lines += "CENTER\n"; }  //2nd stone
+            else
+            { scaledFrame.setPixel(70,25,0x00FF00); lines += "RIGHT\n"; }  //3rd stone
 
             //original frame size
-            lines += "width: " + currentFrame.getWidth() + "\n";
+            lines += "width: " + currentFrame.getWidth() + ", ";
             lines += "height: " + currentFrame.getHeight() + "\n";
 
             //displays the modified bitmap
