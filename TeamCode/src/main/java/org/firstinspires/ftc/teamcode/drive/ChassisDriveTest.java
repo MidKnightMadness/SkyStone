@@ -22,9 +22,10 @@ public class ChassisDriveTest extends OpMode {
     @Override
     public void loop() {
         speed = Math.sqrt(gamepad1.left_stick_x*gamepad1.left_stick_x + gamepad1.left_stick_y*gamepad1.left_stick_y);
-        mechWheel.setPower(Angle.aTan(gamepad1.left_stick_x, gamepad1.left_stick_y).toDegrees(), speed, gamepad1.right_stick_x);
+        mechWheel.setPower(Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y).toDegrees(), speed, gamepad1.right_stick_x);
 
-        telemetry.addData("BL:",mechWheel.powerBL);
+        telemetry.addData("Angle: ", Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y));
+        telemetry.addData("BL: ", mechWheel.powerBL);
         telemetry.addData("BR: ", mechWheel.powerBR);
         telemetry.addData("FL: ", mechWheel.powerFL);
         telemetry.addData("FR: ", mechWheel.powerFR);

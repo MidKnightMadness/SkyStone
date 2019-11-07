@@ -74,8 +74,13 @@ public class MecanumWheels extends Drive{
 
     //theta in degrees, speed between -1 and 1
     public void setPower(double theta, double speed, double rotation){
-        //adjust theta
-        //theta = theta - offset;
+        //convert theta to normal circle angles b/c idk if cos / sin works with greggo's weird angle measures and cuz idk what else to do;
+        if (theta >= 90 && theta <= 180){
+            theta = 270 + (180-theta);
+        }
+        else{
+            theta = 90 - theta;
+        }
 
         //theta needs to be in radians
         theta = theta / 180 * Math.PI;
@@ -101,15 +106,15 @@ public class MecanumWheels extends Drive{
 
         //scale all powers
         powerFL = powerFL*speed/maxPower;
-        powerFR = powerFR*speed/maxPower;
-        powerBR = powerBR*speed/maxPower;
+        powerFR = -powerFR*speed/maxPower;
+        powerBR = -powerBR*speed/maxPower;
         powerBL = powerBL*speed/maxPower;
 
         //set power
         wheelBL.setPower(powerBL);
-        wheelBR.setPower(-powerBR);
+        wheelBR.setPower(powerBR);
         wheelFL.setPower(powerFL);
-        wheelFR.setPower(-powerFR);
+        wheelFR.setPower(powerFR);
 
     }
 
