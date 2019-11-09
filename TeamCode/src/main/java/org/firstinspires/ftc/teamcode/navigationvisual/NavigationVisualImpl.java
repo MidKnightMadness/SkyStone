@@ -80,7 +80,7 @@ public class NavigationVisualImpl extends NavigationVisual {
          * example "StonesAndChips", datasets can be found in in this project in the
          * documentation directory.
          */
-        VuforiaTrackables YummyYumYumList = this.vuforia.loadTrackablesFromAsset("StonesAndChips");
+        VuforiaTrackables YummyYumYumList = this.vuforia.loadTrackablesFromAsset("Navigation_Pics");
         VuforiaTrackable redTarget = YummyYumYumList.get(0);
         redTarget.setName("RedTarget");  // Stones
 
@@ -90,6 +90,7 @@ public class NavigationVisualImpl extends NavigationVisual {
         //***********************************************************************************************************
         //***********************************************************************************************************
         //***********************************************************************************************************
+
 
         VuforiaTrackable target1  = YummyYumYumList.get(0);
         target1.setName("Target1");  // Target1
