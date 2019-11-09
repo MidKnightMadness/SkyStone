@@ -75,6 +75,7 @@ public class MecanumJoystickDrive extends JoystickDrive {
                 }
             }
         }
+
         if(abs[max_abs][0]==0){
             max_abs = -1;
         }
@@ -100,7 +101,6 @@ public class MecanumJoystickDrive extends JoystickDrive {
         //0 = horizontal movement
         //1 = moving horizontally
         //2 = rotating
-
         if (max_abs == -1){
             motor1.setPower(0);
             motor2.setPower(0);
@@ -114,16 +114,26 @@ public class MecanumJoystickDrive extends JoystickDrive {
             motor4.setPower(-gamepad1.left_stick_x);
         }
         else if (max_abs == 1){
-            motor1.setPower(-gamepad1.left_stick_y);
-            motor2.setPower(gamepad1.left_stick_y);
-            motor3.setPower(-gamepad1.left_stick_y);
-            motor4.setPower(gamepad1.left_stick_y);
+//            motor1.setPower(-gamepad1.left_stick_y);
+//            motor2.setPower(gamepad1.left_stick_y);
+//            motor3.setPower(-gamepad1.left_stick_y);
+//            motor4.setPower(gamepad1.left_stick_y);
+
+            motor1.setPower(gamepad1.left_stick_y);
+            motor2.setPower(-gamepad1.left_stick_y);
+            motor3.setPower(gamepad1.left_stick_y);
+            motor4.setPower(-gamepad1.left_stick_y);
         }
         else if (max_abs == 2){
-            motor1.setPower(-gamepad1.right_stick_x);
-            motor2.setPower(-gamepad1.right_stick_x);
-            motor3.setPower(-gamepad1.right_stick_x);
-            motor4.setPower(-gamepad1.right_stick_x);
+//            motor1.setPower(-gamepad1.right_stick_x);
+//            motor2.setPower(-gamepad1.right_stick_x);
+//            motor3.setPower(-gamepad1.right_stick_x);
+//            motor4.setPower(-gamepad1.right_stick_x);
+
+            motor1.setPower(gamepad1.right_stick_x);
+            motor2.setPower(gamepad1.right_stick_x);
+            motor3.setPower(gamepad1.right_stick_x);
+            motor4.setPower(gamepad1.right_stick_x);
         }
 
     }
