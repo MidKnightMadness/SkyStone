@@ -16,6 +16,9 @@ public class MecanumJoystickDrive extends JoystickDrive {
     private DcMotor motor3;
     private DcMotor motor4;
 
+    public MecanumJoystickDrive() {
+    }
+
     @Override
     public void init() {
         motor1 = hardwareMap.dcMotor.get("fl");
@@ -30,6 +33,11 @@ public class MecanumJoystickDrive extends JoystickDrive {
         motor4 = hardwareMap.dcMotor.get("br");
         motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
+
+
+    private double[][] abs = new double[3][2];
+    private int max_abs = 0;
+    private boolean slow = false;
 
     @Override
     /*
@@ -50,75 +58,65 @@ public class MecanumJoystickDrive extends JoystickDrive {
         //For translation movement, the largest magnitude of of x and y will be chosen for movement
         //If x value = y value, the program will favor in chainging the y movement
         //Translational movement (left joystick)
-        if (gamepad1.left_stick_y != 0 && Math.abs(gamepad1.left_stick_y) > Math.abs(gamepad1.left_stick_x)) {
-            /* Forward
-             * FL +
-             * FR +
-             * BL +
-             * BR +
-             *
-             * Backwards
-             * FL -
-             * FR -
-             * BL -
-             * BR -
-             * Works for both settings since it replaces value
-             */
-            motor1.setPower(gamepad1.left_stick_y);
+        abs[0][0] = Math.abs(gamepad1.left_stick_x);
+        abs[1][0] = Math.abs(gamepad1.left_stick_y);
+        abs[2][0] = Math.abs(gamepad1.right_stick_x);
+        abs[0][1] = abs[0][0]/gamepad1.left_stick_x;
+        abs[1][1] = abs[1][0]/gamepad1.left_stick_y;
+        abs[2][1] = abs[2][0]/gamepad1.right_stick_x;
+
+        max_abs = 0;
+        for(int i = 0; i < 3; i++){
+            if(abs[i][0]<0.02){
+                abs[i][0]=0.0;
+            } else {
+                if(abs[i][0]>abs[max_abs][0]){
+                    max_abs=i;
+                }
+            }
+        }
+        if(abs[max_abs][0]==0){
+            max_abs = -1;
+        }
+        if(gamepad1.left_stick_button){
+            slow = true;
+        } else {
+            slow = false;
+        }
+
+        telemetry.addData("X", abs[0][0]);
+        telemetry.addData("Y", abs[1][0]);
+        telemetry.addData("R", abs[2][0]);
+        telemetry.addData("M", max_abs);
+        telemetry.addData("S", slow);
+        telemetry.update();
+
+
+        if (slow && max_abs != -1){
+            abs[max_abs][0] = (abs[max_abs][0])*(abs[max_abs][0]);
+        }
+
+        if (max_abs == -1){
+            motor1.setPower(0);
+            motor2.setPower(0);
+            motor3.setPower(0);
+            motor4.setPower(0);
+        } else if(max_abs == 0){
+            motor1.setPower(gamepad1.left_stick_x);
+            motor2.setPower(gamepad1.left_stick_x);
+            motor3.setPower(-gamepad1.left_stick_x);
+            motor4.setPower(-gamepad1.left_stick_x);
+        } else if (max_abs == 1){
+            motor1.setPower(-gamepad1.left_stick_y);
             motor2.setPower(gamepad1.left_stick_y);
-            motor3.setPower(gamepad1.left_stick_y);
+            motor3.setPower(-gamepad1.left_stick_y);
             motor4.setPower(gamepad1.left_stick_y);
-        } else if (gamepad1.left_stick_x > 0) {
-            /* Translate Right
-             * FL +
-             * FR -
-             * BL -
-             * BR +
-             */
-
-            float x_mag_value = Math.abs(gamepad1.left_stick_x);
-            motor1.setPower(x_mag_value);
-            motor2.setPower(-1 * x_mag_value);
-            motor3.setPower(-1 * x_mag_value);
-            motor4.setPower(x_mag_value);
-        } else if (gamepad1.left_stick_x < 0){
-            /* Translate Left
-             * FL -
-             * FR +
-             * BL +
-             * BR -
-             */
-
-            float x_mag_value = Math.abs(gamepad1.left_stick_x);
-            motor1.setPower(-1 * x_mag_value);
-            motor2.setPower(x_mag_value);
-            motor3.setPower(x_mag_value);
-            motor4.setPower(-1 * x_mag_value);
+        } else if (max_abs == 2){
+            motor1.setPower(-gamepad1.right_stick_x);
+            motor2.setPower(-gamepad1.right_stick_x);
+            motor3.setPower(-gamepad1.right_stick_x);
+            motor4.setPower(-gamepad1.right_stick_x);
         }
 
-        //Rotational movement (right joystick)
-        if (gamepad1.right_stick_x < 0){
-            /* Rotate right
-             * FL -
-             * FR +
-             * BL -
-             * BR +
-             */
-            motor1.setPower(-1 * gamepad1.right_stick_x);
-            motor2.setPower(gamepad1.right_stick_x);
-            motor3.setPower(-1 * gamepad1.right_stick_x);
-            motor4.setPower(gamepad1.right_stick_x);
-        } else if (gamepad1.right_stick_x > 0){
-            /* Rotate left
-             * FL +
-             * FR -
-             * BL +
-             * BR -
-             */
-            motor1.setPower(gamepad1.right_stick_x);
-            motor2.setPower(-1 * gamepad1.right_stick_x);
-            motor3.setPower(gamepad1.right_stick_x);
-            motor4.setPower(-1 * gamepad1.right_stick_x);
-        }
     }
 }
