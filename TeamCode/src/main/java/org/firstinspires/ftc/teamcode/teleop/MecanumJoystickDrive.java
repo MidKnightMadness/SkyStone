@@ -55,14 +55,14 @@ public class MecanumJoystickDrive extends JoystickDrive {
         //Rotational joystick will take priority by being placed by being placed as last if statement
 
 
-        /********************************************
+        /*******************************************************************
          * All values assumes that all motor's positive powers are forward
-         * *******************************************
+         * *****************************************************************
          */
 
 
         //For translation movement, the largest magnitude of of x and y will be chosen for movement
-        //If x value = y value, the program will favor in chainging the y movement
+        //If x value = y value, the program will favor in changing the y movement
         //Translational movement (left joystick)
         abs[0][0] = Math.abs(gamepad1.left_stick_x);
         abs[1][0] = Math.abs(gamepad1.left_stick_y);
@@ -81,6 +81,7 @@ public class MecanumJoystickDrive extends JoystickDrive {
                 }
             }
         }
+
         if(abs[max_abs][0]==0){
             max_abs = -1;
         }
@@ -106,6 +107,10 @@ public class MecanumJoystickDrive extends JoystickDrive {
             abs[max_abs][0] = (abs[max_abs][0])*(abs[max_abs][0]);
         }
 
+        //-1 = not moving
+        //0 = horizontal movement
+        //1 = moving horizontally
+        //2 = rotating
         if (max_abs == -1){
             fl.setPower(0);
             fr.setPower(0);
