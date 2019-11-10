@@ -11,27 +11,33 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 @TeleOp
 public class MecanumJoystickDrive extends JoystickDrive {
 
-    private DcMotor motor1;
-    private DcMotor motor2;
-    private DcMotor motor3;
-    private DcMotor motor4;
+    private DcMotor fl;
+    private DcMotor fr;
+    private DcMotor bl;
+    private DcMotor br;
 
     public MecanumJoystickDrive() {
     }
 
     @Override
     public void init() {
-        motor1 = hardwareMap.dcMotor.get("fl");
-        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl = hardwareMap.dcMotor.get("fl");
+        fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor2 = hardwareMap.dcMotor.get("fr");
-        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fr = hardwareMap.dcMotor.get("fr");
+        fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor3 = hardwareMap.dcMotor.get("bl");
-        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl = hardwareMap.dcMotor.get("bl");
+        bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        motor4 = hardwareMap.dcMotor.get("br");
-        motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br = hardwareMap.dcMotor.get("br");
+        br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        fl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
 
@@ -89,6 +95,10 @@ public class MecanumJoystickDrive extends JoystickDrive {
         telemetry.addData("R", abs[2][0]);
         telemetry.addData("M", max_abs);
         telemetry.addData("S", slow);
+        telemetry.addData("FL", fl.getCurrentPosition());
+        telemetry.addData("FR", fr.getCurrentPosition());
+        telemetry.addData("BL", bl.getCurrentPosition());
+        telemetry.addData("BR", br.getCurrentPosition());
         telemetry.update();
 
 
@@ -97,25 +107,36 @@ public class MecanumJoystickDrive extends JoystickDrive {
         }
 
         if (max_abs == -1){
-            motor1.setPower(0);
-            motor2.setPower(0);
-            motor3.setPower(0);
-            motor4.setPower(0);
+            fl.setPower(0);
+            fr.setPower(0);
+            bl.setPower(0);
+            br.setPower(0);
         } else if(max_abs == 0){
-            motor1.setPower(gamepad1.left_stick_x);
-            motor2.setPower(gamepad1.left_stick_x);
-            motor3.setPower(-gamepad1.left_stick_x);
-            motor4.setPower(-gamepad1.left_stick_x);
+            fl.setPower(gamepad1.left_stick_x);
+            fr.setPower(gamepad1.left_stick_x);
+            bl.setPower(-gamepad1.left_stick_x);
+            br.setPower(-gamepad1.left_stick_x);
         } else if (max_abs == 1){
-            motor1.setPower(-gamepad1.left_stick_y);
-            motor2.setPower(gamepad1.left_stick_y);
-            motor3.setPower(-gamepad1.left_stick_y);
-            motor4.setPower(gamepad1.left_stick_y);
+            fl.setPower(-gamepad1.left_stick_y);
+            fr.setPower(gamepad1.left_stick_y);
+            bl.setPower(-gamepad1.left_stick_y);
+            br.setPower(gamepad1.left_stick_y);
         } else if (max_abs == 2){
-            motor1.setPower(-gamepad1.right_stick_x);
-            motor2.setPower(-gamepad1.right_stick_x);
-            motor3.setPower(-gamepad1.right_stick_x);
-            motor4.setPower(-gamepad1.right_stick_x);
+            fl.setPower(gamepad1.right_stick_x);
+            fr.setPower(gamepad1.right_stick_x);
+            bl.setPower(gamepad1.right_stick_x);
+            br.setPower(gamepad1.right_stick_x);
+        }
+        if(gamepad1.a){
+            fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            fr.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            bl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            br.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+            br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         }
 
     }

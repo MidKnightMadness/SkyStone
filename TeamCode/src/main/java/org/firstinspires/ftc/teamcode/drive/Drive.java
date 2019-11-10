@@ -12,4 +12,13 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 public abstract class Drive extends OpMode {
 
 
+    public abstract void setRunToPosition();
+
+    public abstract void beginTranslation(Distance distance, double speed);
+
+    public abstract void beginTranslationSide(Distance distance, int direction, double speed);
+
+    public abstract void beginRotation(Angle angle, int direction, double speed);
+
+    public abstract boolean isBusy();
 }
