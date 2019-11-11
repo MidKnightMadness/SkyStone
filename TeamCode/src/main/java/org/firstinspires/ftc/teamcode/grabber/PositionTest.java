@@ -9,10 +9,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 @TeleOp
 public class PositionTest extends OpMode {
     private Servo servo;
+    private Servo rotateservo;
 
     @Override
     public void init() {
         servo = hardwareMap.servo.get("servo");
+        rotateservo = hardwareMap.servo.get("rotateservo");
     }
 
     @Override
@@ -27,7 +29,8 @@ public class PositionTest extends OpMode {
         }
 
 
-        telemetry.addData("positionofServo", gamepad1.left_stick_y);
+        telemetry.addData("positionofServo", gamepad1.y);
+        telemetry.addData("rotationofServo", gamepad1.x);
 
     }
 }
