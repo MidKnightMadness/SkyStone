@@ -21,6 +21,10 @@ public class MotorFullSpeedTest extends OpMode {
         motor3 = hardwareMap.dcMotor.get("Motor3");
         motor4 = hardwareMap.dcMotor.get("Motor4");
 
+        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     @Override

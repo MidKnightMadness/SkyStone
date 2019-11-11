@@ -84,8 +84,8 @@ public class MecanumWheels extends Drive{
 
         //theta needs to be in radians
         theta = theta / 180 * Math.PI;
-        Vy = speed*Math.cos(theta);
-        Vx = speed*Math.sin(theta);
+        Vy = speed*Math.sin(theta);
+        Vx = speed*Math.cos(theta);
 
         powerFL = Vy + Vx + rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
         powerFR = Vy - Vx - rotation*(HardwareConfig.RADIUS_FRONT + HardwareConfig.RADIUS_SIDE);
@@ -106,8 +106,8 @@ public class MecanumWheels extends Drive{
 
         //scale all powers
         powerFL = powerFL*speed/maxPower;
-        powerFR = -powerFR*speed/maxPower;
-        powerBR = -powerBR*speed/maxPower;
+        powerFR = powerFR*speed/maxPower;
+        powerBR = powerBR*speed/maxPower;
         powerBL = powerBL*speed/maxPower;
 
         //set power

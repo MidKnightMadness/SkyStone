@@ -6,8 +6,15 @@ import org.firstinspires.ftc.teamcode.common.Position;
 
 public abstract class Visual extends Assembly {
 
-    public abstract VectorF GetPosition();
+    enum SkystoneSetup {
+        Left,
+        Center,
+        Right,
+    }
 
+    public abstract Position getPosition();
 
-    public abstract Position findSkystone();
+    public abstract SkystoneSetup findSkystone();
+
+    public abstract void stop();
 }
