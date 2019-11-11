@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.visual.webcam;
+package org.firstinspires.ftc.teamcode.visual.test;
 
 import org.firstinspires.ftc.teamcode.common.Assembly;
 

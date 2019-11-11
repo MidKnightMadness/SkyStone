@@ -1,7 +1,8 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
 import android.os.Environment;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -22,6 +23,7 @@ import java.util.Locale;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone.TRACKABLE_NAMES;
 
 @TeleOp
+@Disabled
 public class GregoryStatsProject extends OpMode {
 
     // The vuforia instance.

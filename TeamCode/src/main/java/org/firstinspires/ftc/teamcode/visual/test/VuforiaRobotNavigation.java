@@ -1,26 +1,20 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
 import com.vuforia.HINT;
-import com.vuforia.State;
-import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
 
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraName;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaBase;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
-import org.firstinspires.ftc.teamcode.visual.webcam.Webcam;
+import org.firstinspires.ftc.teamcode.visual.Visual;
 
 public class VuforiaRobotNavigation extends Visual {
 
-    VuforiaSkyStone vuforia = new VuforiaSkyStone();
+    private VuforiaSkyStone vuforia = new VuforiaSkyStone();
 
     @Override
     public void init() {

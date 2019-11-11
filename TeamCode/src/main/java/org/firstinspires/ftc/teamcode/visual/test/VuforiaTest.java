@@ -1,16 +1,15 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
-import android.graphics.Bitmap;
-
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
-import com.vuforia.Image;
-import com.vuforia.PIXEL_FORMAT;
+import com.vuforia.Matrix34F;
 import com.vuforia.State;
 import com.vuforia.Tool;
+import com.vuforia.TrackableResult;
 import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
 
@@ -22,32 +21,31 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.internal.camera.CameraImpl;
 
 import java.io.File;
-import java.io.FileOutputStream;
-
-import static com.vuforia.PIXEL_FORMAT.RGB565;
 
 @TeleOp
-public class VuforiaCallibration extends OpMode {
+@Disabled
+public class VuforiaTest extends OpMode {
 
-    public VuforiaCallibration() {
+    public VuforiaTest() {
         msStuckDetectInit = 20000;
     }
 
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables trackables;
 
-    private boolean aPressed;
-    private int captures;
-
     @Override
     public void internalPreInit() {
         super.internalPreInit();
         msStuckDetectInit = 20000;
-        //msStuckDetectLoop = 20000;
     }
 
     @Override
@@ -57,14 +55,12 @@ public class VuforiaCallibration extends OpMode {
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
         parameters.vuforiaLicenseKey = "Ae7oRjb/////AAABmV3pkVnpEU9Pv3XaN0o2EZ5ttngvTMliTd5nX0843lAXhah50oPXg63sdsiK9/BFMjXkw9lMippdx4bHQo5kycWr1GcFcv+QlVNEpSclUqu9Zzj4FYVl+J2ScSAXSyuCRWMRWd3AikCfhAtlwFe7dnMIfpVniU8Yr8o3YumS2/5LjNU2wIkiJak5IHlnugT414wsrzyqemO63BHn0Olbi3REkd61RxW3cE4lbSts3OI0GfnT57/Nw6/YfLAZQ69eCz0eEckVjPmbt7evb8lYo5gEpzm+wf5LVPaAzZWVj/gSQywzPKA8zoz4q6hl4zuAd3647Y3smuWVI8PpQzRwt5vP8d07Qt39p+/zEOrcGRDo";
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
-        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        parameters.cameraName = hardwareMap.get(WebcamName.class,"Webcam 1");
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
-//parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrations/teamwebcamcalibrations.xml");
+parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrations/teamwebcamcalibrations.xml");
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
-        vuforia.setFrameQueueCapacity(1);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
-        Vuforia.setFrameFormat(RGB565,true);
 
         trackables = vuforia.loadTrackablesFromAsset("Skystone");
         trackables.activate();
@@ -72,44 +68,33 @@ public class VuforiaCallibration extends OpMode {
 
     @Override
     public void loop() {
-        if (gamepad1.a) {
-            RobotLog.e("-4");
-            if (!aPressed) {
-                RobotLog.e("-3");
-                try {
-                    RobotLog.e("-2");
-                    VuforiaLocalizer.CloseableFrame frame = vuforia.getFrameQueue().take();
-                    RobotLog.e("-1");
-                    for (int i = 0; i < frame.getNumImages(); i++)
-                    {
-                        RobotLog.e(frame.getImage(i).getFormat() + " format");
-                        if (frame.getImage(i).getFormat() == RGB565) {
-                            RobotLog.e("0");
-                            Image image = frame.getImage(i);
-                            RobotLog.e("1");
-                            Bitmap bmp = Bitmap.createBitmap(image.getWidth(), image.getHeight(), Bitmap.Config.RGB_565);
-                            RobotLog.e("2");
-                            bmp.copyPixelsFromBuffer(image.getPixels());
-                            RobotLog.e("3");
-                            FileOutputStream output = new FileOutputStream(new File("/storage/self/primary/captures/" + Math.random() + ".png"));
-                            RobotLog.e("4");
-                            bmp.compress(Bitmap.CompressFormat.PNG, 100, output);
-                            RobotLog.e("success");
-                            captures++;
-                        }
-                    }
-                } catch (Exception exception) {
-                    telemetry.addLine(exception.getMessage());
-                }
+        State state = TrackerManager.getInstance().getStateUpdater().updateState();
+        for (int i = 0; i < state.getNumTrackableResults(); i++) {
+            if(state.getTrackableResult(i).getStatus()== 3) {
+               telemetry.addLine(state.getTrackableResult(i).getTrackable().getName());
+
+               OpenGLMatrix pose = new OpenGLMatrix(Tool.convertPose2GLMatrix(state.getTrackableResult(i).getPose()));
+               VectorF trans = pose.getTranslation();
+               telemetry.addData("tx", trans.get(0));
+               telemetry.addData("ty", trans.get(1));
+               telemetry.addData("tz", trans.get(2));
+
+               Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+               telemetry.addData("rx", rot.firstAngle);
+               telemetry.addData("ry", rot.secondAngle);
+               telemetry.addData("rz", rot.thirdAngle);
+
+                //telemetry.addData(state.getTrackableResult(i).getTrackable().getName(),state.getTrackableResult(i).getStatus());
             }
-            aPressed = true;
-        } else {
-            aPressed = false;
         }
 
-        telemetry.addData("a",gamepad1.a);
-        telemetry.addData("aPressed", aPressed);
-        telemetry.addData("captures:", captures);
+        float[] items = CameraDevice.getInstance().getCameraCalibration().getDistortionParameters().getData();
+        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getWidth() + "");
+        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getHeight() + "");
+        for (float item : items) {
+            telemetry.addLine(Float.toString(item));
+        }
+
         telemetry.update();
     }
 }

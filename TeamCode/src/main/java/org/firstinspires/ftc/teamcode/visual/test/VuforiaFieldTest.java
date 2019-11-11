@@ -1,14 +1,13 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 import com.vuforia.CameraDevice;
 import com.vuforia.HINT;
-import com.vuforia.Matrix34F;
 import com.vuforia.State;
 import com.vuforia.Tool;
-import com.vuforia.TrackableResult;
 import com.vuforia.TrackerManager;
 import com.vuforia.Vuforia;
 
@@ -20,34 +19,22 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.robotcore.internal.camera.CameraImpl;
-
-import java.io.File;
 
 @TeleOp
-public class VuforiaTest extends OpMode {
-
-    public VuforiaTest() {
-        msStuckDetectInit = 20000;
-    }
+@Disabled
+public class VuforiaFieldTest extends OpMode {
 
     private VuforiaLocalizer vuforia;
     private VuforiaTrackables trackables;
 
     @Override
-    public void internalPreInit() {
-        super.internalPreInit();
-        msStuckDetectInit = 20000;
-    }
-
-    @Override
     public void init() {
+
         int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId",
                 "id", hardwareMap.appContext.getPackageName());
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
@@ -55,13 +42,13 @@ public class VuforiaTest extends OpMode {
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
         parameters.cameraName = hardwareMap.get(WebcamName.class,"Webcam 1");
         parameters.cameraMonitorFeedback = VuforiaLocalizer.Parameters.CameraMonitorFeedback.AXES;
-parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrations/teamwebcamcalibrations.xml");
-
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
 
         trackables = vuforia.loadTrackablesFromAsset("Skystone");
         trackables.activate();
+
+        CameraDevice.getInstance().getCameraCalibration();
     }
 
     @Override
@@ -69,28 +56,14 @@ parameters.addWebcamCalibrationFile("/storage/self/primary/FIRST/webcamcalibrati
         State state = TrackerManager.getInstance().getStateUpdater().updateState();
         for (int i = 0; i < state.getNumTrackableResults(); i++) {
             if(state.getTrackableResult(i).getStatus()== 3) {
-               telemetry.addLine(state.getTrackableResult(i).getTrackable().getName());
+                telemetry.addLine(state.getTrackableResult(i).getTrackable().getName());
 
-               OpenGLMatrix pose = new OpenGLMatrix(Tool.convertPose2GLMatrix(state.getTrackableResult(i).getPose()));
-               VectorF trans = pose.getTranslation();
-               telemetry.addData("tx", trans.get(0));
-               telemetry.addData("ty", trans.get(1));
-               telemetry.addData("tz", trans.get(2));
 
-               Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
-               telemetry.addData("rx", rot.firstAngle);
-               telemetry.addData("ry", rot.secondAngle);
-               telemetry.addData("rz", rot.thirdAngle);
+                OpenGLMatrix location = ((VuforiaTrackableDefaultListener)((VuforiaTrackable)state.getTrackable(i)).getListener()).getRobotLocation();
+                telemetry.addData("xPosition", location.getTranslation().get(0));
 
                 //telemetry.addData(state.getTrackableResult(i).getTrackable().getName(),state.getTrackableResult(i).getStatus());
             }
-        }
-
-        float[] items = CameraDevice.getInstance().getCameraCalibration().getDistortionParameters().getData();
-        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getWidth() + "");
-        telemetry.addLine(CameraDevice.getInstance().getVideoMode(0).getHeight() + "");
-        for (float item : items) {
-            telemetry.addLine(Float.toString(item));
         }
 
         telemetry.update();

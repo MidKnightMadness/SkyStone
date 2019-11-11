@@ -1,15 +1,19 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.teamcode.common.Position;
+import org.firstinspires.ftc.teamcode.visual.Visual;
+import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
 @TeleOp
+@Disabled
 public class VuforiaPositionTest extends OpMode {
 
-    Visual visual = new VuforiaRobotNavigation();
+    Visual visual = new VuforiaPosition();
 
     public VuforiaPositionTest() {
         msStuckDetectInit = 20000;
@@ -32,6 +36,8 @@ public class VuforiaPositionTest extends OpMode {
             telemetry.addData("y", position.getY().toEncoderTicks());
             telemetry.addData("theta", position.getTheta().getDegrees());
         }
+
+        telemetry.addLine(visual.findSkystone().toString());
     }
 
     @Override

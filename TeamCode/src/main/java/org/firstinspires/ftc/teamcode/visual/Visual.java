@@ -6,7 +6,7 @@ import org.firstinspires.ftc.teamcode.common.Position;
 
 public abstract class Visual extends Assembly {
 
-    enum SkystoneSetup {
+    public enum SkystoneSetup {
         Left,
         Center,
         Right,

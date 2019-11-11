@@ -1,14 +1,15 @@
-package org.firstinspires.ftc.teamcode.visual.webcam;
+package org.firstinspires.ftc.teamcode.visual.test;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
+import org.firstinspires.ftc.teamcode.visual.webcam.PhoneManager;
 
 @TeleOp
+@Disabled
 public class VuforiaPhoneCameraTest extends OpMode {
 
     private PhoneManager cameraManager = new PhoneManager();

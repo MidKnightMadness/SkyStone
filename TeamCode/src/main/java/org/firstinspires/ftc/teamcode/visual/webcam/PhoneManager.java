@@ -419,5 +419,19 @@ public class PhoneManager implements ImageReader.OnImageAvailableListener {
 
 
 
+    public static void colorToHSV(int color, double[]hsv) {
+        double r = Color.red(color) / 255d;
+        double b = Color.blue(color) / 255d;
+        double g = Color.green(color) / 255d;
+        double cmin = Math.min(r, Math.min(b, g));
+        double cmax = Math.max(r, Math.max(b, g));
+        double delta = cmax - cmin;
 
+        hsv[0] = delta == 0 ? 0 :
+                cmax == r ? 60 * ((g-b)/delta) :
+                        cmax == g ? 60 * ((b-r)/delta + 2) :
+                                60 * ((r-g)/delta + 4);
+        hsv[1] = cmax == 0 ? 0 : delta / cmax;
+        hsv[2] = cmax;
+    }
 }

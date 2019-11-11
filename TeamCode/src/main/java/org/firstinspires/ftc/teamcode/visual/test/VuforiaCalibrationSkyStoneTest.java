@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
 import android.graphics.Bitmap;
 import android.graphics.Picture;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -28,6 +29,7 @@ import static com.vuforia.PIXEL_FORMAT.RGB565;
 import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone.TRACKABLE_NAMES;
 
 @TeleOp
+@Disabled
 public class VuforiaCalibrationSkyStoneTest extends OpMode {
 
     // The vuforia instance.

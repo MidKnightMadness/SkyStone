@@ -1,5 +1,6 @@
-package org.firstinspires.ftc.teamcode.visual;
+package org.firstinspires.ftc.teamcode.visual.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.vuforia.CameraCalibration;
@@ -17,6 +18,7 @@ import java.io.File;
 import java.util.Arrays;
 
 @TeleOp
+@Disabled
 public class VuforiaCalibrationTest extends OpMode {
 
     // The vuforia instance.
