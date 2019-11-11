@@ -21,10 +21,38 @@ public class PositionTest extends OpMode {
 
     @Override
     public void loop() {
+        if(gamepad1.y) {
+            if (!yPressed)
+                if (rotateservo.getPosition() == 1)
+                 rotateservo.setPosition(-1);
+            else
+                rotateservo.setPosition(1);
+        yPressed = true;
+    }
+    else
+        yPressed=false;
+
+        if(gamepad1.x) {
+            if (!xPressed)
+                if (servo.getPosition() > 0.35)
+                    servo.setPosition(-0.35);
+                else if (servo.getPosition() < -0.35)
+                    servo.setPosition(0.35);
+                else
+                    servo.setPosition(0.355);
+            xPressed = true;
+        }
+        else
+            xPressed=false;
 
 
-        telemetry.addData("positionofServo", gamepad1.y);
-        telemetry.addData("rotationofServo", gamepad1.x);
+
+
+        telemetry.addData("positionofServo", gamepad1.x);
+        telemetry.addData("rotationofServo", gamepad1.y);
+        telemetry.addData("positionoservo", servo.getPosition());
+        telemetry.addData("positionofrotateServo", rotateservo.getPosition());
+        telemetry.update();
 
     }
 }
