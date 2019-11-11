@@ -70,7 +70,7 @@ private FoundationMover foundationMover;
 //Actual code:
 
     /*******TAKING FIRST SKYSTONE*********/
-        Position firstSkyStone = visual.findSkystone(); //Move the robot facing the stone
+        Position firstSkyStone = null;//visual.findSkystone(); //Move the robot facing the stone
         drive.moveTo(firstSkyStone);//Move the robot until the intake is facing the first stone
         intake.spin(1);//Takes the stone(NOTE: change the power)
         grabber.grab();//Grab the stone
@@ -104,7 +104,7 @@ private FoundationMover foundationMover;
     /********MOVING TO SECOND SKYSTONE********/
         Position faceDeportSideFront = AutonomousConstants.FACE_DEPOT_SIDE_FRONT;//Face robot to the depot side
         drive.moveTo(faceDeportSideFront);//Move robot to depot side until it is at the second skystone
-        Position secondSkyStone  = visual.findSkystone();//Face robot to the second skystone
+        Position secondSkyStone  = null;//visual.findSkystone();//Face robot to the second skystone
         drive.moveTo(secondSkyStone);
 
 

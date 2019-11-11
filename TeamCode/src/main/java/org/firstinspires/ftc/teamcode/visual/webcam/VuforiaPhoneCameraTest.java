@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaSkyStone;
 @TeleOp
 public class VuforiaPhoneCameraTest extends OpMode {
 
-    private VuforiaPhoneCameraManager cameraManager = new VuforiaPhoneCameraManager();
+    private PhoneManager cameraManager = new PhoneManager();
     private int frameCooldown = 0;  //allows loop to run multiple times between frames
     private int frameCooldownMax = 10;
     private String lines;   //lines for telemetry output
@@ -33,7 +33,7 @@ public class VuforiaPhoneCameraTest extends OpMode {
 
     @Override
     public void init() {
-        cameraManager.startCaptureWithViews(hardwareMap.appContext);
+        cameraManager.startCaptureWithViews(telemetry, hardwareMap.appContext);
     }
 
     @Override
