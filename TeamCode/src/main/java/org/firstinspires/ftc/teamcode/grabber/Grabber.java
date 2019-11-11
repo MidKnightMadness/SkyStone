@@ -12,5 +12,6 @@ public abstract class Grabber extends Assembly {
 
     public abstract void grab();
     public abstract void release();
+    public abstract void rotate();
 
 }

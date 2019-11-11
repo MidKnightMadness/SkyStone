@@ -6,6 +6,7 @@ import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 
 public class Claw extends Grabber  {
     private Servo clawservo;
+    private Servo rotateservo;
 
     @Override
     public void init() {
@@ -18,9 +19,10 @@ public class Claw extends Grabber  {
     }
 
     @Override
-    public void release() {
-        clawservo.setPosition(0.6);
-    }
+    public void release() { clawservo.setPosition(0.6);}
+
+    @Override
+    public void rotate() { rotateservo.setPosition(1);}
 
 }
 
