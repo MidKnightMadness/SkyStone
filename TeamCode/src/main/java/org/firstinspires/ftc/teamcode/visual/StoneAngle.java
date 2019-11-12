@@ -1,13 +1,11 @@
-package org.firstinspires.ftc.teamcode.test;
+package org.firstinspires.ftc.teamcode.visual;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
+import org.firstinspires.ftc.teamcode.common.Assembly;
 
-@TeleOp
-public class TwoMeterStoneTest extends OpMode {
+public class StoneAngle extends Assembly {
 
     private Rev2mDistanceSensor distSensorLeft;
     private Rev2mDistanceSensor distSensorRight;
@@ -18,16 +16,17 @@ public class TwoMeterStoneTest extends OpMode {
         distSensorRight = hardwareMap.get(Rev2mDistanceSensor.class, "distanceright");
     }
 
-    @Override
-    public void loop() {
+    public double[] stonePosition() {
         //sensor readings
         double leftDist = distSensorLeft.getDistance(DistanceUnit.CM);
         double rightDist = distSensorRight.getDistance(DistanceUnit.CM);
-        telemetry.addData("left", leftDist);
-        telemetry.addData("right", rightDist);
+        //telemetry.addData("left", leftDist);
+        //telemetry.addData("right", rightDist);
 
-        //distance and rotation
-        telemetry.addData("distance", (leftDist + rightDist) / 2);
-        telemetry.addData("rotation", 0);
+        //distance and angle
+        return new double[] {
+            (leftDist + rightDist) / 2,
+            Math.atan2(leftDist - rightDist, 12) / Math.PI * 180
+        };
     }
 }
