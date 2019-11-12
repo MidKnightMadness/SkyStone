@@ -81,6 +81,10 @@ public class Angle {
             return Angle.fromDegrees(a);
         }
 
+        public Angle copy() {
+            return Angle.fromDegrees(degrees);
+        }
+
         public double getRadians() {
             return getDegrees() * Math.PI / 180d;
         }

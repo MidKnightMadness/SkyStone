@@ -13,6 +13,7 @@ public class ChassisDriveTest extends OpMode {
     @Override
     public void init() {
         mechWheel.hardwareMap = hardwareMap;
+        mechWheel.telemetry = telemetry;
         mechWheel.init();
         speed = 0;
         offset = 0;
@@ -26,6 +27,8 @@ public class ChassisDriveTest extends OpMode {
         mechWheel.setPower(angle, speed, gamepad1.right_stick_x);
 
         telemetry.addData("Angle: ", angle);
+        telemetry.addData("Speed", speed);
+        telemetry.addData("Rotation", gamepad1.right_stick_x);
         telemetry.addData("BL: ", mechWheel.powerBL);
         telemetry.addData("BR: ", mechWheel.powerBR);
         telemetry.addData("FL: ", mechWheel.powerFL);

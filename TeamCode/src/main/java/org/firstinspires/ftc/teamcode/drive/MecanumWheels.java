@@ -51,10 +51,10 @@ public class MecanumWheels extends Drive{
 
         angle = Angle.fromDegrees(0);
 
-        BNO055IMU.Parameters parameter = new BNO055IMU.Parameters();
-        parameter.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
         imu = hardwareMap.get(BNO055IMU.class, "imu");
-        imu.initialize(parameter);
+        imu.initialize(parameters);
         imu.startAccelerationIntegration(new org.firstinspires.ftc.robotcore.external.navigation.Position(), new Velocity(), 50);
     }
 
@@ -103,6 +103,11 @@ public class MecanumWheels extends Drive{
         else if (powerBR > maxPower){
             maxPower = powerBR;
         }
+
+        telemetry.addData("BL: ", powerBL);
+        telemetry.addData("BR: ", powerBR);
+        telemetry.addData("FL: ", powerFL);
+        telemetry.addData("FR: ", powerFR);
 
         //scale all powers
         powerFL = powerFL*speed/maxPower;
