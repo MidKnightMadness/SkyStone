@@ -103,6 +103,9 @@ public class MecanumDrive extends Drive {
         telemetry.update();
     }
 
+    /**
+     * Sets all motors to Run to Position mode
+     */
     @Override
     public void setRunToPosition(){
         fl.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -111,7 +114,11 @@ public class MecanumDrive extends Drive {
         br.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 
-
+    /**
+     *
+     * @param distance the distance at which the bot moves in {@code Distance} distance units
+     * @param speed speed in which bot moves, it sets the power
+     */
     @Override
     public void beginTranslation(Distance distance, double speed){
         fl.setTargetPosition(fl.getCurrentPosition()+distance.toEncoderTicks());
@@ -124,18 +131,30 @@ public class MecanumDrive extends Drive {
         br.setPower(-speed);
     }
 
+    /**
+     *
+     * @param distance the distance at which the bot moves in {@code Distance} distance units
+     * @param direction the direction in which the bot moves sideways, {@code 1} moves to the right and {@code -1} moves to the left
+     * @param speed speed in which bot moves, it sets the power
+     */
     @Override
     public void beginTranslationSide(Distance distance, int direction, double speed){
-        fl.setTargetPosition(fl.getCurrentPosition()+direction*distance.toEncoderTicks());
-        fr.setTargetPosition(fr.getCurrentPosition()+direction*distance.toEncoderTicks());
-        bl.setTargetPosition(bl.getCurrentPosition()-direction*distance.toEncoderTicks());
-        br.setTargetPosition(br.getCurrentPosition()-direction*distance.toEncoderTicks());
+        fl.setTargetPosition(fl.getCurrentPosition() + direction * distance.toEncoderTicks());
+        fr.setTargetPosition(fr.getCurrentPosition() + direction * distance.toEncoderTicks());
+        bl.setTargetPosition(bl.getCurrentPosition() - direction * distance.toEncoderTicks());
+        br.setTargetPosition(br.getCurrentPosition() - direction * distance.toEncoderTicks());
         fl.setPower(speed);
         fr.setPower(speed);
         bl.setPower(-speed);
         br.setPower(-speed);
     }
 
+    /**
+     *
+     * @param angle the angle at which the bot rotates in {@code Distance} angle units
+     * @param direction
+     * @param speed speed in which bot moves, it sets the power
+     */
     @Override
     public void beginRotation(Angle angle, int direction, double speed) {
         fl.setTargetPosition(fl.getCurrentPosition() - direction * angle.toEncoderTicks());
@@ -148,6 +167,10 @@ public class MecanumDrive extends Drive {
         br.setPower(-speed);
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public boolean isBusy(){
         return Math.abs(fl.getCurrentPosition()- fl.getTargetPosition()) > 10;
