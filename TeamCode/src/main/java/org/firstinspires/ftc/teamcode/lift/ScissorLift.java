@@ -9,7 +9,9 @@ public class ScissorLift extends Lift {
 
     DcMotor motor;
     public double SCISSOR_POWER = 0.1;
-
+    public double SCISSOR_MIN_ENC = -10000000;
+    public double SCISSOR_MAX_ENC = 10000000;
+    private int pos = 0;
 
     @Override
     public void init() {
@@ -31,14 +33,15 @@ public class ScissorLift extends Lift {
 
     @Override
     public void loop() {
-        if(gamepad1.left_trigger>0){
+        pos = motor.getCurrentPosition();
+        if(gamepad1.left_trigger>0 && pos < SCISSOR_MAX_ENC){
             motor.setPower(SCISSOR_POWER);
-        } else if (gamepad1.right_trigger>0){
+        } else if (gamepad1.right_trigger>0 && pos > SCISSOR_MIN_ENC){
             motor.setPower(-SCISSOR_POWER);
         } else {
             motor.setPower(0);
         }
-        telemetry.addLine(String.valueOf(motor.getCurrentPosition()));
+        telemetry.addLine(String.valueOf(pos));
         telemetry.update();
 
 
