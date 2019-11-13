@@ -29,15 +29,34 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
 
 
         SkystoneVisual.SkystonePosition pos = SkystoneVisual.SkystonePosition.UNKNOWN;
-        d.beginTranslationSide(Distance.fromInches(1), -1, .1);
+        d.beginTranslation(Distance.fromInches(1), .2);
         d.setRunToPosition();
         while (pos == SkystoneVisual.SkystonePosition.UNKNOWN && d.isBusy() && !isStopRequested()) {
-
-
+            pos = sv.findSkystone();
+            telemetry.addLine(pos.toString());
         }
         while (d.isBusy() && !isStopRequested());
 
+        d.beginTranslation(Distance.fromInches(14), .4);
+        while (d.isBusy() && !isStopRequested());
 
+        d.beginTranslation(Distance.fromInches(2), .2);
+        while (d.isBusy() && !isStopRequested());
+
+
+        d.beginTranslation(Distance.fromInches(-10), .4);
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginRotation(Angle.fromDegrees(90), -1, .3);//r
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(100), .4);
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginRotation(Angle.fromDegrees(90), 1, .5);//l
+        while (d.isBusy() && !isStopRequested());
+
+        /*
 
 
         //Testing all the directions
@@ -47,24 +66,13 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(-10), .3);
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslationSide(Distance.fromInches(10), 1, .2);
+        d.beginRotation(Angle.fromDegrees(90), 1, .5);//l
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslationSide(Distance.fromInches(10), -1, .5);
+        d.beginRotation(Angle.fromDegrees(90), -1, .3);//r
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .5);
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginRotation(Angle.fromDegrees(90), -1, .3);
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(-10), 1);
-        while (d.isBusy() && !isStopRequested());
-
-
-
-
+        */
 
 
     }

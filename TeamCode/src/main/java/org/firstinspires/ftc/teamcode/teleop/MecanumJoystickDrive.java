@@ -5,8 +5,11 @@
 
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.util.Log;
+
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.RobotLog;
 
 @TeleOp
 public class MecanumJoystickDrive extends JoystickDrive {
@@ -37,6 +40,8 @@ public class MecanumJoystickDrive extends JoystickDrive {
         fr.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        RobotLog.a("STARTING!\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
+        Log.d("STARTING!!!", "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n");
 
     }
 
@@ -117,15 +122,15 @@ public class MecanumJoystickDrive extends JoystickDrive {
             bl.setPower(0);
             br.setPower(0);
         } else if(max_abs == 0){
-            fl.setPower(gamepad1.left_stick_x);
-            fr.setPower(gamepad1.left_stick_x);
-            bl.setPower(-gamepad1.left_stick_x);
-            br.setPower(-gamepad1.left_stick_x);
+            fl.setPower(-gamepad1.left_stick_x);
+            fr.setPower(-gamepad1.left_stick_x);
+            bl.setPower(gamepad1.left_stick_x);
+            br.setPower(gamepad1.left_stick_x);
         } else if (max_abs == 1){
-            fl.setPower(-gamepad1.left_stick_y);
-            fr.setPower(gamepad1.left_stick_y);
-            bl.setPower(-gamepad1.left_stick_y);
-            br.setPower(gamepad1.left_stick_y);
+            fl.setPower(gamepad1.left_stick_y);
+            fr.setPower(-gamepad1.left_stick_y);
+            bl.setPower(gamepad1.left_stick_y);
+            br.setPower(-gamepad1.left_stick_y);
         } else if (max_abs == 2){
             fl.setPower(gamepad1.right_stick_x);
             fr.setPower(gamepad1.right_stick_x);

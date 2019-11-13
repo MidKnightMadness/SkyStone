@@ -114,14 +114,14 @@ public class MecanumDrive extends Drive {
 
     @Override
     public void beginTranslation(Distance distance, double speed){
-        fl.setTargetPosition(fl.getCurrentPosition()-distance.toEncoderTicks());
-        fr.setTargetPosition(fr.getCurrentPosition()+distance.toEncoderTicks());
-        bl.setTargetPosition(bl.getCurrentPosition()-distance.toEncoderTicks());
-        br.setTargetPosition(br.getCurrentPosition()+distance.toEncoderTicks());
-        fl.setPower(-speed);
-        fr.setPower(speed);
-        bl.setPower(-speed);
-        br.setPower(speed);
+        fl.setTargetPosition(fl.getCurrentPosition()+distance.toEncoderTicks());
+        fr.setTargetPosition(fr.getCurrentPosition()-distance.toEncoderTicks());
+        bl.setTargetPosition(bl.getCurrentPosition()+distance.toEncoderTicks());
+        br.setTargetPosition(br.getCurrentPosition()-distance.toEncoderTicks());
+        fl.setPower(speed);
+        fr.setPower(-speed);
+        bl.setPower(speed);
+        br.setPower(-speed);
     }
 
     @Override
@@ -137,11 +137,11 @@ public class MecanumDrive extends Drive {
     }
 
     @Override
-    public void beginRotation(Angle angle, int direction, double speed){
-        fl.setTargetPosition(fl.getCurrentPosition()-direction*angle.toEncoderTicks());
-        fr.setTargetPosition(fr.getCurrentPosition()-direction*angle.toEncoderTicks());
-        bl.setTargetPosition(bl.getCurrentPosition()-direction*angle.toEncoderTicks());
-        br.setTargetPosition(br.getCurrentPosition()-direction*angle.toEncoderTicks());
+    public void beginRotation(Angle angle, int direction, double speed) {
+        fl.setTargetPosition(fl.getCurrentPosition() - direction * angle.toEncoderTicks());
+        fr.setTargetPosition(fr.getCurrentPosition() - direction * angle.toEncoderTicks());
+        bl.setTargetPosition(bl.getCurrentPosition() - direction * angle.toEncoderTicks());
+        br.setTargetPosition(br.getCurrentPosition() - direction * angle.toEncoderTicks());
         fl.setPower(-speed);
         fr.setPower(-speed);
         bl.setPower(-speed);
