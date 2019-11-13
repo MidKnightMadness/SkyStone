@@ -24,7 +24,7 @@ public class PositionTest extends OpMode {
         if(gamepad1.y) {
             if (!yPressed)
                 if (rotateservo.getPosition() == 1)
-                 rotateservo.setPosition(-1);
+                 rotateservo.setPosition(0.275);
             else
                 rotateservo.setPosition(1);
         yPressed = true;
@@ -34,12 +34,12 @@ public class PositionTest extends OpMode {
 
         if(gamepad1.x) {
             if (!xPressed)
-                if (servo.getPosition() > 0.35)
-                    servo.setPosition(-0.35);
-                else if (servo.getPosition() < -0.35)
-                    servo.setPosition(0.35);
+                if (servo.getPosition() > 0.48)
+                    servo.setPosition(-0.48);
+                else if (servo.getPosition() < -0.48)
+                    servo.setPosition(0.48);
                 else
-                    servo.setPosition(0.355);
+                    servo.setPosition(0.481);
             xPressed = true;
         }
         else
