@@ -104,7 +104,7 @@ public class MecanumDrive extends Drive {
     }
 
     /**
-     * Sets all motors to Run to Position mode
+     * Makes the bot move from the pre-set values from {@code begin} methods
      */
     @Override
     public void setRunToPosition(){
