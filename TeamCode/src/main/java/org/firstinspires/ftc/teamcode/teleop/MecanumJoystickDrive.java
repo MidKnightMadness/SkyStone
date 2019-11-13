@@ -91,9 +91,9 @@ public class MecanumJoystickDrive extends JoystickDrive {
             max_abs = -1;
         }
         if(gamepad1.left_stick_button){
-            slow = true;
-        } else {
             slow = false;
+        } else {
+            slow = true;
         }
 
         telemetry.addData("X", abs[0][0]);
