@@ -53,7 +53,22 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(100), .4);
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .5);//l
+        d.beginRotation(Angle.fromDegrees(90), 1, .3);//l
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(30), .4);
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(-40), .4);
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslationSide(Distance.fromInches(35), 1, .4);
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginRotation(Angle.fromDegrees(90), 1, .3);//l
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(15), .4);
         while (d.isBusy() && !isStopRequested());
 
         /*
