@@ -8,7 +8,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class FoundationMover extends Mover {
 
     private Servo servoLeft;
-    private Servo servoRight;
+    //private Servo servoRight;
 
     @Override
     public void init() {
