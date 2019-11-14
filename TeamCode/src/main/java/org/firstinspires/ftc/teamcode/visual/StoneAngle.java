@@ -16,6 +16,7 @@ public class StoneAngle extends Assembly {
         distSensorRight = hardwareMap.get(Rev2mDistanceSensor.class, "distanceright");
     }
 
+    //returns a distance (cm) and angle (degrees)
     public double[] stonePosition() {
         //sensor readings
         double leftDist = distSensorLeft.getDistance(DistanceUnit.CM);
