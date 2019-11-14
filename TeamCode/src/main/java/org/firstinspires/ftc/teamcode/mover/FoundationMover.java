@@ -1,8 +1,10 @@
 package org.firstinspires.ftc.teamcode.mover;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+@TeleOp
 public class FoundationMover extends Mover {
 
     private Servo servoLeft;
@@ -11,7 +13,7 @@ public class FoundationMover extends Mover {
     @Override
     public void init() {
         servoLeft = hardwareMap.servo.get("left");
-        servoRight = hardwareMap.servo.get("right");
+        //servoRight = hardwareMap.servo.get("right");
 
     }
 
@@ -24,18 +26,26 @@ public class FoundationMover extends Mover {
         }
     }
 
+    @Override
+    public void init_loop() {
+
+    }
+    @Override
+    public void start() {
+
+    }
+
     //****************************************
-    //Assumes that 0 position is down and 1 position is up
-    //TODO: Check the hardware and find which way is which
+    //Tested: 0 position is up and 1 position is down
     //****************************************
 
     public void holdFoundation(){
-        servoLeft.setPosition(0);
-        servoRight.setPosition(0);
+        servoLeft.setPosition(1);
+        //servoRight.setPosition(0);
     }
 
     public void releaseFoundation(){
-        servoLeft.setPosition(1);
-        servoRight.setPosition(1);
+        servoLeft.setPosition(0);
+        //servoRight.setPosition(1);
     }
 }
