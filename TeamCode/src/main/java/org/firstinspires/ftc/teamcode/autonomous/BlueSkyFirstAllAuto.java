@@ -9,6 +9,7 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.drive.Drive;
+import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
 @Autonomous
@@ -21,6 +22,7 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
 
         Drive d = AssemblyManager.newInstance(Drive.class, hardwareMap, telemetry); // Initialize all Assemblies required during the Autonomous program by the interface
         SkystoneVisual sv = AssemblyManager.newInstance(SkystoneVisual.class, hardwareMap, telemetry);
+        Mover m = AssemblyManager.newInstance(Mover.class, hardwareMap, telemetry);
 
         waitForStart();
 
@@ -37,38 +39,47 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         }
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(14), .4);
+        d.beginTranslation(Distance.fromInches(14), .4); //move to stone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(2), .2);
+        d.beginTranslation(Distance.fromInches(2), .2); //move slowly up to stone
         while (d.isBusy() && !isStopRequested());
 
+        //TODO: pick up stone
 
-        d.beginTranslation(Distance.fromInches(-10), .4);
+        d.beginTranslation(Distance.fromInches(-10), .4); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), -1, .3);//r
+        d.beginRotation(Angle.fromDegrees(90), -1, .3);//turn right
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(100), .4);
+        d.beginTranslation(Distance.fromInches(100), .4);//move under bridge to foundation
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .3);//l
+        d.beginRotation(Angle.fromDegrees(90), 1, .3);//turn left
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(30), .4);
+        d.beginTranslation(Distance.fromInches(30), .4);//move to foundation
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-40), .4);
+        m.holdFoundation();
+
+        sleep(500);
+
+        d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslationSide(Distance.fromInches(35), 1, .4);
+        m.releaseFoundation();
+
+        sleep(500);
+
+        d.beginTranslationSide(Distance.fromInches(35), 1, .4);//move left away from foundation
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .3);//l
+        d.beginRotation(Angle.fromDegrees(90), 1, .3);//turn left
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(15), .4);
+        d.beginTranslation(Distance.fromInches(15), .4);//move to park
         while (d.isBusy() && !isStopRequested());
 
         /*

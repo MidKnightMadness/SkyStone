@@ -1,12 +1,13 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
-@Autonomous
+@Disabled
 public class SkystoneVisualAutoTest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

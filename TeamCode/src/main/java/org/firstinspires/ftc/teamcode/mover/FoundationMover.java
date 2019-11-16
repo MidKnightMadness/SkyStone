@@ -8,12 +8,12 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class FoundationMover extends Mover {
 
     private Servo servoLeft;
-    //private Servo servoRight;
+    private Servo servoRight;
 
     @Override
     public void init() {
-        servoLeft = hardwareMap.servo.get("left");
-        //servoRight = hardwareMap.servo.get("right");
+        servoLeft = hardwareMap.servo.get("l");
+        servoRight = hardwareMap.servo.get("r");
 
     }
 
@@ -41,11 +41,11 @@ public class FoundationMover extends Mover {
 
     public void holdFoundation(){
         servoLeft.setPosition(1);
-        //servoRight.setPosition(0);
+        servoRight.setPosition(0);
     }
 
     public void releaseFoundation(){
         servoLeft.setPosition(0);
-        //servoRight.setPosition(1);
+        servoRight.setPosition(1);
     }
 }

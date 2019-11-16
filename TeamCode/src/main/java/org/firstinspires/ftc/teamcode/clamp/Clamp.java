@@ -8,4 +8,7 @@ import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 @AssemblyManager.Implementation(LeadClamp.class)
 public abstract class Clamp extends OpMode {
 
+    public abstract void closeClamp();
+    public abstract void openClamp();
+
 }

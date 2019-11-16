@@ -46,4 +46,14 @@ public class ScissorLift extends Lift {
 
 
     }
+
+    @Override
+    public void raiseLift() {
+
+    }
+
+    @Override
+    public void lowerLift() {
+
+    }
 }

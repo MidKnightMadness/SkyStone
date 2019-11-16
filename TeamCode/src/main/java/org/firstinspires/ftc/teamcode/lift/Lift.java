@@ -12,4 +12,9 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 
 public abstract class Lift extends OpMode {
 
+    public abstract void raiseLift();
+    public abstract void lowerLift();
+
+
+
 }

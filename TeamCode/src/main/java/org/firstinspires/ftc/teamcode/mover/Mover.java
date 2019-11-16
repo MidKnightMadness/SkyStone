@@ -7,6 +7,8 @@ import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 @AssemblyManager.Implementation(FoundationMover.class)
 public abstract class Mover extends OpMode {
 
+    public abstract void holdFoundation();
+    public abstract void releaseFoundation();
 
 
 }

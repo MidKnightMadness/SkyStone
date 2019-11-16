@@ -45,4 +45,12 @@ public class LeadClamp extends Clamp {
 
 
     }
+
+    public void closeClamp(){
+
+    }
+
+    public void openClamp(){
+
+    }
 }
