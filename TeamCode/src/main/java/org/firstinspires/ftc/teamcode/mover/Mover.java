@@ -8,12 +8,11 @@ import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 public abstract class Mover extends OpMode {
     @Override
     public void init() {}
+    @Override
+    public void loop() {}
 
     public abstract void holdFoundation();
     public abstract void releaseFoundation();
 
-    @Override
-    public void loop() {
 
-    }
 }
