@@ -22,29 +22,27 @@ public class PositionTest extends OpMode {
     public void loop() {
         if(gamepad1.y) {
             if (!yPressed)
-                if (rotateservo.getPosition() == 1)
-                 rotateservo.setPosition(0.65);
+                if (rotateservo.getPosition() == 0.24000000000000005)
+                    rotateservo.setPosition(0.62);
             else
-                rotateservo.setPosition(1);
-        yPressed = true;
+                rotateservo.setPosition(0.24000000000000005);
+            yPressed = true;
     }
-    else
-        yPressed=false;
+        else
+            yPressed=false;
 
         if(gamepad1.x) {
             if (!xPressed)
-                if (servo.getPosition() > 0.47)
-                    servo.setPosition(-0.47);
-                else if (servo.getPosition() < -0.47)
-                    servo.setPosition(0.47);
+                if (servo.getPosition() > 0.2)
+                    servo.setPosition(0);
+                else if (servo.getPosition() < -0.2)
+                    servo.setPosition(0.2);
                 else
-                    servo.setPosition(0.471);
+                    servo.setPosition(0.25);
             xPressed = true;
         }
         else
             xPressed=false;
-
-
 
 
         telemetry.addData("positionofServo", gamepad1.x);
