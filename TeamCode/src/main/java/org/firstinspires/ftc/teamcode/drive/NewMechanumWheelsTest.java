@@ -20,7 +20,7 @@ public class NewMechanumWheelsTest extends OpMode {
     public void loop() {
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);
         double speed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y);
-        double rotation = gamepad1.right_stick_x;
+        double rotation = -gamepad1.right_stick_x;
 
         drive.setDirection(direction, speed, rotation);
         drive.update();

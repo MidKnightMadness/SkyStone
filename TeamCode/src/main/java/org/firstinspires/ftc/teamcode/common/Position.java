@@ -10,6 +10,13 @@ public class Position {
         this.theta = theta;
     }
 
+    public Position add(Distance x, Distance y, Angle theta) {
+        this.x.add(x);
+        this.y.add(y);
+        this.theta.add(theta);
+        return this;
+    }
+
     public Distance getX() {
         return x;
     }
@@ -20,6 +27,10 @@ public class Position {
 
     public Angle getTheta() {
         return theta;
+    }
+
+    public void setTheta(Angle theta) {
+        this.theta = theta;
     }
 
 }

@@ -9,12 +9,13 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Velocity;
 import org.firstinspires.ftc.teamcode.common.Angle;
+import org.firstinspires.ftc.teamcode.common.Assembly;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 
 
-public class MecanumWheels extends Drive{
+public class MecanumWheels extends Assembly {
     private double Vx;
     private double Vy;
 

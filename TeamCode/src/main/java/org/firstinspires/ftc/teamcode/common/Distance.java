@@ -31,6 +31,11 @@ public class Distance {
         return this;
     }
 
+    public Distance add(Distance addend) {
+        encoderTicks += addend.encoderTicks;
+        return this;
+    }
+
     public double toRotations() {
         return encoderTicks / 396000.0d;
     }
@@ -48,5 +53,11 @@ public class Distance {
     }
     public long getEncoderTicks() {
         return toEncoderTicks();
+    }
+    public double toInches() {
+        return encoderTicks / Config.ENCODER_TICKS_PER_INCH;
+    }
+    public double toMillimeters() {
+        return toInches() * 25.4;
     }
 }

@@ -5,6 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Gamepad;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
+import org.firstinspires.ftc.teamcode.config.HardwareConfig;
+
 
 @TeleOp
 public class MotorFullSpeedTest extends OpMode {
@@ -16,23 +18,23 @@ public class MotorFullSpeedTest extends OpMode {
 
     @Override
     public void init() {
-        motor1 = hardwareMap.dcMotor.get("Motor1");
-        motor2 = hardwareMap.dcMotor.get("Motor2");
-        motor3 = hardwareMap.dcMotor.get("Motor3");
-        motor4 = hardwareMap.dcMotor.get("Motor4");
+        motor1 = hardwareMap.dcMotor.get(HardwareConfig.MECANUM_BL);
+        motor2 = hardwareMap.dcMotor.get(HardwareConfig.MECANUM_BR);
+        motor3 = hardwareMap.dcMotor.get(HardwareConfig.MECANUM_FL);
+        motor4 = hardwareMap.dcMotor.get(HardwareConfig.MECANUM_FR);
 
-        motor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor3.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        motor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        motor4.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
     public void loop() {
-        motor1.setPower(.5);
-        motor2.setPower(.5);
-        motor3.setPower(-.5);
-        motor4.setPower(-.5);
+        motor1.setPower(gamepad1.left_stick_x);
+        motor2.setPower(gamepad1.left_stick_x);
+        motor3.setPower(-gamepad1.left_stick_x);
+        motor4.setPower(-gamepad1.left_stick_x);
 
     }
 }
