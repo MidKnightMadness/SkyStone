@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.grabber;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -23,29 +22,27 @@ public class PositionTest extends OpMode {
     public void loop() {
         if(gamepad1.y) {
             if (!yPressed)
-                if (rotateservo.getPosition() == 1)
-                 rotateservo.setPosition(-1);
+                if (rotateservo.getPosition() == 0.24000000000000005)
+                    rotateservo.setPosition(0.62);
             else
-                rotateservo.setPosition(1);
-        yPressed = true;
+                rotateservo.setPosition(0.24000000000000005);
+            yPressed = true;
     }
-    else
-        yPressed=false;
+        else
+            yPressed=false;
 
         if(gamepad1.x) {
             if (!xPressed)
-                if (servo.getPosition() > 0.35)
-                    servo.setPosition(-0.35);
-                else if (servo.getPosition() < -0.35)
-                    servo.setPosition(0.35);
+                if (servo.getPosition() > 0.2)
+                    servo.setPosition(0);
+                else if (servo.getPosition() < -0.2)
+                    servo.setPosition(0.2);
                 else
-                    servo.setPosition(0.355);
+                    servo.setPosition(0.25);
             xPressed = true;
         }
         else
             xPressed=false;
-
-
 
 
         telemetry.addData("positionofServo", gamepad1.x);
