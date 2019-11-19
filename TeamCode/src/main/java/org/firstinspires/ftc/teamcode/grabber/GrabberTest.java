@@ -13,7 +13,7 @@ public class GrabberTest extends OpMode {
 
     @Override
     public void init() {
-        gamepadController = new GamepadController(gamepad1, gamepad2);
+        gamepadController = new GamepadController();
 
         grabber.hardwareMap = hardwareMap;
         grabber.telemetry = telemetry;
@@ -22,6 +22,7 @@ public class GrabberTest extends OpMode {
 
     @Override
     public void loop() {
+        gamepadController.update(gamepad1, gamepad2);
         gamepadController.processGrabber(grabber);
         grabber.update();//end of loop
     }
