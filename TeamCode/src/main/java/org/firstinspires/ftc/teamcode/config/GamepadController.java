@@ -10,19 +10,21 @@ public class GamepadController {
     private Gamepad gamepad2;
 
 
-    public void update (Gamepad gamepad1, Gamepad gamepad2){
+    public void update(Gamepad gamepad1, Gamepad gamepad2) {
         this.gamepad1 = gamepad1;
         this.gamepad2 = gamepad2;
     }
 
-    public void processGrabber(Grabber grabber){
+    public void processGrabber(Grabber grabber) {
         if (gamepad1.x) {
             grabber.grab();
-        }
-        else{
+        } else {
             grabber.release();
         }
-        grabber.rotate((gamepad2.left_stick_x + 1) / 2);
-    }
+        grabber.rotate(((gamepad1.left_stick_x / 1.4) + 1) / 2);
 
+
+    }
 }
+
+

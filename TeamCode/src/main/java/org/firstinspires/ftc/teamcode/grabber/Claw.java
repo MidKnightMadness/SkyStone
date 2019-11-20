@@ -27,9 +27,15 @@ public class Claw extends Grabber  {
     public void rotate(double angle) { rotateservo.setPosition(angle);}
 
     @Override
+    public double getangle() {
+        return rotateservo.getPosition();
+    }
+
+    @Override
     public void update() {
         super.update();
         telemetry.addData("clawservoposition", clawservo.getPosition());
+        telemetry.addData("rotateservoposition", rotateservo.getPosition());
     }
 }
 
