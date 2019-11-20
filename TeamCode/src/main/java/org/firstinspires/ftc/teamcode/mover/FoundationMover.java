@@ -4,6 +4,8 @@ package org.firstinspires.ftc.teamcode.mover;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.teamcode.common.Config;
+
 @TeleOp
 public class FoundationMover extends Mover {
 
@@ -12,8 +14,8 @@ public class FoundationMover extends Mover {
 
     @Override
     public void init() {
-        servoLeft = hardwareMap.servo.get("l");
-        servoRight = hardwareMap.servo.get("r");
+        servoLeft = hardwareMap.servo.get(Config.Mover.MOVER_SERVO_LEFT);
+        servoRight = hardwareMap.servo.get(Config.Mover.MOVER_SERVO_RIGHT);
 
     }
 

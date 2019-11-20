@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.drive.Drive;
+import org.firstinspires.ftc.teamcode.lift.Lift;
 import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.teleop.JoystickDrive;
 
@@ -26,7 +27,7 @@ public class Main extends OpMode {
     @Override
     public void init() {
         assemblies[0] = AssemblyManager.newInstance(JoystickDrive.class, hardwareMap, telemetry, true); // Initialize all OpModes independently
-        assemblies[1] = AssemblyManager.newInstance(Mover.class, hardwareMap, telemetry, true);
+        assemblies[1] = AssemblyManager.newInstance(Lift.class, hardwareMap, telemetry, true);
         //assemblies[2] = AssemblyManager.newInstance(Lift.class, hardwareMap, telemetry, true);
     }
 

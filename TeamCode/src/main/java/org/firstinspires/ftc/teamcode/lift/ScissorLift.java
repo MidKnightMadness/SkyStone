@@ -4,18 +4,22 @@ import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-@Disabled
+import org.firstinspires.ftc.teamcode.common.Config;
+
+
 public class ScissorLift extends Lift {
 
     DcMotor motor;
-    public double SCISSOR_POWER = 0.1;
-    public double SCISSOR_MIN_ENC = -10000000;
-    public double SCISSOR_MAX_ENC = 10000000;
+    public double SCISSOR_POWER = 1;
+    public double SCISSOR_MIN_ENC = -20;
+    public double SCISSOR_MAX_ENC = 3900;
+    private boolean overriding = false;
     private int pos = 0;
+    private double tp = 0;
 
     @Override
     public void init() {
-        motor = hardwareMap.dcMotor.get("scissor");
+        motor = hardwareMap.dcMotor.get(Config.Lift.LIFT_MOTOR);
         motor.resetDeviceConfigurationForOpMode();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -34,26 +38,46 @@ public class ScissorLift extends Lift {
     @Override
     public void loop() {
         pos = motor.getCurrentPosition();
-        if(gamepad1.left_trigger>0 && pos < SCISSOR_MAX_ENC){
-            motor.setPower(SCISSOR_POWER);
-        } else if (gamepad1.right_trigger>0 && pos > SCISSOR_MIN_ENC){
-            motor.setPower(-SCISSOR_POWER);
-        } else {
-            motor.setPower(0);
+        tp = (double) Math.max(gamepad1.left_trigger, gamepad1.right_trigger);
+        tp = SCISSOR_POWER*tp*tp;
+        if(gamepad1.right_trigger>gamepad1.left_trigger) {
+            tp = -tp;
         }
-        telemetry.addLine(String.valueOf(pos));
+        if(!overriding){
+            if(pos > SCISSOR_MAX_ENC && tp > 0){
+                tp = 0;
+            }
+        }
+        motor.setPower(tp);
+
+        if(gamepad1.a){
+            motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        }
+        if(gamepad1.b){
+            overriding = !overriding;
+        }
+
+        telemetry.addData("ENC: ", String.valueOf(pos));
+        telemetry.addData("PWR: ", String.valueOf(tp));
+        telemetry.addData("OVR: ", String.valueOf(overriding));
         telemetry.update();
 
-
     }
 
     @Override
-    public void raiseLift() {
-
+    public void raiseLift(int enc) {
+        motor.setTargetPosition(enc);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(Math.abs(enc-motor.getCurrentPosition())>10){
+            motor.setPower(0.2);
+        }
+        motor.setPower(0);
     }
 
     @Override
-    public void lowerLift() {
+    public void lowerLift(int enc) {
 
     }
 }

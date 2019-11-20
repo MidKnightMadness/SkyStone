@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Distance;
+import org.firstinspires.ftc.teamcode.common.Config;
 
 import java.security.Policy;
 
@@ -23,18 +24,17 @@ public class MecanumDrive extends Drive {
     @Override
     public void init() {
 
-        fl = hardwareMap.dcMotor.get("fl");
+        fl = hardwareMap.dcMotor.get(Config.Drive.FRONT_LEFT);
         fl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //motor1 is front left
-        fr = hardwareMap.dcMotor.get("fr");
+
+        fr = hardwareMap.dcMotor.get(Config.Drive.FRONT_RIGHT);
         fr.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //motor2 is front right
-        bl = hardwareMap.dcMotor.get("bl");
+
+        bl = hardwareMap.dcMotor.get(Config.Drive.BACK_LEFT);
         bl.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //motor3 is back left
-        br = hardwareMap.dcMotor.get("br");
+
+        br = hardwareMap.dcMotor.get(Config.Drive.BACK_RIGHT);
         br.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        //motor4 is back right
     }
     @Override
     public void init_loop() {

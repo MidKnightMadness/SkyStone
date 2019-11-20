@@ -48,7 +48,7 @@ public class BluePark extends LinearOpMode {
         //Assumes bot is facing away from wall and is on the wall
         d.beginTranslationSide(Distance.fromInches(40), -1,.5);
         d.setRunToPosition();
-        while (d.isBusy() && !isStopRequested());
+        while (d.isBusy( ) && !isStopRequested());
 
 
 

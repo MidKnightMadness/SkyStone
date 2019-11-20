@@ -25,7 +25,17 @@ public final class Config {
         // "imu"   Hub 2: I2C Bus 0: 0
     }
 
-    public static final class Measurements {    // WE HAVE TO MEASURE THESE
+    public static final class Lift {     // Drive Assembly Configuration
+        public static final String LIFT_MOTOR = "l";   // Hub 1: 0
+    }
+
+    public static final class Mover {     // Drive Assembly Configuration
+        public static final String MOVER_SERVO_LEFT = "sl";   // Hub 2: 1
+        public static final String MOVER_SERVO_RIGHT = "sr";   // Hub 2: 0
+
+    }
+
+    public static final class Measurements {
         public static final double ROBOT_DEGREES_PER_TICK = 7200d/62500d;
         public static final double ENCODER_TICKS_PER_INCH = 4100d/96d;
         public static final int ENCODER_TICKS_PER_SHAFT_DEGREE = 1100;
