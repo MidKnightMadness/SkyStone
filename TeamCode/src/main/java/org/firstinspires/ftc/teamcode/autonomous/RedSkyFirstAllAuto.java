@@ -22,6 +22,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         telemetry.addLine("HELLO! DID YA MISS ME?");
         telemetry.update();
 
+
         Drive d = AssemblyManager.newInstance(Drive.class, hardwareMap, telemetry); // Initialize all Assemblies required during the Autonomous program by the interface
         SkystoneVisual sv = AssemblyManager.newInstance(SkystoneVisual.class, hardwareMap, telemetry);
         Mover m = AssemblyManager.newInstance(Mover.class, hardwareMap, telemetry);
