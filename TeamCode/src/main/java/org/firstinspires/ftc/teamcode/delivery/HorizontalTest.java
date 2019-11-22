@@ -30,14 +30,14 @@ public class HorizontalTest extends OpMode {
 
     @Override
     public void loop() {
-        targetPosition += gamepad1.left_stick_x * 100;
+        targetPosition += gamepad1.left_stick_x * 10;
         motor.setTargetPosition(targetPosition + initPosition);
 
         //software limit
-        if (targetPosition > 6000)
-            targetPosition = 6000;
-        else if (targetPosition < -6000)
-            targetPosition = -6000;
+        if (targetPosition > 8000)
+            targetPosition = 8000;
+        else if (targetPosition < -4500)
+            targetPosition = -4500;
 
         //enable and disable
         if (gamepad1.b)

@@ -121,6 +121,7 @@ public class NewMechanumWheels extends Drive {
         telemetry.addData("Y Velocity", vY);
 
 
+        vX *= Math.sqrt(2);
         double translateFL = vY + vX;
         double translateFR = -(vY - vX); // the motors are facing opposite directions
         double translateBL = vY - vX;
