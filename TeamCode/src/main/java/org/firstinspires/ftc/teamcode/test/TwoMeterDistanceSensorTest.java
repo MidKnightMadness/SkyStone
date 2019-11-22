@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
 
-@TeleOp
+//@TeleOp
 public class TwoMeterDistanceSensorTest extends OpMode {
     private Rev2mDistanceSensor distanceSensor;
     @Override

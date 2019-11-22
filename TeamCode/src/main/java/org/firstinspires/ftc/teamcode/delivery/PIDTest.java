@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.PIDCoefficients;
 import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
-@TeleOp
+//@TeleOp
 public class PIDTest extends OpMode {
 
     //note: only works on a REV Robotics Expansion Hub

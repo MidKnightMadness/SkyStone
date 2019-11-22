@@ -12,6 +12,7 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
+import org.firstinspires.ftc.teamcode.navigation.Navigation;
 
 public class NewMechanumWheels extends Drive {
 
@@ -20,9 +21,7 @@ public class NewMechanumWheels extends Drive {
     private Angle targetTranslation = Angle.fromDegrees(0);
     private double speed = 0;
     private double rotationalSpeed = 0;
-    private Angle targetRotation = Angle.fromDegrees(0);
-    private final double K_P_ROTATION = 0.1; // PID P constant
-    private final double MAX_VELOCITY = 2380;
+    private static final double MAX_VELOCITY = 2380;
     private Position currentPosition = new Position(Distance.fromEncoderTicks(0), Distance.fromEncoderTicks(0), Angle.fromDegrees(0));
 
     private DcMotorEx wheelFL;
@@ -34,12 +33,8 @@ public class NewMechanumWheels extends Drive {
     private int lastPositionBL;
     private int lastPositionBR;
     private BNO055IMU imu;
-
-
-    @Override
-    public void moveTo(Position target) {
-
-    }
+    private Position targetPosition;
+    private Navigation navigation;
 
     @Override
     public Position getPosition() {
@@ -72,10 +67,10 @@ public class NewMechanumWheels extends Drive {
         wheelFL.resetDeviceConfigurationForOpMode();
         wheelFR.resetDeviceConfigurationForOpMode();
 
-        wheelBL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelBR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelFL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        wheelFR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        wheelFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // changed to run using encoder...
 
         wheelBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wheelBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -95,16 +90,60 @@ public class NewMechanumWheels extends Drive {
     }
 
     public void setDirection(Angle theta, double speed, double rotation) {
+        internalSetDirection(theta, speed, rotation);
+        targetPosition = null;
+    }
+
+    private void internalSetDirection(Angle theta, double speed, double rotation) {
         targetTranslation = theta;
         this.speed = speed;
         this.rotationalSpeed = rotation;
     }
 
+    public void setTarget(Position position, Navigation navigation) {
+        targetPosition = position;
+        this.navigation = navigation;
+    }
+
+    public boolean isComplete() {
+        return navigation == null;
+    }
+
+    public Angle getCurrentRotation() {
+        return currentRotation.copy().subtract(initialRotation);
+    }
+
+
+    private double trim(double value) {
+        return value < -1 ? -1 : value > 1 ? 1 : value;
+    }
+
+    private static final double K_P_TRANSLATION = 4;
+    private static final double K_P_ROTATION = 4;
+
+    private void updateTarget() {
+        if (targetPosition != null) { // we're navigating somewhere specific
+
+            double fieldX = targetPosition.getX().toInches() - navigation.getPosition().getX().toInches() / 4;
+            double fieldY = targetPosition.getY().toInches() - navigation.getPosition().getY().toInches() / 4;
+            double fieldRot = targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / 4;
+            if (Math.abs(fieldX) < 1 / K_P_TRANSLATION && Math.abs(fieldY) < 1 / K_P_TRANSLATION && fieldRot < 1 / K_P_ROTATION) {
+                targetPosition = null;
+            } else {
+                internalSetDirection(
+                        Angle.aTan(fieldX, fieldY),
+                        trim(fieldX + fieldY),
+                        trim(fieldRot)
+                );
+            }
+        }
+    }
     @Override
     public void update() {
         super.update();
-        updateSpeed();
         updatePosition();
+        updateTarget();
+        updateSpeed();
     }
 
     private void updateSpeed() {
@@ -165,8 +204,6 @@ public class NewMechanumWheels extends Drive {
     }
 
     private void updatePosition() {
-        // find the rotational portion
-
         double a = wheelBL.getCurrentPosition() - lastPositionBL;
         double b = wheelBR.getCurrentPosition() - lastPositionBR;
         double c = wheelFL.getCurrentPosition() - lastPositionFL;
@@ -185,21 +222,13 @@ public class NewMechanumWheels extends Drive {
         c -= rot;
         d -= rot;
 
-        double transY1 = a - ((a + b) / 2);
-        double transY2 = c + ((c + d) / -2);
+        double transY = (a + b - c - d) / 4;
 
-        double transY = (transY1 + transY2) / 2;
-
-
-        double transX1 = ((a + b) / 2);
-        double transX2 = ((c + d) / -2);
-
-        double transX = (transX1 + transX2) / 2;
+        double transX = (a - b + c - d) / (4 * Math.sqrt(2));
 
         telemetry.addData("Translation X", transX);
         telemetry.addData("Translation Y", transY);
         telemetry.addData("Rotation", rot);
-
 
 
         Angle theta = currentRotation.copy().subtract(initialRotation);
@@ -208,6 +237,11 @@ public class NewMechanumWheels extends Drive {
 
         currentPosition.add(Distance.fromEncoderTicks((int) fieldX), Distance.fromEncoderTicks((int) fieldY), Angle.fromDegrees(0));
         currentPosition.setTheta(theta);
+        telemetry.addData("a", a);
+        telemetry.addData("b", b);
+        telemetry.addData("c", c);
+        telemetry.addData("d", d);
+
         telemetry.addData("fieldX", fieldX);
         telemetry.addData("fieldY", fieldY);
         telemetry.addData("fieldX", currentPosition.getX().toInches());

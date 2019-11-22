@@ -69,67 +69,67 @@ private FoundationMover foundationMover;
 
 //Actual code:
 
-    /*******TAKING FIRST SKYSTONE*********/
-        Position firstSkyStone = null;//visual.findSkystone(); //Move the robot facing the stone
-        drive.moveTo(firstSkyStone);//Move the robot until the intake is facing the first stone
-        intake.spin(1);//Takes the stone(NOTE: change the power)
-        grabber.grab();//Grab the stone
+ //   /*******TAKING FIRST SKYSTONE*********/
+ //       Position firstSkyStone = null;//visual.findSkystone(); //Move the robot facing the stone
+ //       drive.setTarget(firstSkyStone);//Move the robot until the intake is facing the first stone
+ //       intake.spin(1);//Takes the stone(NOTE: change the power)
+ //       grabber.grab();//Grab the stone
 
 
-    /*******MOVING TO THE FOUNDATION*********/
-        Position faceFoundationSideFront = AutonomousConstants.FACE_FOUNDATION_SIDE_FRONT;//Move the robot so its facing the side with the foundation
-        drive.moveTo(faceFoundationSideFront);//Move the robot to the foundation(Specific Location)
-        Position faceFoundationInitialPlace = AutonomousConstants.FACE_FOUNDATION_INITIAL_PLACE;//Robot is facing the foundation
-        drive.moveTo(faceFoundationInitialPlace);//Moves to the foundation
+ //   /*******MOVING TO THE FOUNDATION*********/
+ //       Position faceFoundationSideFront = AutonomousConstants.FACE_FOUNDATION_SIDE_FRONT;//Move the robot so its facing the side with the foundation
+ //       drive.setTarget(faceFoundationSideFront);//Move the robot to the foundation(Specific Location)
+ //       Position faceFoundationInitialPlace = AutonomousConstants.FACE_FOUNDATION_INITIAL_PLACE;//Robot is facing the foundation
+ //       drive.setTarget(faceFoundationInitialPlace);//Moves to the foundation
 
 
-    /*******DELIVERING STONE ON THE FOUNDATION********/
-        delivery.setHeight(2);//Delivery moves claw to foundation
-        delivery.setDepth(12);//Delivery moves claw to foundation
-        grabber.release();//Release stone on the foundation
-        delivery.setDepth(0);//Reset the delivery system
-        delivery.setHeight(0);//Reset the delivery system
+ //   /*******DELIVERING STONE ON THE FOUNDATION********/
+ //       delivery.setHeight(2);//Delivery moves claw to foundation
+ //       delivery.setDepth(12);//Delivery moves claw to foundation
+ //       grabber.release();//Release stone on the foundation
+ //       delivery.setDepth(0);//Reset the delivery system
+ //       delivery.setHeight(0);//Reset the delivery system
 
 
-    /*******MOVING THE FOUNDATION*******/
-        foundationMover.prepare();//Robot is ready to grab the foundation
-        foundationMover.grab();//Robot grabs the foundation
-        Position faceFoundationSideRight = AutonomousConstants.FACE_FOUNDATION_SIDE_RIGHT;//Face opposite way
-        drive.moveTo(faceFoundationSideRight);// Move the robot foundation is close to wall
-        foundationMover.reset(); //Drop Foundation
-        Position faceFoundationSideLeft = AutonomousConstants.FACE_FOUNDATION_SIDE_LEFT;//Face away from placed foundation
-        drive.moveTo(faceFoundationSideLeft);//Move away from the placed foundation
+ //   /*******MOVING THE FOUNDATION*******/
+ //       foundationMover.prepare();//Robot is ready to grab the foundation
+ //       foundationMover.grab();//Robot grabs the foundation
+ //       Position faceFoundationSideRight = AutonomousConstants.FACE_FOUNDATION_SIDE_RIGHT;//Face opposite way
+ //       drive.setTarget(faceFoundationSideRight);// Move the robot foundation is close to wall
+ //       foundationMover.reset(); //Drop Foundation
+ //       Position faceFoundationSideLeft = AutonomousConstants.FACE_FOUNDATION_SIDE_LEFT;//Face away from placed foundation
+ //       drive.setTarget(faceFoundationSideLeft);//Move away from the placed foundation
 
 
-    /********MOVING TO SECOND SKYSTONE********/
-        Position faceDeportSideFront = AutonomousConstants.FACE_DEPOT_SIDE_FRONT;//Face robot to the depot side
-        drive.moveTo(faceDeportSideFront);//Move robot to depot side until it is at the second skystone
-        Position secondSkyStone  = null;//visual.findSkystone();//Face robot to the second skystone
-        drive.moveTo(secondSkyStone);
+ //   /********MOVING TO SECOND SKYSTONE********/
+ //       Position faceDeportSideFront = AutonomousConstants.FACE_DEPOT_SIDE_FRONT;//Face robot to the depot side
+ //       drive.setTarget(faceDeportSideFront);//Move robot to depot side until it is at the second skystone
+ //       Position secondSkyStone  = null;//visual.findSkystone();//Face robot to the second skystone
+ //       drive.setTarget(secondSkyStone);
 
 
-    /********TAKING SECOND SKYSTONE*******/
-        intake.spin(1);//Take in the block(Note: change power)
-        grabber.grab();//Grab the block
+ //   /********TAKING SECOND SKYSTONE*******/
+ //       intake.spin(1);//Take in the block(Note: change power)
+ //       grabber.grab();//Grab the block
 
 
-    /********MOVE TO FOUNDATION*******/
-        drive.moveTo(faceFoundationSideFront);
-        Position faceFoundationFinalPlace = AutonomousConstants.FACE_FOUNDATION_FINAL_PLACE;
-        drive.moveTo(faceFoundationFinalPlace);
+ //   /********MOVE TO FOUNDATION*******/
+ //       drive.setTarget(faceFoundationSideFront);
+ //       Position faceFoundationFinalPlace = AutonomousConstants.FACE_FOUNDATION_FINAL_PLACE;
+ //       drive.setTarget(faceFoundationFinalPlace);
 
 
-    /********DELIVERING THE SECOND SKYSTONE ON THE FOUNDATION**********/
-        delivery.setHeight(2);//Delivery moves claw to foundation(NOTE: change it)
-        delivery.setDepth(12);//Delivery moves claw to foundation(NOTE: change it)
-        grabber.release();//release second stone on the first skystone
-        delivery.setDepth(0);//Reset delivery system
-        delivery.setHeight(0);//Reset delivery system
+ //   /********DELIVERING THE SECOND SKYSTONE ON THE FOUNDATION**********/
+ //       delivery.setHeight(2);//Delivery moves claw to foundation(NOTE: change it)
+ //       delivery.setDepth(12);//Delivery moves claw to foundation(NOTE: change it)
+ //       grabber.release();//release second stone on the first skystone
+ //       delivery.setDepth(0);//Reset delivery system
+ //       delivery.setHeight(0);//Reset delivery system
 
 
-    /**********PARKING UNDER THE ALLIANCE BRIDGE*********/
-        Position faceAllianceBridge = AutonomousConstants.SKYBRIDGE_PARKING;
-        drive.moveTo(faceAllianceBridge);//
+ //   /**********PARKING UNDER THE ALLIANCE BRIDGE*********/
+ //       Position faceAllianceBridge = AutonomousConstants.SKYBRIDGE_PARKING;
+ //       drive.setTarget(faceAllianceBridge);//
 
 
 

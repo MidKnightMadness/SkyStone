@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.config.GamepadController;
 
-@TeleOp
+//@TeleOp
 public class GrabberTest extends OpMode {
     private Grabber grabber = new Claw();
     private GamepadController gamepadController;

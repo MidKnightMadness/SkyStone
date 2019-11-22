@@ -3,7 +3,7 @@ package org.firstinspires.ftc.teamcode.led;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp
+//@TeleOp
 public class LEDTest extends OpMode {
     private LEDStrip ledStrip;
     @Override

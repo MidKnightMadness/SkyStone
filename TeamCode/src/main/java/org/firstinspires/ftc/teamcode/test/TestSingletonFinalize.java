@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
 
-@TeleOp
+//@TeleOp
 public class TestSingletonFinalize extends OpMode {
     @Override
     public void init() {

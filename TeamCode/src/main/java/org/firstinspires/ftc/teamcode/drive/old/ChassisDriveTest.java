@@ -1,10 +1,9 @@
-package org.firstinspires.ftc.teamcode.drive;
+package org.firstinspires.ftc.teamcode.drive.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
-@TeleOp
+//@TeleOp
 public class ChassisDriveTest extends OpMode {
     private MecanumWheels mechWheel = new MecanumWheels();
     private double speed;

@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.drive;
+package org.firstinspires.ftc.teamcode.drive.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
 
-@TeleOp
+//@TeleOp
 public class TestTan extends OpMode {
     @Override
     public void init() {

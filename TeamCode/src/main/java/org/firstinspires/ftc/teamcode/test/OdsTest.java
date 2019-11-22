@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
 
-@TeleOp
+//@TeleOp
 public class OdsTest extends OpMode {
 
     private OpticalDistanceSensor ods;

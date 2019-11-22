@@ -4,6 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
+import org.firstinspires.ftc.teamcode.common.Assembly;
 import org.firstinspires.ftc.teamcode.delivery.Delivery;
 import org.firstinspires.ftc.teamcode.delivery.Elevator;
 import org.firstinspires.ftc.teamcode.drive.Drive;
@@ -32,18 +33,7 @@ public class Main extends OpMode {
 
     @Override
     public void init() {
-        delivery.telemetry = telemetry;
-        delivery.hardwareMap = hardwareMap;
-        delivery.init();
-        drive.telemetry = telemetry;
-        drive.hardwareMap = hardwareMap;
-        drive.init();
-        foundationMover.telemetry = telemetry;
-        foundationMover.hardwareMap = hardwareMap;
-        foundationMover.init();
-        grabber.telemetry = telemetry;
-        grabber.hardwareMap = hardwareMap;
-        grabber.init();
+        Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
     }
 
     @Override

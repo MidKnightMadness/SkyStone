@@ -11,4 +11,11 @@ public abstract class Assembly {
     public Telemetry telemetry;
     public void update(){};
 
+    public static void initialize(Telemetry telemetry, HardwareMap hardwareMap, Assembly... assemblies) {
+        for (Assembly assembly : assemblies) {
+            assembly.telemetry = telemetry;
+            assembly.hardwareMap = hardwareMap;
+            assembly.init();
+        }
+    }
 }
