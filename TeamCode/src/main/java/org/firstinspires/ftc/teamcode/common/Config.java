@@ -29,6 +29,10 @@ public final class Config {
         public static final String LIFT_MOTOR = "l";   // Hub 1: 0
     }
 
+    public static final class Clamp {     // Drive Assembly Configuration
+        public static final String CLAMP_MOTOR = "c";   // Hub 1: 1
+    }
+
     public static final class Mover {     // Drive Assembly Configuration
         public static final String MOVER_SERVO_LEFT = "sl";   // Hub 2: 1
         public static final String MOVER_SERVO_RIGHT = "sr";   // Hub 2: 0

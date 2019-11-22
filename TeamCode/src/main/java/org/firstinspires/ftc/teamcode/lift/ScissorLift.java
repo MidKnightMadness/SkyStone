@@ -60,8 +60,7 @@ public class ScissorLift extends Lift {
         }
 
         telemetry.addData("ENC: ", String.valueOf(pos));
-        telemetry.addData("PWR: ", String.valueOf(tp));
-        telemetry.addData("OVR: ", String.valueOf(overriding));
+        telemetry.addData("PWR: ", String.valueOf(1));
         telemetry.update();
 
     }
@@ -78,6 +77,16 @@ public class ScissorLift extends Lift {
 
     @Override
     public void lowerLift(int enc) {
+        motor.setTargetPosition(enc);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        while(Math.abs(enc-motor.getCurrentPosition())>10){
+            motor.setPower(-0.2);
+        }
+        motor.setPower(0);
+    }
 
+    @Override
+    public boolean isBusy(){
+        return Math.abs(motor.getCurrentPosition()- motor.getTargetPosition()) > 10;
     }
 }

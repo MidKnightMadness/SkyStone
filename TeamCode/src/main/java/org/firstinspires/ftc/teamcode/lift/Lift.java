@@ -24,6 +24,8 @@ public abstract class Lift extends OpMode {
     public abstract void raiseLift(int enc);
     public abstract void lowerLift(int enc);
 
+    public abstract boolean isBusy();
+
 
 
 }

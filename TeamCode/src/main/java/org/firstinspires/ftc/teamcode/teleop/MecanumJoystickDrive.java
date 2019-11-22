@@ -51,6 +51,7 @@ public class MecanumJoystickDrive extends JoystickDrive {
     private double[][] abs = new double[3][2];
     private int max_abs = 0;
     private boolean slow = false;
+    private double pwr = 0;
 
     @Override
     /*
@@ -124,20 +125,26 @@ public class MecanumJoystickDrive extends JoystickDrive {
             bl.setPower(0);
             br.setPower(0);
         } else if(max_abs == 0){
-            fl.setPower(gamepad1.left_stick_x);
-            fr.setPower(gamepad1.left_stick_x);
-            bl.setPower(-gamepad1.left_stick_x);
-            br.setPower(-gamepad1.left_stick_x);
+            pwr = gamepad1.left_stick_x;
+            pwr = pwr*pwr*pwr*.6;
+            fl.setPower( pwr);
+            fr.setPower( pwr);
+            bl.setPower(-pwr);
+            br.setPower(-pwr);
         } else if (max_abs == 1){
-            fl.setPower(-gamepad1.left_stick_y);
-            fr.setPower(gamepad1.left_stick_y);
-            bl.setPower(-gamepad1.left_stick_y);
-            br.setPower(gamepad1.left_stick_y);
+            pwr = gamepad1.left_stick_y;
+            pwr = pwr*pwr*pwr*.6;
+            fl.setPower(-pwr);
+            fr.setPower( pwr);
+            bl.setPower(-pwr);
+            br.setPower( pwr);
         } else if (max_abs == 2){
-            fl.setPower(gamepad1.right_stick_x);
-            fr.setPower(gamepad1.right_stick_x);
-            bl.setPower(gamepad1.right_stick_x);
-            br.setPower(gamepad1.right_stick_x);
+            pwr = gamepad1.right_stick_x;
+            pwr = pwr*pwr*pwr*.6;
+            fl.setPower(pwr);
+            fr.setPower(pwr);
+            bl.setPower(pwr);
+            br.setPower(pwr);
         }
         if(gamepad1.a){
             fl.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);

@@ -5,6 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
+import org.firstinspires.ftc.teamcode.clamp.Clamp;
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.common.Distance;
@@ -25,6 +26,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         SkystoneVisual sv = AssemblyManager.newInstance(SkystoneVisual.class, hardwareMap, telemetry);
         Mover m = AssemblyManager.newInstance(Mover.class, hardwareMap, telemetry);
         Lift l = AssemblyManager.newInstance(Lift.class, hardwareMap, telemetry);
+        Clamp c = AssemblyManager.newInstance(Clamp.class, hardwareMap, telemetry);
 
 
         waitForStart();
@@ -37,10 +39,16 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(-18), .2);
         d.setRunToPosition();
         d.beginTranslation(Distance.fromInches(-18), .2);
+        l.raiseLift(1000);
+        c.openToHalf();
         while (d.isBusy() && !isStopRequested());
 
         pos = sv.findSkystone();
         telemetry.addLine(pos.toString());
+
+        c.openToFull();
+
+        while (c.isBusy() && !isStopRequested());
 
         d.beginRotation(Angle.fromDegrees(90), 1, .25);
         while (d.isBusy() && !isStopRequested());
@@ -66,7 +74,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
 
         sleep(300);
 
-        //TODO: pick up stone
+
 
         sleep(300);
 
