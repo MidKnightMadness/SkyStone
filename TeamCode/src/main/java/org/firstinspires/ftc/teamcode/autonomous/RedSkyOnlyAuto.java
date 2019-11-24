@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.clamp.Clamp;
 import org.firstinspires.ftc.teamcode.common.Angle;
@@ -15,7 +13,7 @@ import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
 @Autonomous
-public class RedSkyFirstAllAuto extends LinearOpMode {
+public class RedSkyOnlyAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -94,32 +92,14 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(85), .4);//move under bridge to foundation
+        d.beginTranslation(Distance.fromInches(65), .4);//move under bridge to foundation
         while (d.isBusy() && !isStopRequested());
-
-        d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(30), .35);//move to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        m.holdFoundation();
 
         c.openToFull();
-        sleep(1500);
-        c.stopMoving();
 
-        d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());
+        d.beginTranslation(Distance.fromInches(-30-skydist), .4);
+        while(d.isBusy() && !isStopRequested());
 
-        m.releaseFoundation();
-        sleep(300);
-
-        d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(50), .4);//move to park
-        while (d.isBusy() && !isStopRequested());
 
 
 

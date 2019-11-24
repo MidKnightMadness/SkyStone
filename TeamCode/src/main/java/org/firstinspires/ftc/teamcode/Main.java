@@ -23,13 +23,14 @@ import org.firstinspires.ftc.teamcode.teleop.JoystickDrive;
 @TeleOp(name = "Main Robot", group = "Main")
 public class Main extends OpMode {
 
-    private OpMode[] assemblies = new OpMode[3];                  // Increase the size of the array for the amount of Assemblies
+    private OpMode[] assemblies = new OpMode[4];                  // Increase the size of the array for the amount of Assemblies
 
     @Override
     public void init() {
         assemblies[0] = AssemblyManager.newInstance(JoystickDrive.class, hardwareMap, telemetry, true); // Initialize all OpModes independently
         assemblies[1] = AssemblyManager.newInstance(Lift.class, hardwareMap, telemetry, true);
         assemblies[2] = AssemblyManager.newInstance(Clamp.class, hardwareMap, telemetry, true);
+        assemblies[3] = AssemblyManager.newInstance(Mover.class, hardwareMap, telemetry, true);
 
     }
 

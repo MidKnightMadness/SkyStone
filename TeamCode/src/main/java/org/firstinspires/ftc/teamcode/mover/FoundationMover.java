@@ -21,9 +21,9 @@ public class FoundationMover extends Mover {
 
     @Override
     public void loop() {
-        if (gamepad1.a){
+        if (gamepad1.x){
             holdFoundation();
-        } else if (gamepad1.b){
+        } else if (gamepad1.y){
             releaseFoundation();
         }
     }

@@ -12,6 +12,7 @@ public abstract class Clamp extends OpMode {
     public abstract void closeToClosed();
     public abstract void openToHalf();
     public abstract void openToFull();
+    public abstract void stopMoving();
 
     public abstract boolean isBusy();
 

@@ -43,6 +43,9 @@ public class ScissorLift extends Lift {
         if(gamepad1.right_trigger>gamepad1.left_trigger) {
             tp = -tp;
         }
+        if(tp == 0){
+            tp = 0.02;
+        }
         if(!overriding){
             if(pos > SCISSOR_MAX_ENC && tp > 0){
                 tp = 0;
@@ -59,9 +62,7 @@ public class ScissorLift extends Lift {
             overriding = !overriding;
         }
 
-        telemetry.addData("ENC: ", String.valueOf(pos));
-        telemetry.addData("PWR: ", String.valueOf(1));
-        telemetry.update();
+
 
     }
 
