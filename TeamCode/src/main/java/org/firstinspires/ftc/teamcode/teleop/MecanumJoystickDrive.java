@@ -120,27 +120,51 @@ public class MecanumJoystickDrive extends JoystickDrive {
         //1 = moving horizontally
         //2 = rotating
         if (max_abs == -1){
+        } else if(max_abs == 0){
+            pwr = gamepad1.left_stick_x;
+        } else if (max_abs == 1){
+            pwr = gamepad1.left_stick_y;
+        } else if (max_abs == 2){
+            pwr = gamepad1.right_stick_x;
+        }
+        if(pwr > 0) {
+            if (pwr < 0.5) {
+                pwr = 0.1;
+            } else if (pwr >= 0.5 && pwr < 0.75) {
+                pwr = 0.2;
+            } else if (pwr >= 0.75 && pwr < 0.95) {
+                pwr = 0.4;
+            } else {
+                pwr = 1;
+            }
+        } else if(pwr < 0){
+            if (pwr > -0.5) {
+                pwr = -0.1;
+            } else if (pwr <= -0.5 && pwr > -0.75) {
+                pwr = -0.2;
+            } else if (pwr <= -0.75 && pwr > -0.95) {
+                pwr = -0.4;
+            } else {
+                pwr = -1;
+            }
+        }
+
+        if (max_abs == -1){
             fl.setPower(0);
             fr.setPower(0);
             bl.setPower(0);
             br.setPower(0);
         } else if(max_abs == 0){
-            pwr = gamepad1.left_stick_x;
-            pwr = pwr*pwr*pwr*.6;
             fl.setPower( pwr);
             fr.setPower( pwr);
             bl.setPower(-pwr);
             br.setPower(-pwr);
         } else if (max_abs == 1){
-            pwr = gamepad1.left_stick_y;
-            pwr = pwr*pwr*pwr*.6;
             fl.setPower(-pwr);
             fr.setPower( pwr);
             bl.setPower(-pwr);
             br.setPower( pwr);
         } else if (max_abs == 2){
-            pwr = gamepad1.right_stick_x;
-            pwr = pwr*pwr*pwr*.6;
             fl.setPower(pwr);
             fr.setPower(pwr);
             bl.setPower(pwr);

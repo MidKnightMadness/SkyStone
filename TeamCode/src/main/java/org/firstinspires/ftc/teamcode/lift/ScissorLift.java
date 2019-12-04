@@ -44,7 +44,7 @@ public class ScissorLift extends Lift {
             tp = -tp;
         }
         if(tp == 0){
-            tp = 0.02;
+            tp = 0.01;
         }
         if(!overriding){
             if(pos > SCISSOR_MAX_ENC && tp > 0){
@@ -56,6 +56,7 @@ public class ScissorLift extends Lift {
         if(gamepad1.a){
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         }
         if(gamepad1.b){
