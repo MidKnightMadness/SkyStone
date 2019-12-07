@@ -17,20 +17,21 @@ import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 @Autonomous
 public class SimpleParkRight extends LinearOpMode {
     private Drive drive = new NewMechanumWheels();
-    private Visual visual = new VuforiaPosition();
-    private Navigation navigation = new Navigation(visual, drive);
+    //private Visual visual = new VuforiaPosition();
+    private Navigation navigation = new Navigation(null, drive);
 
     @Override
     public void runOpMode() throws InterruptedException {
-        Assembly.initialize(telemetry, hardwareMap, drive, visual, navigation);
+        Assembly.initialize(telemetry, hardwareMap, drive, /*visual,*/ navigation);
 
         waitForStart();
 
         drive.setTarget(new Position(Distance.fromInches(36), Distance.fromInches(0), Angle.fromDegrees(0)), navigation);
-        while (!drive.isComplete()) {
-            visual.update();
+        while (!drive.isComplete() || !Thread.currentThread().isInterrupted()) {
+            //visual.update();
             navigation.update();
             drive.update();
+            telemetry.update();
         }
     }
 }

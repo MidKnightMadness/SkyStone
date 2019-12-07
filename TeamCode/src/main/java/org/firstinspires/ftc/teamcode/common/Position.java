@@ -32,6 +32,11 @@ public class Position {
     public void setTheta(Angle theta) {
         this.theta = theta;
     }
+    
+    @Override
+    public String toString() {
+        return "x: "+ x.toInches() + ", y: " + y.toInches() + ", theta: " + theta.toDegrees();
+    }
 
 }
 

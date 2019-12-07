@@ -66,6 +66,11 @@ public class NewMechanumWheels extends Drive {
         wheelBR.resetDeviceConfigurationForOpMode();
         wheelFL.resetDeviceConfigurationForOpMode();
         wheelFR.resetDeviceConfigurationForOpMode();
+        
+        wheelBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wheelBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        wheelFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -98,6 +103,8 @@ public class NewMechanumWheels extends Drive {
         targetTranslation = theta;
         this.speed = speed;
         this.rotationalSpeed = rotation;
+        
+        telemetry.addData("rotationalSpeed", rotationalSpeed);
     }
 
     public void setTarget(Position position, Navigation navigation) {
@@ -106,7 +113,7 @@ public class NewMechanumWheels extends Drive {
     }
 
     public boolean isComplete() {
-        return navigation == null;
+        return targetPosition == null;
     }
 
     public Angle getCurrentRotation() {
@@ -118,22 +125,29 @@ public class NewMechanumWheels extends Drive {
         return value < -1 ? -1 : value > 1 ? 1 : value;
     }
 
-    private static final double K_P_TRANSLATION = 4;
-    private static final double K_P_ROTATION = 4;
+    private static final double K_P_TRANSLATION = 4;  //threshold constant
+    private static final double K_P_ROTATION = 1000;
 
     private void updateTarget() {
         if (targetPosition != null) { // we're navigating somewhere specific
 
-            double fieldX = targetPosition.getX().toInches() - navigation.getPosition().getX().toInches() / 4;
-            double fieldY = targetPosition.getY().toInches() - navigation.getPosition().getY().toInches() / 4;
-            double fieldRot = targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / 4;
-            if (Math.abs(fieldX) < 1 / K_P_TRANSLATION && Math.abs(fieldY) < 1 / K_P_TRANSLATION && fieldRot < 1 / K_P_ROTATION) {
+            telemetry.addData("targetPosition", targetPosition);
+            telemetry.addData("navigationPosition", navigation.getPosition());
+
+            double fieldX = (targetPosition.getX().toInches() - navigation.getPosition().getX().toInches()) / K_P_TRANSLATION;
+            double fieldY = (targetPosition.getY().toInches() - navigation.getPosition().getY().toInches()) / K_P_TRANSLATION;
+            double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
+       
+            telemetry.addData("fieldRot", fieldRot);
+       
+            if (Math.abs(fieldX) < 0.25 / K_P_TRANSLATION && Math.abs(fieldY) < 0.25 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {
                 targetPosition = null;
+                internalSetDirection(Angle.fromDegrees(0), 0, 0);
             } else {
                 internalSetDirection(
                         Angle.aTan(fieldX, fieldY),
-                        trim(fieldX + fieldY),
-                        trim(fieldRot)
+                        Math.pow(Math.abs(trim(fieldX + fieldY)) / 4, 1/2.0),
+                        Math.signum(fieldRot) * Math.pow(Math.abs(trim(fieldRot)), 1/2.0)
                 );
             }
         }
@@ -172,17 +186,17 @@ public class NewMechanumWheels extends Drive {
         translateFR *= speed / maxSpeed;
         translateBL *= speed / maxSpeed;
         translateBR *= speed / maxSpeed;
-
+        
         double rotateFL = rotationalSpeed;
         double rotateFR = rotationalSpeed;
         double rotateBL = rotationalSpeed;
         double rotateBR = rotationalSpeed;
-
-        double velocityFL = rotateFL + translateFL;
+        
+         double velocityFL = rotateFL + translateFL;
         double velocityFR = rotateFR + translateFR;
         double velocityBL = rotateBL + translateBL;
         double velocityBR = rotateBR + translateBR;
-
+        
         if (Math.abs(velocityFL) > 1 || Math.abs(velocityFR) > 1 || Math.abs(velocityBL) > 1 || Math.abs(velocityBR) > 1) {
             double maxVelocity = Math.max(Math.max(Math.abs(translateFL), Math.abs(translateFR)), Math.max(Math.abs(translateBL), Math.abs(translateBR)));
 
@@ -208,6 +222,11 @@ public class NewMechanumWheels extends Drive {
         double b = wheelBR.getCurrentPosition() - lastPositionBR;
         double c = wheelFL.getCurrentPosition() - lastPositionFL;
         double d = wheelFR.getCurrentPosition() - lastPositionFR;
+        
+        telemetry.addData("wheelBL", wheelBL.getCurrentPosition());
+        telemetry.addData("wheelBR", wheelBR.getCurrentPosition());
+        telemetry.addData("wheelFL", wheelFL.getCurrentPosition());
+        telemetry.addData("wheelFR", wheelFR.getCurrentPosition());
 
         lastPositionBL += a;
         lastPositionBR += b;
@@ -222,9 +241,9 @@ public class NewMechanumWheels extends Drive {
         c -= rot;
         d -= rot;
 
-        double transY = (a + b - c - d) / 4;
+        double transX = -(a + b - c - d) / (4 * Math.sqrt(2));
 
-        double transX = (a - b + c - d) / (4 * Math.sqrt(2));
+        double transY = (a - b + c - d) / 4;
 
         telemetry.addData("Translation X", transX);
         telemetry.addData("Translation Y", transY);
@@ -232,7 +251,7 @@ public class NewMechanumWheels extends Drive {
 
 
         Angle theta = currentRotation.copy().subtract(initialRotation);
-        double fieldX = transY * Math.sin(theta.toRadians()) + transX * Math.cos(theta.toRadians());
+        double fieldX = -transY * Math.sin(theta.toRadians()) + transX * Math.cos(theta.toRadians());
         double fieldY = transY * Math.cos(theta.toRadians()) + transX * Math.sin(theta.toRadians());
 
         currentPosition.add(Distance.fromEncoderTicks((int) fieldX), Distance.fromEncoderTicks((int) fieldY), Angle.fromDegrees(0));

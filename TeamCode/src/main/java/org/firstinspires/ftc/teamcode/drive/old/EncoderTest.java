@@ -9,7 +9,7 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 
-//@Autonomous
+@Autonomous
 public class EncoderTest extends LinearOpMode {
     private DcMotorEx wheelFL;
     private DcMotorEx wheelFR;
@@ -37,8 +37,8 @@ public class EncoderTest extends LinearOpMode {
 
         telemetry.addLine("Front Left Wheel");
         telemetry.update();
-        wheelFL.setPower(1);
-        while (getRuntime() < 2) {
+        wheelFL.setVelocity(2380);
+        while (getRuntime() < 4) {
             telemetry.addData("FL", wheelFL.getCurrentPosition());
             telemetry.addData("FL V", wheelFL.getVelocity());
             telemetry.update();
@@ -48,8 +48,8 @@ public class EncoderTest extends LinearOpMode {
 
         telemetry.addLine("Front Right Wheel");
         telemetry.update();
-        wheelFR.setPower(1);
-        while (getRuntime() < 4) {
+        wheelFR.setVelocity(2380);
+        while (getRuntime() < 7) {
             telemetry.addData("FR", wheelFR.getCurrentPosition());
             telemetry.addData("FR V", wheelFR.getVelocity());
             telemetry.update();
@@ -59,7 +59,7 @@ public class EncoderTest extends LinearOpMode {
 
         telemetry.addLine("Back Left Wheel");
         telemetry.update();
-        wheelBL.setPower(1);
+        wheelBL.setVelocity(2380);
         while (getRuntime() < 10) {
             telemetry.addData("BL", wheelBL.getCurrentPosition());
             telemetry.addData("BL V", wheelBL.getVelocity());
@@ -70,8 +70,8 @@ public class EncoderTest extends LinearOpMode {
 
         telemetry.addLine("Back Right Wheel");
         telemetry.update();
-        wheelBR.setPower(1);
-        while (getRuntime() < 12) {
+        wheelBR.setVelocity(2380);
+        while (getRuntime() < 13) {
             telemetry.addData("BR", wheelBR.getCurrentPosition());
             telemetry.addData("BR V", wheelBR.getVelocity());
             telemetry.update();

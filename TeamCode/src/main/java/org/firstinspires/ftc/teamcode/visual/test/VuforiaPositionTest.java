@@ -10,7 +10,6 @@ import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
 @TeleOp
-@Disabled
 public class VuforiaPositionTest extends OpMode {
 
     Visual visual = new VuforiaPosition();
@@ -32,8 +31,8 @@ public class VuforiaPositionTest extends OpMode {
         if (position == null)
             telemetry.addLine("nothing detected");
         else {
-            telemetry.addData("x", position.getX().toEncoderTicks());
-            telemetry.addData("y", position.getY().toEncoderTicks());
+            telemetry.addData("x", position.getX().toInches());
+            telemetry.addData("y", position.getY().toInches());
             telemetry.addData("theta", position.getTheta().getDegrees());
         }
 

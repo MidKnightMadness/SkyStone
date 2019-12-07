@@ -68,10 +68,10 @@ public class VuforiaPosition extends Visual {
         }
 
         //debugging for now since the Distance class is not finished
-        telemetry.addData("x", x);
-        telemetry.addData("y", y);
-        telemetry.addData("theta", theta);
-        telemetry.addData("count", count);
+        //telemetry.addData("x", x);
+        //telemetry.addData("y", y);
+        //telemetry.addData("theta", theta);
+        //telemetry.addData("count", count);
 
         //if there is nothing detected, return null
         if (count == 0)

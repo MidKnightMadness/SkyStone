@@ -44,8 +44,6 @@ public class Elevator extends Delivery {
 
         if (targetPos < 0)
             targetPos = 0;
-        else if (targetPos > 3700)
-            targetPos = 3700;
 
         vertical.setTargetPosition(targetPos + initHeight);
     }

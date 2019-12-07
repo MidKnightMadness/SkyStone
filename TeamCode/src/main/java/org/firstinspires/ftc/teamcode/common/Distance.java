@@ -22,8 +22,8 @@ public class Distance {
         return new Distance((int) (inches * Config.ENCODER_TICKS_PER_INCH));
     }
 
-    public static Distance fromMillimeters(double inches) {
-        return fromInches(inches * 25.4);
+    public static Distance fromMillimeters(double millimeters) {
+        return fromInches(millimeters / 25.4);
     }
 
     public Distance subtract(Distance subtractend) {

@@ -29,6 +29,7 @@ public class Main extends OpMode {
     private int mode;
 
     private boolean xpressed;
+    private boolean isGrabbed;
     private double targetGrabberRot;
 
     @Override
@@ -49,10 +50,9 @@ public class Main extends OpMode {
             targetDepth = 1;
         if (targetHeight < -1)
             targetHeight = -1;
-        else if (targetHeight > 1)
-            targetHeight = 1;
         delivery.setDepth(targetDepth);
         delivery.setHeight(targetHeight);
+        telemetry.addData("targetHeight", targetHeight);
 
         //drive
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);
@@ -76,10 +76,18 @@ public class Main extends OpMode {
 
         //grabber
         if (gamepad1.x && !xpressed) {
-            grabber.grab();
             xpressed = true;
+            if(isGrabbed)
+            {
+                grabber.release();
+                isGrabbed = false;
+            }
+            else
+            {
+                grabber.grab();
+                isGrabbed = true;
+            }
         } else if (!gamepad1.x && xpressed) {
-            grabber.release();
             xpressed = false;
         }
         targetGrabberRot = gamepad1.right_trigger - gamepad1.left_trigger;

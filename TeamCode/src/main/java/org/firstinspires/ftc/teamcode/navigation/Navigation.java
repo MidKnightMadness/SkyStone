@@ -18,6 +18,9 @@ public class Navigation extends Assembly {
     public void init() {}
 
     public void update() {
+        if(visual == null)
+            return;
+            
         Position visualPosition = visual.getPosition();
         Position drivePosition = drive.getPosition();
 
