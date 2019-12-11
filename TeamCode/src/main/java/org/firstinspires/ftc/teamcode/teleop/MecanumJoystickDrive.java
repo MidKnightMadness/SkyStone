@@ -128,21 +128,21 @@ public class MecanumJoystickDrive extends JoystickDrive {
             pwr = gamepad1.right_stick_x;
         }
         if(pwr > 0) {
-            if (pwr < 0.5) {
-                pwr = 0.1;
-            } else if (pwr >= 0.5 && pwr < 0.75) {
+            if (pwr < 0.35) {
                 pwr = 0.2;
-            } else if (pwr >= 0.75 && pwr < 0.95) {
+            } else if (pwr >= 0.35 && pwr < 0.65) {
+                pwr = 0.3;
+            } else if (pwr >= 0.65 && pwr < 0.95) {
                 pwr = 0.4;
             } else {
                 pwr = 1;
             }
         } else if(pwr < 0){
-            if (pwr > -0.5) {
-                pwr = -0.1;
-            } else if (pwr <= -0.5 && pwr > -0.75) {
+            if (pwr > -0.35) {
                 pwr = -0.2;
-            } else if (pwr <= -0.75 && pwr > -0.95) {
+            } else if (pwr <= -0.35 && pwr > -0.65) {
+                pwr = -0.3;
+            } else if (pwr <= -0.65 && pwr > -0.95) {
                 pwr = -0.4;
             } else {
                 pwr = -1;

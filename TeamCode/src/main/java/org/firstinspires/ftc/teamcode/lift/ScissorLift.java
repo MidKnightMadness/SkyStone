@@ -15,14 +15,16 @@ public class ScissorLift extends Lift {
     public double SCISSOR_MAX_ENC = 3900;
     private boolean overriding = false;
     private int pos = 0;
+    private int lastStoppedPos = 0;
     private double tp = 0;
+    private boolean t = false;
 
     @Override
     public void init() {
         motor = hardwareMap.dcMotor.get(Config.Lift.LIFT_MOTOR);
         motor.resetDeviceConfigurationForOpMode();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setPower(0);
     }
@@ -43,25 +45,47 @@ public class ScissorLift extends Lift {
         if(gamepad1.right_trigger>gamepad1.left_trigger) {
             tp = -tp;
         }
-        if(tp == 0){
-            tp = 0.01;
+
+        if(tp != 0){
+            lastStoppedPos = pos;
         }
+
         if(!overriding){
             if(pos > SCISSOR_MAX_ENC && tp > 0){
                 tp = 0;
             }
         }
+
+
         motor.setPower(tp);
+        if(tp != 0){
+            motor.setTargetPosition((int) (pos+tp*200));
+            motor.setPower(tp);
+            t = false;
+        }else{
+            motor.setTargetPosition((int) (lastStoppedPos));
+            if(lastStoppedPos-pos>10){
+                tp=0.4;
+                t = true;
+
+            }
+            motor.setPower(tp);
+        }
 
         if(gamepad1.a){
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         }
         if(gamepad1.b){
             overriding = !overriding;
         }
+
+        telemetry.addData("ENC: ", pos);
+        telemetry.addData("LSP: ", lastStoppedPos);
+        telemetry.addData("PWR: ", tp);
+        telemetry.addData("BLW: ", t);
+        telemetry.update();
 
 
 

@@ -42,8 +42,7 @@ public class LeadClamp extends Clamp {
         } else {
             motor.setPower(0);
         }
-        telemetry.addData("ENC: ", String.valueOf(pos));
-        telemetry.update();
+
 
     }
 
