@@ -24,6 +24,7 @@ public class ScissorLift extends Lift {
         motor = hardwareMap.dcMotor.get(Config.Lift.LIFT_MOTOR);
         motor.resetDeviceConfigurationForOpMode();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        motor.setTargetPosition(0);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setPower(0);
@@ -64,7 +65,7 @@ public class ScissorLift extends Lift {
             t = false;
         }else{
             motor.setTargetPosition((int) (lastStoppedPos));
-            if(lastStoppedPos-pos>10){
+            if(lastStoppedPos-pos>5){
                 tp=0.4;
                 t = true;
 
@@ -80,12 +81,12 @@ public class ScissorLift extends Lift {
         if(gamepad1.b){
             overriding = !overriding;
         }
-
+/*
         telemetry.addData("ENC: ", pos);
         telemetry.addData("LSP: ", lastStoppedPos);
         telemetry.addData("PWR: ", tp);
         telemetry.addData("BLW: ", t);
-        telemetry.update();
+        telemetry.update();*/
 
 
 
