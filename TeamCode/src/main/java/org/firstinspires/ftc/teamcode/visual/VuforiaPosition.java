@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.visual.webcam.PhoneManager;
 
 public class VuforiaPosition extends Visual {
-    private PhoneManager cameraManager = new PhoneManager();
+    public PhoneManager cameraManager = new PhoneManager();
     private VuforiaSkyStone vuforia = new VuforiaSkyStone();
 
     @Override
@@ -78,6 +78,61 @@ public class VuforiaPosition extends Visual {
             return null;
         else
             return new Position(Distance.fromMillimeters(x / count), Distance.fromMillimeters(y / count), Angle.fromDegrees(theta / count));
+    }
+
+    public double getSkystoneOffset() {
+        Bitmap currentFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, true);
+        double[] hsv = new double[3];
+
+        // (DEBUG) show the skystone and black pixels a special color
+        for (int y = 0; y < currentFrame.getHeight(); y++) {
+            for (int x = 0; x < currentFrame.getWidth(); x++) {
+                PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
+                if (hsv[2] < 0.1) {
+                    currentFrame.setPixel(x, y, 0xFF0000);
+                } else if (hsv[0] < 0.1) {
+                    currentFrame.setPixel(x, y, 0x00FF00);
+                }
+            }
+        }
+
+        int quarryRow = 0;
+
+        // Find the lower bound of the quarry (search for some yellow)
+        for (int y = 0; y < currentFrame.getHeight(); y++) {
+            for (int x = 0; x < currentFrame.getWidth(); x++) {
+                PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
+                if (hsv[0] < 0.1) { // if it's yellow
+                    // then we'll skip a few lines and check the x-offset from centered to the skystone
+                    quarryRow = y + 10;
+                }
+            }
+        }
+
+        int left = 0, right = 0;
+        boolean foundSkystone = false; // to know if we've hit the black yet...
+
+        for (int x = 0; x < currentFrame.getWidth(); x++) {
+            PhoneManager.colorToHSV(currentFrame.getPixel(x, quarryRow), hsv);
+            if (hsv[0] < 0.1) {
+                if (foundSkystone) {
+                    currentFrame.setPixel(x, quarryRow, 0x0000FF);
+                    left++;
+                } else {
+                    currentFrame.setPixel(x, quarryRow, 0x00FFFF);
+                    right++;
+                }
+            } else if (hsv[2] < 0.1) {
+                currentFrame.setPixel(x, quarryRow, 0xFF00FF);
+                foundSkystone = true;
+            }
+        }
+        cameraManager.updatePreviewBitmap(currentFrame);
+
+
+        // Now we need a proportion of left to right... Just subtracting might work...
+
+        return right - left;
     }
 
     @Override

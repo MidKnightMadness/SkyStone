@@ -15,4 +15,6 @@ public abstract class Drive extends Assembly {
     public abstract void setDirection(Angle theta, double speed, double rotation);
 
     public abstract boolean isComplete();
+
+    public abstract void resetHeading();
 }
