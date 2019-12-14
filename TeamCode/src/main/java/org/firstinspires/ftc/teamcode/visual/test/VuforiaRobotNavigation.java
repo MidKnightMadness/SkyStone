@@ -76,6 +76,11 @@ public class VuforiaRobotNavigation extends Visual {
     }
 
     @Override
+    public double getSkystoneOffset() {
+        return 0;
+    }
+
+    @Override
     public void stop() {
 
     }

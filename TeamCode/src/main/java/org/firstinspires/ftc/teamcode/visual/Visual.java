@@ -15,5 +15,7 @@ public abstract class Visual extends Assembly {
 
     public abstract SkystoneSetup findSkystone();
 
+    public abstract double getSkystoneOffset();
+
     public abstract void stop();
 }

@@ -66,7 +66,7 @@ public class NewMechanumWheels extends Drive {
         wheelBR.resetDeviceConfigurationForOpMode();
         wheelFL.resetDeviceConfigurationForOpMode();
         wheelFR.resetDeviceConfigurationForOpMode();
-        
+
         wheelBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -103,7 +103,7 @@ public class NewMechanumWheels extends Drive {
         targetTranslation = theta;
         this.speed = speed;
         this.rotationalSpeed = rotation;
-        
+
         telemetry.addData("rotationalSpeed", rotationalSpeed);
     }
 
@@ -137,9 +137,9 @@ public class NewMechanumWheels extends Drive {
             double fieldX = (targetPosition.getX().toInches() - navigation.getPosition().getX().toInches()) / K_P_TRANSLATION;
             double fieldY = (targetPosition.getY().toInches() - navigation.getPosition().getY().toInches()) / K_P_TRANSLATION;
             double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
-       
+
             telemetry.addData("fieldRot", fieldRot);
-       
+
             if (Math.abs(fieldX) < 0.25 / K_P_TRANSLATION && Math.abs(fieldY) < 0.25 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {
                 targetPosition = null;
                 internalSetDirection(Angle.fromDegrees(0), 0, 0);
@@ -186,17 +186,17 @@ public class NewMechanumWheels extends Drive {
         translateFR *= speed / maxSpeed;
         translateBL *= speed / maxSpeed;
         translateBR *= speed / maxSpeed;
-        
+
         double rotateFL = rotationalSpeed;
         double rotateFR = rotationalSpeed;
         double rotateBL = rotationalSpeed;
         double rotateBR = rotationalSpeed;
-        
-         double velocityFL = rotateFL + translateFL;
+
+        double velocityFL = rotateFL + translateFL;
         double velocityFR = rotateFR + translateFR;
         double velocityBL = rotateBL + translateBL;
         double velocityBR = rotateBR + translateBR;
-        
+
         if (Math.abs(velocityFL) > 1 || Math.abs(velocityFR) > 1 || Math.abs(velocityBL) > 1 || Math.abs(velocityBR) > 1) {
             double maxVelocity = Math.max(Math.max(Math.abs(translateFL), Math.abs(translateFR)), Math.max(Math.abs(translateBL), Math.abs(translateBR)));
 
@@ -222,7 +222,7 @@ public class NewMechanumWheels extends Drive {
         double b = wheelBR.getCurrentPosition() - lastPositionBR;
         double c = wheelFL.getCurrentPosition() - lastPositionFL;
         double d = wheelFR.getCurrentPosition() - lastPositionFR;
-        
+
         telemetry.addData("wheelBL", wheelBL.getCurrentPosition());
         telemetry.addData("wheelBR", wheelBR.getCurrentPosition());
         telemetry.addData("wheelFL", wheelFL.getCurrentPosition());

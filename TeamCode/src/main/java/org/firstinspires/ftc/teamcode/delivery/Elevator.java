@@ -59,4 +59,10 @@ public class Elevator extends Delivery {
 
         horizontal.setTargetPosition(targetPos + initDepth);
     }
+
+    @Override
+    public boolean isComplete() {
+        return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 100 &&
+                Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 100;
+    }
 }

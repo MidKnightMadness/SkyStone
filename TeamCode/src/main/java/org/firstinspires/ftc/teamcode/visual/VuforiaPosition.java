@@ -127,6 +127,11 @@ public class VuforiaPosition extends Visual {
         return result;
     }
 
+    @Override
+    public double getSkystoneOffset() {
+        return 0;
+    }
+
     public void stop() {
         cameraManager.stopCapture();
     }
