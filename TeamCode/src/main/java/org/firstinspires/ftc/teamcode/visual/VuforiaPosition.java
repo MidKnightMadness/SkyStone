@@ -80,8 +80,10 @@ public class VuforiaPosition extends Visual {
             return new Position(Distance.fromMillimeters(x / count), Distance.fromMillimeters(y / count), Angle.fromDegrees(theta / count));
     }
 
+    // hue 30-50 is the stones
+
     public double getSkystoneOffset() {
-        Bitmap currentFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, true);
+        Bitmap currentFrame = Bitmap.createScaledBitmap(cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, false), 720, 10, false);
         double[] hsv = new double[3];
 
         // (DEBUG) show the skystone and black pixels a special color
@@ -90,7 +92,7 @@ public class VuforiaPosition extends Visual {
                 PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
                 if (hsv[2] < 0.1) {
                     currentFrame.setPixel(x, y, 0xFF0000);
-                } else if (hsv[0] < 0.1) {
+                } else if (30 < hsv[0] && hsv[0] < 50) {
                     currentFrame.setPixel(x, y, 0x00FF00);
                 }
             }
@@ -180,11 +182,6 @@ public class VuforiaPosition extends Visual {
         //display the modified bitmap
         cameraManager.updatePreviewBitmap(scaledFrame);
         return result;
-    }
-
-    @Override
-    public double getSkystoneOffset() {
-        return 0;
     }
 
     public void stop() {

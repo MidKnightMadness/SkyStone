@@ -16,7 +16,7 @@ public class LED {
     public static void init(I2cDeviceSynch ledController) {
         LED.ledController = ledController;
         ledController.setI2cAddress(I2cAddr.create8bit(0x50));
-        ledController.write8(0xF4, 0b00001101);
+        ledController.write8(0xF4, 0b0000110);
         ledController.write8(0xF7, 0b11110011);
     }
 
