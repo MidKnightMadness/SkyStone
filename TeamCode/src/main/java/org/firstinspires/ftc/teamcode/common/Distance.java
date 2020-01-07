@@ -35,6 +35,11 @@ public class Distance {
         encoderTicks += addend.encoderTicks;
         return this;
     }
+    
+    public Distance copy()
+    {
+        return Distance.fromEncoderTicks(encoderTicks);
+    }
 
     public double toRotations() {
         return encoderTicks / 396000.0d;

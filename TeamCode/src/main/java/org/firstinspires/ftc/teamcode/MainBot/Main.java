@@ -52,7 +52,9 @@ public class Main extends OpMode {
             targetHeight = -1;
         delivery.setDepth(targetDepth);
         delivery.setHeight(targetHeight);
+        telemetry.addData("targetDepth", targetDepth);
         telemetry.addData("targetHeight", targetHeight);
+        delivery.update();
 
         //drive
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);

@@ -82,16 +82,18 @@ public class VuforiaPosition extends Visual {
 
     public double getSkystoneOffset() {
         Bitmap currentFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, true);
+        Bitmap displayFrame = currentFrame.copy(Bitmap.Config.RGB_565, true);
         double[] hsv = new double[3];
 
         // (DEBUG) show the skystone and black pixels a special color
-        for (int y = 0; y < currentFrame.getHeight(); y++) {
-            for (int x = 0; x < currentFrame.getWidth(); x++) {
-                PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
+        for (int y = 0; y < displayFrame.getHeight(); y++) {
+            for (int x = 0; x < displayFrame.getWidth(); x++) {
+                PhoneManager.colorToHSV(displayFrame.getPixel(x, y), hsv);
                 if (hsv[2] < 0.1) {
-                    currentFrame.setPixel(x, y, 0xFF0000);
-                } else if (hsv[0] < 0.1) {
-                    currentFrame.setPixel(x, y, 0x00FF00);
+                    displayFrame.setPixel(x, y, 0xFF0000);
+                } else if (
+                    Math.abs(hsv[0] - 33) < 5 && hsv[1] > 0.5) {
+                    displayFrame.setPixel(x, y, 0x00FF00);
                 }
             }
         }
@@ -99,35 +101,41 @@ public class VuforiaPosition extends Visual {
         int quarryRow = 0;
 
         // Find the lower bound of the quarry (search for some yellow)
-        for (int y = 0; y < currentFrame.getHeight(); y++) {
+        for (int y = currentFrame.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < currentFrame.getWidth(); x++) {
                 PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
-                if (hsv[0] < 0.1) { // if it's yellow
+                if (Math.abs(hsv[0] - 33) < 5 && hsv[1] > 0.5) { // if it's yellow
                     // then we'll skip a few lines and check the x-offset from centered to the skystone
-                    quarryRow = y + 10;
+                    quarryRow = y - 10;
+                    break;
                 }
             }
+            if (quarryRow != 0) {
+                break;
+            }
         }
+        quarryRow = Math.min(quarryRow, currentFrame.getHeight() - 1);  //prevent overflow
+        telemetry.addData("quarryRow", quarryRow);
 
         int left = 0, right = 0;
         boolean foundSkystone = false; // to know if we've hit the black yet...
 
         for (int x = 0; x < currentFrame.getWidth(); x++) {
             PhoneManager.colorToHSV(currentFrame.getPixel(x, quarryRow), hsv);
-            if (hsv[0] < 0.1) {
+            if (Math.abs(hsv[0] - 33) < 5) {
                 if (foundSkystone) {
-                    currentFrame.setPixel(x, quarryRow, 0x0000FF);
+                    displayFrame.setPixel(x, quarryRow, 0x0000FF);
                     left++;
                 } else {
-                    currentFrame.setPixel(x, quarryRow, 0x00FFFF);
+                    displayFrame.setPixel(x, quarryRow, 0x00FFFF);
                     right++;
                 }
             } else if (hsv[2] < 0.1) {
-                currentFrame.setPixel(x, quarryRow, 0xFF00FF);
+                displayFrame.setPixel(x, quarryRow, 0xFF00FF);
                 foundSkystone = true;
             }
         }
-        cameraManager.updatePreviewBitmap(currentFrame);
+        cameraManager.updatePreviewBitmap(displayFrame);
 
 
         // Now we need a proportion of left to right... Just subtracting might work...
@@ -180,11 +188,6 @@ public class VuforiaPosition extends Visual {
         //display the modified bitmap
         cameraManager.updatePreviewBitmap(scaledFrame);
         return result;
-    }
-
-    @Override
-    public double getSkystoneOffset() {
-        return 0;
     }
 
     public void stop() {

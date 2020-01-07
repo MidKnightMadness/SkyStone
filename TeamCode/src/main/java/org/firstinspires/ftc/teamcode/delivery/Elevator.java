@@ -42,27 +42,30 @@ public class Elevator extends Delivery {
     public void setHeight(double blocks) {
         int targetPos = (int) (blocks * 10000);
 
-        if (targetPos < 0)
-            targetPos = 0;
-
         vertical.setTargetPosition(targetPos + initHeight);
     }
 
     @Override
     public void setDepth(double inches) {
-        int targetPos = (int) (inches * 10000);  //change later
-
-        if (targetPos > 8000)
-            targetPos = 8000;
-        else if (targetPos < -4500)
-            targetPos = -4500;
+        int targetPos = (int) (inches * 10);  //change later
 
         horizontal.setTargetPosition(targetPos + initDepth);
+    }
+    
+    @Override
+    public void setDepthRaw(int encoderTicks) {
+        horizontal.setTargetPosition(encoderTicks + initDepth);
     }
 
     @Override
     public boolean isComplete() {
         return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 100 &&
                 Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 100;
+    }
+    
+    @Override
+    public void update()
+    {
+        telemetry.addData("horizontalPosition", horizontal.getCurrentPosition());
     }
 }

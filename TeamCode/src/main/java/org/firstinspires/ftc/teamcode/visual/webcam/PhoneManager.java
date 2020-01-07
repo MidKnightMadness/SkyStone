@@ -166,7 +166,7 @@ public class PhoneManager implements ImageReader.OnImageAvailableListener {
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         currentFrame = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);// The bitmap is ARGB_8888
-        telemetry.addLine(currentFrame.getConfig().name());
+        //telemetry.addLine(currentFrame.getConfig().name());
 
 
 

@@ -16,13 +16,13 @@ public class StoneAngle extends Assembly {
         distSensorRight = hardwareMap.get(Rev2mDistanceSensor.class, "distanceright");
     }
 
-    //returns a distance (cm) and angle (degrees)
+    //returns a distance (in) and angle (degrees)
     public double[] stonePosition() {
         //sensor readings
-        double leftDist = distSensorLeft.getDistance(DistanceUnit.CM);
-        double rightDist = distSensorRight.getDistance(DistanceUnit.CM);
-        //telemetry.addData("left", leftDist);
-        //telemetry.addData("right", rightDist);
+        double leftDist = distSensorLeft.getDistance(DistanceUnit.INCH);
+        double rightDist = distSensorRight.getDistance(DistanceUnit.INCH);
+        telemetry.addData("left", leftDist);
+        telemetry.addData("right", rightDist);
 
         //distance and angle
         return new double[] {

@@ -2,14 +2,14 @@ package org.firstinspires.ftc.teamcode.led;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.I2cAddr;
 
 //@TeleOp
 public class LEDTest extends OpMode {
+    private LEDStrip ledStrip;
     @Override
     public void init() {
-        LED.init(hardwareMap.i2cDeviceSynch.get("ledstrip"));
-        //LED.setStaticColor(LED.StaticColor.GREEN);
+        ledStrip = hardwareMap.get(LEDStrip.class, "ledstrip");
+        ledStrip.sendHello();
     }
 
     @Override
