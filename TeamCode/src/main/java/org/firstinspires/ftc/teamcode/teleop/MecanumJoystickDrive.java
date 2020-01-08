@@ -149,16 +149,16 @@ public class MecanumJoystickDrive extends JoystickDrive {
         bl.setPower(usepwr[2]);
         br.setPower(usepwr[3]);
 
-        telemetry.addData("X", (Math.round(100*abs[0][0]))/100.0);
-        telemetry.addData("Y", (Math.round(100*abs[1][0]))/100.0);
-        telemetry.addData("R", (Math.round(100*abs[2][0]))/100.0);
-        telemetry.addData("M ", max_abs);
-        telemetry.addData("P ", pwr);
+        //telemetry.addData("X", (Math.round(100*abs[0][0]))/100.0);
+        //telemetry.addData("Y", (Math.round(100*abs[1][0]))/100.0);
+        //telemetry.addData("R", (Math.round(100*abs[2][0]))/100.0);
+        //telemetry.addData("M ", max_abs);
+        //telemetry.addData("P ", pwr);
         //telemetry.addData("FL", fl.getCurrentPosition());
         //telemetry.addData("FR", fr.getCurrentPosition());
         //telemetry.addData("BL", bl.getCurrentPosition());
         //telemetry.addData("BR", br.getCurrentPosition());
-        telemetry.update();
+        //telemetry.update();
 
     }
 }

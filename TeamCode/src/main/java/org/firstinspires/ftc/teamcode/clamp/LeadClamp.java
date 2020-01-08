@@ -35,13 +35,16 @@ public class LeadClamp extends Clamp {
     public void loop() {
         pos = motor.getCurrentPosition();
 
-        if(gamepad2.dpad_down && pos < CLAMP_MAX_ENC){
+        if(gamepad1.dpad_down && pos < CLAMP_MAX_ENC){
             motor.setPower(CLAMP_POWER);
-        } else if (gamepad2.dpad_up && pos > CLAMP_MIN_ENC){
+        } else if (gamepad1.dpad_up && pos > CLAMP_MIN_ENC){
             motor.setPower(-CLAMP_POWER);
         } else {
             motor.setPower(0);
         }
+
+        telemetry.addData("ENC ", pos);
+        telemetry.update();
 
 
     }
