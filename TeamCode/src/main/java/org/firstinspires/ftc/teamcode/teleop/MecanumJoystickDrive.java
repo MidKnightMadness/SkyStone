@@ -51,8 +51,12 @@ public class MecanumJoystickDrive extends JoystickDrive {
     private double[][] abs = new double[3][2];
     private int max_abs = 0;
     private double pwr = 0;
-    private double[][] apwr = {{.2,.3,.4,1},{.2,.3,.4,1},{.2,.3,.4,1},{0,0,0,0}};
-    private double[][] alvl = {{0,.35,.65,.99,1},{0,.35,.65,.99,1},{0,.35,.65,.99,1},{0,0,0,0,0}};
+    private double[] examplelvl = {0,.3,.6,.999,1};
+    private double[][] apwr = {{.4,.6,.8,1}, //left/right
+            {.15,.3,.6,1}, //front/back
+            {.2,.35,.6,1}, //rotation
+            {0,0,0,0}};
+    private double[][] alvl = {examplelvl, examplelvl, examplelvl,{0,0,0,0,0}};
     private double[][] amtr = {{1,1,-1,-1},{-1,1,-1,1},{1,1,1,1},{0,0,0,0}};
     private double[] usepwr = new double[4];
 
@@ -125,10 +129,12 @@ public class MecanumJoystickDrive extends JoystickDrive {
                 if(i < 4){
                     if(pwr >= -alvl[max_abs][4-i] && pwr < -alvl[max_abs][3-i]){
                         pwr = -apwr[max_abs][3-i];
+                        break;
                     }
                 }else{
                     if (pwr > alvl[max_abs][i-4] && pwr <= alvl[max_abs][i-3]) {
                         pwr = apwr[max_abs][i-4];
+                        break;
                     }
                 }
             }
@@ -143,11 +149,11 @@ public class MecanumJoystickDrive extends JoystickDrive {
         bl.setPower(usepwr[2]);
         br.setPower(usepwr[3]);
 
-        //telemetry.addData("X", abs[0][0]);
-        //telemetry.addData("Y", abs[1][0]);
-        //telemetry.addData("R", abs[2][0]);
-        telemetry.addData("M", max_abs);
-        telemetry.addData("P", pwr);
+        telemetry.addData("X", (Math.round(100*abs[0][0]))/100.0);
+        telemetry.addData("Y", (Math.round(100*abs[1][0]))/100.0);
+        telemetry.addData("R", (Math.round(100*abs[2][0]))/100.0);
+        telemetry.addData("M ", max_abs);
+        telemetry.addData("P ", pwr);
         //telemetry.addData("FL", fl.getCurrentPosition());
         //telemetry.addData("FR", fr.getCurrentPosition());
         //telemetry.addData("BL", bl.getCurrentPosition());
