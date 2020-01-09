@@ -21,9 +21,9 @@ public class FoundationMover extends Mover {
 
     @Override
     public void loop() {
-        if (gamepad1.dpad_down){
+        if (gamepad1.left_bumper){
             holdFoundation();
-        } else if (gamepad1.dpad_up){
+        } else if (gamepad1.right_bumper){
             releaseFoundation();
         }
     }

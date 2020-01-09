@@ -59,6 +59,9 @@ public class MecanumJoystickDrive extends JoystickDrive {
     private double[][] alvl = {examplelvl, examplelvl, examplelvl,{0,0,0,0,0}};
     private double[][] amtr = {{1,1,-1,-1},{-1,1,-1,1},{1,1,1,1},{0,0,0,0}};
     private double[] usepwr = new double[4];
+    private double k = 0;
+    private double filterpwr = 0;
+    private double powerat1 = 0;
 
 
     @Override
@@ -98,6 +101,7 @@ public class MecanumJoystickDrive extends JoystickDrive {
         //1 = moving horizontally
         //2 = rotating
         if (max_abs == 3){
+            pwr = 0;
         } else if(max_abs == 0){
             pwr = gamepad1.left_stick_x;
         } else if (max_abs == 1){
@@ -105,8 +109,9 @@ public class MecanumJoystickDrive extends JoystickDrive {
         } else if (max_abs == 2){
             pwr = gamepad1.right_stick_x;
         }
+        powerat1 = pwr;
 
-        if(pwr != 0) {/*
+        if(max_abs!=3) {/*
             if (pwr >= -alvl[max_abs][4] && pwr < -alvl[max_abs][3]) {
                 pwr = -apwr[max_abs][3];
             } else if (pwr >= -alvl[max_abs][3] && pwr < -alvl[max_abs][2]) {
@@ -140,25 +145,40 @@ public class MecanumJoystickDrive extends JoystickDrive {
             }
         }
 
+
+        if(gamepad1.right_stick_y!=0){
+            k-= gamepad1.right_stick_y*.01;
+        }
+
+        if(pwr == 0){
+            filterpwr = k*pwr+(1-k)*filterpwr;
+        }
+
         for(int i = 0; i < 4; i++){
             usepwr[i]=pwr*amtr[max_abs][i];
         }
 
+
+
+
         fl.setPower(usepwr[0]);
         fr.setPower(usepwr[1]);
         bl.setPower(usepwr[2]);
-        br.setPower(usepwr[3]);
+        br.setPower(usepwr[3]);/*
 
-        //telemetry.addData("X", (Math.round(100*abs[0][0]))/100.0);
-        //telemetry.addData("Y", (Math.round(100*abs[1][0]))/100.0);
-        //telemetry.addData("R", (Math.round(100*abs[2][0]))/100.0);
-        //telemetry.addData("M ", max_abs);
-        //telemetry.addData("P ", pwr);
-        //telemetry.addData("FL", fl.getCurrentPosition());
-        //telemetry.addData("FR", fr.getCurrentPosition());
-        //telemetry.addData("BL", bl.getCurrentPosition());
-        //telemetry.addData("BR", br.getCurrentPosition());
-        //telemetry.update();
+        telemetry.addData("X", (Math.round(100*abs[0][0]))/100.0);
+        telemetry.addData("Y", (Math.round(100*abs[1][0]))/100.0);
+        telemetry.addData("R", (Math.round(100*abs[2][0]))/100.0);
+        telemetry.addData("M ", max_abs);
+        telemetry.addData("P ", usepwr[1]);
+        telemetry.addData("FL", fl.getCurrentPosition());
+        telemetry.addData("FR", fr.getCurrentPosition());
+        telemetry.addData("BL", bl.getCurrentPosition());
+        telemetry.addData("BR", br.getCurrentPosition());
+        telemetry.addData("K ", k);
+        telemetry.addData("FP", filterpwr);
+        telemetry.addData("P1", powerat1);
+        telemetry.update();*/
 
     }
 }

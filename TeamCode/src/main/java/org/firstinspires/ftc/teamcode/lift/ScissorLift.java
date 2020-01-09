@@ -1,7 +1,5 @@
 package org.firstinspires.ftc.teamcode.lift;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.Config;
@@ -14,7 +12,7 @@ public class ScissorLift extends Lift {
     public double SCISSOR_MIN_ENC = -20;
     public double SCISSOR_MAX_ENC = 3900;
     private boolean overriding = false;
-    private int pos = 0;
+    public int scissorpos = 0;
     private int lastStoppedPos = 0;
     private double tp = 0;
     private boolean t = false;
@@ -40,7 +38,7 @@ public class ScissorLift extends Lift {
 
     @Override
     public void loop() {
-        pos = motor.getCurrentPosition();
+        scissorpos = motor.getCurrentPosition();
         tp = (double) Math.max(gamepad1.left_trigger, gamepad1.right_trigger);
         tp = SCISSOR_POWER*tp*tp;
         if(gamepad1.right_trigger>gamepad1.left_trigger) {
@@ -48,11 +46,11 @@ public class ScissorLift extends Lift {
         }
 
         if(tp != 0){
-            lastStoppedPos = pos;
+            lastStoppedPos = scissorpos;
         }
 
         if(!overriding){
-            if(pos > SCISSOR_MAX_ENC && tp > 0){
+            if(scissorpos > SCISSOR_MAX_ENC && tp > 0){
                 tp = 0;
             }
         }
@@ -60,12 +58,12 @@ public class ScissorLift extends Lift {
 
         motor.setPower(tp);
         if(tp != 0){
-            motor.setTargetPosition((int) (pos+tp*200));
+            motor.setTargetPosition((int) (scissorpos +tp*200));
             motor.setPower(tp);
             t = false;
         }else{
             motor.setTargetPosition((int) (lastStoppedPos));
-            if(lastStoppedPos-pos>5){
+            if(lastStoppedPos- scissorpos >5){
                 tp=0.4;
                 t = true;
 
@@ -82,7 +80,7 @@ public class ScissorLift extends Lift {
             overriding = !overriding;
         }
 /*
-        telemetry.addData("ENC: ", pos);
+        telemetry.addData("ENC: ", scissorpos);
         telemetry.addData("LSP: ", lastStoppedPos);
         telemetry.addData("PWR: ", tp);
         telemetry.addData("BLW: ", t);

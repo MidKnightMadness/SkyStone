@@ -187,9 +187,9 @@ public class SkystoneVisualImpl extends SkystoneVisual {
                 }
 
                 if (areYellow[0] && areYellow[1]) {
-                    pos = (yellowCount[0] > yellowCount[1] ? SkystonePosition.LEFT : SkystonePosition.CENTER);
+                    scissorpos = (yellowCount[0] > yellowCount[1] ? SkystonePosition.LEFT : SkystonePosition.CENTER);
                 } else {
-                    pos = (areYellow[0] ? SkystonePosition.LEFT : (areYellow[1] ? SkystonePosition.CENTER : ((yellowCount[0] + whiteCount[0] < 5 || yellowCount[1] + whiteCount[1] < 5) ? SkystonePosition.UNKNOWN : SkystonePosition.RIGHT)));
+                    scissorpos = (areYellow[0] ? SkystonePosition.LEFT : (areYellow[1] ? SkystonePosition.CENTER : ((yellowCount[0] + whiteCount[0] < 5 || yellowCount[1] + whiteCount[1] < 5) ? SkystonePosition.UNKNOWN : SkystonePosition.RIGHT)));
                 }*/
 
                 telemetry.addData("The Skystone is on the", pos.toString());
