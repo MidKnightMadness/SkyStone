@@ -6,27 +6,28 @@ import org.firstinspires.ftc.teamcode.common.Config;
 
 public class LeadClamp extends Clamp {
 
-    DcMotor motor;
+    DcMotor clampmotor;
     private double CLAMP_POWER = 1;
-    private double CLAMP_MIN_ENC = -1850;
-    private double CLAMP_MAX_ENC = 50;
-    private double clamppos = 0;
+    private int CLAMP_MIN_ENC = -1850;
+    private int CLAMP_MAX_ENC = 50;
+    private int clamppos = 0;
     private int[] encoderpositions = {0, -1000, -1800};
     private int state = 0; // 0 = fully closed, 1 = clamping, 2 = open
     private boolean overriding = false;
     private int buttoncounter = 0;
+    private String telstring = "";
 
 
 
     @Override
     public void init() {
-        motor = hardwareMap.dcMotor.get(Config.Clamp.CLAMP_MOTOR);
-        motor.resetDeviceConfigurationForOpMode();
-        motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        motor.setTargetPosition(0);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        motor.setPower(0);
+        clampmotor = hardwareMap.dcMotor.get(Config.Clamp.CLAMP_MOTOR);
+        clampmotor.resetDeviceConfigurationForOpMode();
+        clampmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        clampmotor.setTargetPosition(0);
+        clampmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        clampmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        clampmotor.setPower(0);
     }
     @Override
     public void init_loop() {
@@ -39,49 +40,55 @@ public class LeadClamp extends Clamp {
 
     @Override
     public void loop() { // closed: 0   full: -1800    lowered: can open to -450, close to -1000
-        clamppos = motor.getCurrentPosition();/*
+        clamppos = clampmotor.getCurrentPosition();
 
-        if(gamepad1.dpad_down && scissorpos < CLAMP_MAX_ENC){
-            motor.setPower(CLAMP_POWER);
-        } else if (gamepad1.dpad_up && scissorpos > CLAMP_MIN_ENC){
-            motor.setPower(-CLAMP_POWER);
+        /*if(gamepad1.dpad_down){
+            telstring = "DOWN";
+            clampmotor.setPower(CLAMP_POWER);
+        } else if (gamepad1.dpad_up){
+            telstring = "UP";
+            clampmotor.setPower(-CLAMP_POWER);
         } else {
-            motor.setPower(0);
-        }*/
+            telstring = "NO POWER";
+            clampmotor.setPower(0);
+        }     */
+
+
+
         if(!overriding){
             if(gamepad1.dpad_down && buttoncounter == 0){
                 if(state == 1){
                     state = 0;
-                    motor.setTargetPosition(encoderpositions[state]);
-                    motor.setPower(CLAMP_POWER);
+                    clampmotor.setTargetPosition(encoderpositions[state]);
+                    clampmotor.setPower(CLAMP_POWER);
                 }
                 else if(state == 2){
                     state = 1;
-                    motor.setTargetPosition(encoderpositions[state]);
-                    motor.setPower(CLAMP_POWER);
+                    clampmotor.setTargetPosition(encoderpositions[state]);
+                    clampmotor.setPower(CLAMP_POWER);
                 }
-                buttoncounter = 60;
+                buttoncounter = 30;
             }
             else if(gamepad1.dpad_up && buttoncounter == 0){
                 if(state == 1){
                     state = 2;
-                    motor.setTargetPosition(encoderpositions[state]);
-                    motor.setPower(CLAMP_POWER);
+                    clampmotor.setTargetPosition(encoderpositions[state]);
+                    clampmotor.setPower(CLAMP_POWER);
                 }
                 else if(state == 0){
                     state = 1;
-                    motor.setTargetPosition(encoderpositions[state]);
-                    motor.setPower(CLAMP_POWER);
+                    clampmotor.setTargetPosition(encoderpositions[state]);
+                    clampmotor.setPower(CLAMP_POWER);
                 }
-                buttoncounter = 60;
+                buttoncounter = 30;
             }
         } else {
             if(gamepad1.dpad_down){
-                motor.setPower(CLAMP_POWER);
+                clampmotor.setPower(CLAMP_POWER);
             } else if (gamepad1.dpad_up){
-                motor.setPower(-CLAMP_POWER);
+                clampmotor.setPower(-CLAMP_POWER);
             } else {
-                motor.setPower(0);
+                clampmotor.setPower(0);
             }
         }
 
@@ -90,6 +97,12 @@ public class LeadClamp extends Clamp {
 
         if(gamepad1.b && buttoncounter == 0){
             overriding = !overriding;
+            if(overriding){
+                clampmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            }else{
+                clampmotor.setTargetPosition(clamppos);
+                clampmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
             buttoncounter = 30;
         }
         buttoncounter = Math.max(buttoncounter-1, 0);
@@ -98,41 +111,36 @@ public class LeadClamp extends Clamp {
         telemetry.addData("ENC ", clamppos);
         telemetry.addData("OVR ", overriding);
         telemetry.addData("C ", buttoncounter);
+        telemetry.addData("STATE ", telstring);
         telemetry.update();
 
     }
 
     @Override
     public void closeToHalf() {
-        motor.setPower(0.2);
-    }
-
-    @Override
-    public void closeToClosed() {
-        motor.setPower(0.2);
+        clampmotor.setTargetPosition(-1150);
+        clampmotor.setPower(CLAMP_POWER);
 
     }
+
 
     @Override
     public void openToHalf() {
-        motor.setPower(-0.2);
+        clampmotor.setTargetPosition(encoderpositions[1]);
+        clampmotor.setPower(CLAMP_POWER);
 
     }
 
     @Override
     public void openToFull() {
-        motor.setPower(-0.2);
+        clampmotor.setTargetPosition(encoderpositions[2]);
+        clampmotor.setPower(CLAMP_POWER);
 
     }
 
-    @Override
-    public void stopMoving() {
-        motor.setPower(0);
-
-    }
 
     @Override
     public boolean isBusy(){
-        return Math.abs(motor.getCurrentPosition()- motor.getTargetPosition()) > 10;
+        return Math.abs(clampmotor.getCurrentPosition()- clampmotor.getTargetPosition()) > 10;
     }
 }

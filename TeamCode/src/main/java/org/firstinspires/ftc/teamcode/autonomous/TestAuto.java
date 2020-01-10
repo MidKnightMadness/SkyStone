@@ -30,15 +30,33 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addLine("HERE'S JOHNNY");
+
+        l.raiseLift(1000);
+
+        while(l.isBusy()){ }
+
+        c.openToHalf();
+
+        while(c.isBusy()){ }
+
+        c.openToFull();
+
+        while(c.isBusy()){ }
+
+        c.closeToHalf();
+
+        while(c.isBusy()){ }
+
+        l.lowerLift(0);
+
+        while(l.isBusy()){ }
+
+        telemetry.addLine();
         telemetry.update();
 
 
-        m.holdFoundation();
 
-        sleep(3000);
 
-        m.releaseFoundation();
 
         sleep(3000);
 

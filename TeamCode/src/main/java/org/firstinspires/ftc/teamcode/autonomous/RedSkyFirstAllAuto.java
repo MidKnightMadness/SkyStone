@@ -32,7 +32,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addLine("HERE'S JOHNNY");
+        telemetry.addLine("");
         telemetry.update();
 
 
@@ -40,15 +40,15 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(-18), .25);
         d.setRunToPosition();
         d.beginTranslation(Distance.fromInches(-18), .25);
-        l.raiseLift(1700);
+        l.raiseLift(1200);
         while (d.isBusy() && !isStopRequested());
+
+        sleep(100);
 
         pos = sv.findSkystone();
         telemetry.addLine(pos.toString());
 
         c.openToFull();
-        sleep(4000);
-        c.stopMoving();
 
         d.beginRotation(Angle.fromDegrees(90), 1, .25);
         while (d.isBusy() && !isStopRequested());
@@ -66,36 +66,40 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(skydist), .25); //move to stone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .25);
+        d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn to face stone with clamp
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(16), .125); //move slowly up to stone
+        d.beginTranslation(Distance.fromInches(14), .125); //move slowly up to stone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-1), .125); //move slowly back from stone
-        while (d.isBusy() && !isStopRequested());
-
-        sleep(300);
+        telemetry.addLine("FINISHED MOVING TO STONE");
+        telemetry.update();
 
         l.lowerLift(0);
+        while (l.isBusy() && !isStopRequested()); //drop lift
 
-        while (l.isBusy() && !isStopRequested());
+        telemetry.addLine("FINISHED DROP");
+        telemetry.update();
 
         c.closeToHalf();
-        sleep(2000);
-        c.stopMoving();
+        while (c.isBusy() && !isStopRequested()); // pick up stone
 
-        l.raiseLift(200);
+        telemetry.addLine("FINISHED CLAMPING");
+        telemetry.update();
+
+        l.raiseLift(1200);
         while (l.isBusy() && !isStopRequested());
 
         d.beginTranslation(Distance.fromInches(-16), .25); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
+        l.lowerLift(0);
+
         d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
         while (d.isBusy() && !isStopRequested());
 
         d.beginTranslation(Distance.fromInches(85), .4);//move under bridge to foundation
-        while (d.isBusy() && !isStopRequested());
+        while (d.isBusy() && !isStopRequested());/*
 
         d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
         while (d.isBusy() && !isStopRequested());
@@ -107,7 +111,6 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
 
         c.openToFull();
         sleep(1500);
-        c.stopMoving();
 
         d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
         while (d.isBusy() && !isStopRequested());
@@ -119,7 +122,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         while (d.isBusy() && !isStopRequested());
 
         d.beginTranslation(Distance.fromInches(50), .4);//move to park
-        while (d.isBusy() && !isStopRequested());
+        while (d.isBusy() && !isStopRequested());*/
 
 
 

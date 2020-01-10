@@ -64,7 +64,7 @@ public class ScissorLift extends Lift {
         }else{
             motor.setTargetPosition((int) (lastStoppedPos));
             if(lastStoppedPos- scissorpos >5){
-                tp=0.4;
+                tp=0.6;
                 t = true;
 
             }
@@ -78,8 +78,8 @@ public class ScissorLift extends Lift {
         }
         if(gamepad1.b){
             overriding = !overriding;
-        }
-/*
+        }/*
+
         telemetry.addData("ENC: ", scissorpos);
         telemetry.addData("LSP: ", lastStoppedPos);
         telemetry.addData("PWR: ", tp);
@@ -95,9 +95,9 @@ public class ScissorLift extends Lift {
         motor.setTargetPosition(enc);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while(Math.abs(enc-motor.getCurrentPosition())>10){
-            motor.setPower(0.2);
+            motor.setPower(.5);
         }
-        motor.setPower(0);
+        motor.setPower(0.01);
     }
 
     @Override
@@ -105,9 +105,9 @@ public class ScissorLift extends Lift {
         motor.setTargetPosition(enc);
         motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         while(Math.abs(enc-motor.getCurrentPosition())>10){
-            motor.setPower(-0.2);
+            motor.setPower(-.5);
         }
-        motor.setPower(0);
+        motor.setPower(0.01);
     }
 
     @Override
