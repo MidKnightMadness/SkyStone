@@ -35,21 +35,6 @@ public class TestAuto extends LinearOpMode {
 
         while(l.isBusy()){ }
 
-        c.openToHalf();
-
-        while(c.isBusy()){ }
-
-        c.openToFull();
-
-        while(c.isBusy()){ }
-
-        c.closeToHalf();
-
-        while(c.isBusy()){ }
-
-        l.lowerLift(0);
-
-        while(l.isBusy()){ }
 
         telemetry.addLine();
         telemetry.update();

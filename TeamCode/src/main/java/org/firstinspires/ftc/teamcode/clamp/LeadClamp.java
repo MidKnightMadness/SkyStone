@@ -105,20 +105,20 @@ public class LeadClamp extends Clamp {
             }
             buttoncounter = 30;
         }
-        buttoncounter = Math.max(buttoncounter-1, 0);
+        buttoncounter = Math.max(buttoncounter-1, 0);/*
 
 
         telemetry.addData("ENC ", clamppos);
         telemetry.addData("OVR ", overriding);
         telemetry.addData("C ", buttoncounter);
         telemetry.addData("STATE ", telstring);
-        telemetry.update();
+        telemetry.update();*/
 
     }
 
     @Override
     public void closeToHalf() {
-        clampmotor.setTargetPosition(-1150);
+        clampmotor.setTargetPosition(-1180);
         clampmotor.setPower(CLAMP_POWER);
 
     }

@@ -15,7 +15,6 @@ public class ScissorLift extends Lift {
     public int scissorpos = 0;
     private int lastStoppedPos = 0;
     private double tp = 0;
-    private boolean t = false;
 
     @Override
     public void init() {
@@ -23,7 +22,7 @@ public class ScissorLift extends Lift {
         motor.resetDeviceConfigurationForOpMode();
         motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motor.setTargetPosition(0);
-        motor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         motor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         motor.setPower(0);
     }
@@ -58,15 +57,13 @@ public class ScissorLift extends Lift {
 
         motor.setPower(tp);
         if(tp != 0){
-            motor.setTargetPosition((int) (scissorpos +tp*200));
             motor.setPower(tp);
-            t = false;
         }else{
-            motor.setTargetPosition((int) (lastStoppedPos));
-            if(lastStoppedPos- scissorpos >5){
-                tp=0.6;
-                t = true;
-
+            if(lastStoppedPos>scissorpos){
+                tp = 0.12;
+            }
+            else{
+                tp = 0.05;
             }
             motor.setPower(tp);
         }
@@ -78,13 +75,12 @@ public class ScissorLift extends Lift {
         }
         if(gamepad1.b){
             overriding = !overriding;
-        }/*
+        }
 
         telemetry.addData("ENC: ", scissorpos);
         telemetry.addData("LSP: ", lastStoppedPos);
         telemetry.addData("PWR: ", tp);
-        telemetry.addData("BLW: ", t);
-        telemetry.update();*/
+        telemetry.update();
 
 
 

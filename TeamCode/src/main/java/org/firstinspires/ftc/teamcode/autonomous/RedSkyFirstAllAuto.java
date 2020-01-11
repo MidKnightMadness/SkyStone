@@ -66,8 +66,12 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(skydist), .25); //move to stone
         while (d.isBusy() && !isStopRequested());
 
+        sleep(100);
+
         d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn to face stone with clamp
         while (d.isBusy() && !isStopRequested());
+
+        sleep(100);
 
         d.beginTranslation(Distance.fromInches(14), .125); //move slowly up to stone
         while (d.isBusy() && !isStopRequested());
@@ -98,8 +102,14 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(85), .4);//move under bridge to foundation
-        while (d.isBusy() && !isStopRequested());/*
+        sleep(300);
+
+        d.beginTranslation(Distance.fromInches(90), .4);//move under bridge to foundation
+        while (d.isBusy() && !isStopRequested());
+
+        sleep(300);
+
+        l.raiseLift(900);
 
         d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
         while (d.isBusy() && !isStopRequested());
@@ -110,10 +120,13 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         m.holdFoundation();
 
         c.openToFull();
-        sleep(1500);
+
+        l.raiseLift(2100);
+        while (l.isBusy() && !isStopRequested());
+
 
         d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());
+        while (d.isBusy() && !isStopRequested());/*
 
         m.releaseFoundation();
         sleep(300);
