@@ -91,10 +91,9 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         telemetry.addLine("FINISHED CLAMPING");
         telemetry.update();
 
-        l.raiseLift(1200);
-        while (l.isBusy() && !isStopRequested());
+        sleep(300);
 
-        d.beginTranslation(Distance.fromInches(-16), .25); //back up from stones
+        d.beginTranslation(Distance.fromInches(-13), .25); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);
@@ -104,7 +103,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
 
         sleep(300);
 
-        d.beginTranslation(Distance.fromInches(90), .4);//move under bridge to foundation
+        d.beginTranslation(Distance.fromInches(85-skydist), .4);//move under bridge to foundation
         while (d.isBusy() && !isStopRequested());
 
         sleep(300);
@@ -126,7 +125,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
 
 
         d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());/*
+        while (d.isBusy() && !isStopRequested());
 
         m.releaseFoundation();
         sleep(300);
@@ -135,7 +134,7 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         while (d.isBusy() && !isStopRequested());
 
         d.beginTranslation(Distance.fromInches(50), .4);//move to park
-        while (d.isBusy() && !isStopRequested());*/
+        while (d.isBusy() && !isStopRequested());
 
 
 

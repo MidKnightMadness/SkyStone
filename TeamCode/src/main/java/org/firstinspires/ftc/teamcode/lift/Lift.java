@@ -21,6 +21,8 @@ public abstract class Lift extends OpMode {
     public void loop() {
 
     }
+
+    public abstract int getScissorPos(int pos);
     public abstract void raiseLift(int enc);
     public abstract void lowerLift(int enc);
 

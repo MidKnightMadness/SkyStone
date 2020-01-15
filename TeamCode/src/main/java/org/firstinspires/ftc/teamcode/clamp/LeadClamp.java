@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.clamp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
 import org.firstinspires.ftc.teamcode.common.Config;
+import org.firstinspires.ftc.teamcode.lift.ScissorLift;
 
 public class LeadClamp extends Clamp {
 
@@ -11,11 +12,12 @@ public class LeadClamp extends Clamp {
     private int CLAMP_MIN_ENC = -1850;
     private int CLAMP_MAX_ENC = 50;
     private int clamppos = 0;
-    private int[] encoderpositions = {0, -1000, -1800};
-    private int state = 0; // 0 = fully closed, 1 = clamping, 2 = open
+    private int[] encoderpositions = {1800, 800, 0};
+    private int state = 2; // 0 = fully closed, 1 = clamping, 2 = open
     private boolean overriding = false;
     private int buttoncounter = 0;
     private String telstring = "";
+    private int scissorenc;
 
 
 
@@ -42,60 +44,57 @@ public class LeadClamp extends Clamp {
     public void loop() { // closed: 0   full: -1800    lowered: can open to -450, close to -1000
         clamppos = clampmotor.getCurrentPosition();
 
-        /*if(gamepad1.dpad_down){
-            telstring = "DOWN";
-            clampmotor.setPower(CLAMP_POWER);
-        } else if (gamepad1.dpad_up){
-            telstring = "UP";
-            clampmotor.setPower(-CLAMP_POWER);
-        } else {
-            telstring = "NO POWER";
-            clampmotor.setPower(0);
-        }     */
-
-
 
         if(!overriding){
-            if(gamepad1.dpad_down && buttoncounter == 0){
+            if(gamepad2.dpad_down && buttoncounter == 0){/*
                 if(state == 1){
                     state = 0;
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
-                }
-                else if(state == 2){
+                }*/
+                if(state == 2){
                     state = 1;
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
                 }
                 buttoncounter = 30;
             }
-            else if(gamepad1.dpad_up && buttoncounter == 0){
+            else if(gamepad2.dpad_up && buttoncounter == 0){
                 if(state == 1){
                     state = 2;
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
-                }
+                }/*
                 else if(state == 0){
                     state = 1;
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
-                }
+                }*/
                 buttoncounter = 30;
-            }
-        } else {
-            if(gamepad1.dpad_down){
-                clampmotor.setPower(CLAMP_POWER);
-            } else if (gamepad1.dpad_up){
-                clampmotor.setPower(-CLAMP_POWER);
-            } else {
-                clampmotor.setPower(0);
             }
         }
 
 
 
 
-        if(gamepad1.b && buttoncounter == 0){
+        else {
+            if(gamepad2.dpad_down){
+                clampmotor.setPower(CLAMP_POWER);
+            } else if (gamepad2.dpad_up){
+                clampmotor.setPower(-CLAMP_POWER);
+            } else {
+                clampmotor.setPower(0);
+            }
+        }
+
+        if(gamepad2.a && buttoncounter == 0){
+            clampmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            clampmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        }
+
+
+        if(gamepad2.b && buttoncounter == 0){
             overriding = !overriding;
             if(overriding){
                 clampmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -105,14 +104,16 @@ public class LeadClamp extends Clamp {
             }
             buttoncounter = 30;
         }
-        buttoncounter = Math.max(buttoncounter-1, 0);/*
+
+        buttoncounter = Math.max(buttoncounter-1, 0);
 
 
         telemetry.addData("ENC ", clamppos);
         telemetry.addData("OVR ", overriding);
         telemetry.addData("C ", buttoncounter);
-        telemetry.addData("STATE ", telstring);
-        telemetry.update();*/
+        telemetry.addData("STATE ", state);
+
+        telemetry.update();
 
     }
 
