@@ -53,8 +53,8 @@ public class MecanumJoystickDrive extends JoystickDrive {
     private double pwr = 0;
     private double[] examplelvl = {0,.3,.6,.999,1};
     private double[][] apwr = {{.4,.6,.8,1}, //left/right
-            {.15,.3,.6,1}, //front/back
-            {.2,.35,.6,1}, //rotation
+            {.15,.25,.4,.6}, //front/back
+            {.2,.3,.4,.6}, //rotation
             {0,0,0,0}};
     private double[][] alvl = {examplelvl, examplelvl, examplelvl,{0,0,0,0,0}};
     private double[][] amtr = {{1,1,-1,-1},{-1,1,-1,1},{1,1,1,1},{0,0,0,0}};

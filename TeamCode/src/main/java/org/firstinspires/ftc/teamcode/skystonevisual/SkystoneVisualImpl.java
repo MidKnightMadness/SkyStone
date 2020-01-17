@@ -175,10 +175,10 @@ public class SkystoneVisualImpl extends SkystoneVisual {
 
                 if(yellowCount[0]<yellowCount[1]&&yellowCount[0]<yellowCount[2]){
                     pos = SkystonePosition.RIGHT;
-                } else if (yellowCount[1]<yellowCount[0]&&yellowCount[1]<yellowCount[2]){
-                    pos = SkystonePosition.CENTER;
-                } else {
+                } else if (yellowCount[2]<yellowCount[0]&&yellowCount[2]<yellowCount[1]){
                     pos = SkystonePosition.LEFT;
+                } else {
+                    pos = SkystonePosition.CENTER;
                 }
 
 

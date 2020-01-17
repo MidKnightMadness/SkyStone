@@ -17,7 +17,7 @@ public class MecanumDrive extends Drive {
     DcMotor fr;
     DcMotor bl;
     DcMotor br;
-    private double POWER_CONSTANT = 1;
+    private double POWER_CONSTANT = .5;
     public double left = 1;
     public double right = -1;
 

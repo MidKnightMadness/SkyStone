@@ -30,15 +30,12 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart();
 
-
-        l.raiseLift(1000);
-
-        while(l.isBusy()){ }
-
-
-        telemetry.addLine();
+        telemetry.addLine("TRYING NEW THING");
         telemetry.update();
 
+
+        d.beginTranslationSide(Distance.fromInches(20), 1, .7);
+        while (d.isBusy() && !isStopRequested());
 
 
 

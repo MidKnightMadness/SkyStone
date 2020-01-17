@@ -21,9 +21,9 @@ public class FoundationMover extends Mover {
 
     @Override
     public void loop() {
-        if (gamepad1.left_trigger!=0){
+        if (gamepad2.left_trigger!=0){
             holdFoundation();
-        } else if (gamepad1.right_trigger!=0){
+        } else if (gamepad2.right_trigger!=0){
             releaseFoundation();
         }
     }

@@ -2,8 +2,6 @@ package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.hardware.HardwareMap;
 
 import org.firstinspires.ftc.teamcode.clamp.Clamp;
 import org.firstinspires.ftc.teamcode.common.Angle;
@@ -15,7 +13,7 @@ import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
 @Autonomous
-public class RedSkyFirstAllAuto extends LinearOpMode {
+public class BlueSkyFirstAllAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -76,6 +74,9 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(13), .125); //move slowly up to stone
         while (d.isBusy() && !isStopRequested());
 
+        d.beginTranslation(Distance.fromInches(-1), .125); //move slowly up to stone
+        while (d.isBusy() && !isStopRequested());
+
         telemetry.addLine("FINISHED MOVING TO STONE");
         telemetry.update();
 
@@ -91,29 +92,25 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         telemetry.addLine("FINISHED CLAMPING");
         telemetry.update();
 
-        sleep(300);
-
-        d.beginTranslation(Distance.fromInches(-8), .2); //back up from stones
+        d.beginTranslation(Distance.fromInches(-7), .2); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);
 
-        d.beginRotation(Angle.fromDegrees(90), -1, .2);//turn right
-        while (d.isBusy() && !isStopRequested());
-
-        sleep(300);
-
-        d.beginTranslation(Distance.fromInches(85-skydist), .4);//move under bridge to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        sleep(300);
-
-        l.raiseLift(1100);
-
         d.beginRotation(Angle.fromDegrees(90), 1, .2);//turn left
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(16), .3);//move to foundation
+        sleep(100);
+
+        d.beginTranslation(Distance.fromInches(85+skydist), .4);//move under bridge to foundation
+        while (d.isBusy() && !isStopRequested());
+
+        l.raiseLift(1100);
+
+        d.beginRotation(Angle.fromDegrees(90), -1, .2);//turn right
+        while (d.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(12), .3);//move to foundation
         while (d.isBusy() && !isStopRequested());
 
         d.beginTranslation(Distance.fromInches(2), .2);//move to foundation
@@ -125,23 +122,23 @@ public class RedSkyFirstAllAuto extends LinearOpMode {
         while (d.isBusy() && !isStopRequested());
 
         c.openToFull();
-        while (c.isBusy() && !isStopRequested());
+
+        sleep(200);
 
         l.raiseLift(2200);
         while (l.isBusy() && !isStopRequested());
 
-
-        d.beginTranslation(Distance.fromInches(-35), .4);//drag foundation to zone
+        d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-8), .2);//drag foundation to zone
+        d.beginTranslation(Distance.fromInches(-6), .2);//drag foundation to zone
         while (d.isBusy() && !isStopRequested());
 
         m.releaseFoundation();
         sleep(300);
 
 
-        d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
+        d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);

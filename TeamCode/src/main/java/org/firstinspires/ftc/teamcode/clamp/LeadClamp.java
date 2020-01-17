@@ -46,7 +46,7 @@ public class LeadClamp extends Clamp {
 
 
         if(!overriding){
-            if(gamepad2.dpad_down && buttoncounter == 0){/*
+            if(gamepad1.dpad_down && buttoncounter == 0){/*
                 if(state == 1){
                     state = 0;
                     clampmotor.setTargetPosition(encoderpositions[state]);
@@ -57,9 +57,9 @@ public class LeadClamp extends Clamp {
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
                 }
-                buttoncounter = 30;
+                buttoncounter = 15;
             }
-            else if(gamepad2.dpad_up && buttoncounter == 0){
+            else if(gamepad1.dpad_up && buttoncounter == 0){
                 if(state == 1){
                     state = 2;
                     clampmotor.setTargetPosition(encoderpositions[state]);
@@ -70,7 +70,7 @@ public class LeadClamp extends Clamp {
                     clampmotor.setTargetPosition(encoderpositions[state]);
                     clampmotor.setPower(CLAMP_POWER);
                 }*/
-                buttoncounter = 30;
+                buttoncounter = 15;
             }
         }
 
@@ -78,23 +78,25 @@ public class LeadClamp extends Clamp {
 
 
         else {
-            if(gamepad2.dpad_down){
+            if(gamepad1.dpad_down){
                 clampmotor.setPower(CLAMP_POWER);
-            } else if (gamepad2.dpad_up){
+            } else if (gamepad1.dpad_up){
                 clampmotor.setPower(-CLAMP_POWER);
             } else {
                 clampmotor.setPower(0);
             }
         }
 
-        if(gamepad2.a && buttoncounter == 0){
+        if(gamepad1.a && buttoncounter == 0){
             clampmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
             clampmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+            buttoncounter = 15;
         }
 
 
-        if(gamepad2.b && buttoncounter == 0){
+        if(gamepad1.b && buttoncounter == 0){
             overriding = !overriding;
             if(overriding){
                 clampmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -102,7 +104,7 @@ public class LeadClamp extends Clamp {
                 clampmotor.setTargetPosition(clamppos);
                 clampmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
             }
-            buttoncounter = 30;
+            buttoncounter = 15;
         }
 
         buttoncounter = Math.max(buttoncounter-1, 0);
@@ -119,7 +121,7 @@ public class LeadClamp extends Clamp {
 
     @Override
     public void closeToHalf() {
-        clampmotor.setTargetPosition(-1180);
+        clampmotor.setTargetPosition(-1000);
         clampmotor.setPower(CLAMP_POWER);
 
     }
@@ -127,14 +129,14 @@ public class LeadClamp extends Clamp {
 
     @Override
     public void openToHalf() {
-        clampmotor.setTargetPosition(encoderpositions[1]);
+        clampmotor.setTargetPosition(-1180);
         clampmotor.setPower(CLAMP_POWER);
 
     }
 
     @Override
     public void openToFull() {
-        clampmotor.setTargetPosition(encoderpositions[2]);
+        clampmotor.setTargetPosition(-1800);
         clampmotor.setPower(CLAMP_POWER);
 
     }
