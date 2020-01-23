@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
-import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
@@ -14,7 +13,7 @@ import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
 @Disabled
-public class BlueSkyFirstAllAuto extends LinearOpMode {
+public class BlueSkyOnFoundAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -41,6 +40,8 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(-18), .2);
         l.raiseLift(1200);
         while (d.isBusy() && !isStopRequested());
+
+        m.releaseFoundation();
 
         sleep(100);
 
@@ -93,7 +94,7 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         telemetry.addLine("FINISHED CLAMPING");
         telemetry.update();
 
-        d.beginTranslation(Distance.fromInches(-7), .2); //back up from stones
+        d.beginTranslation(Distance.fromInches(-8), .2); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);
@@ -117,8 +118,6 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(2), .2);//move to foundation
         while (d.isBusy() && !isStopRequested());
 
-        m.holdFoundation();
-
         d.beginTranslation(Distance.fromInches(2), .2);//move to foundation
         while (d.isBusy() && !isStopRequested());
 
@@ -129,24 +128,17 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         l.raiseLift(2200);
         while (l.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
+        d.beginTranslation(Distance.fromInches(-18), .4);//drag foundation to zone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-6), .2);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());
-
-        m.releaseFoundation();
-        sleep(300);
-
-
-        d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
+        d.beginRotation(Angle.fromDegrees(90), 1, .25);//turn left
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);
 
         while (l.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(50), .4);//move to park
+        d.beginTranslation(Distance.fromInches(-50), .4);//move to park
         while (d.isBusy() && !isStopRequested());
 
 

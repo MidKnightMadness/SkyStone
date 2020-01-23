@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.vuforia.CameraDevice;
 import com.vuforia.Vuforia;
@@ -28,7 +29,7 @@ import java.io.FileOutputStream;
  * Created by Gregory on 9/14/18.
  */
 
-@TeleOp(name="SkystoneSeer")
+@Disabled
 public class SkystoneVisualImpl extends SkystoneVisual {
 
     private VuforiaLocalizer vuforia;

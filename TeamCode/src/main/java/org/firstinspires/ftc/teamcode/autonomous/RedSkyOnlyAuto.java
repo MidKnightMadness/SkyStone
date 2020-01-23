@@ -1,7 +1,6 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.clamp.Clamp;
@@ -13,8 +12,8 @@ import org.firstinspires.ftc.teamcode.lift.Lift;
 import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
-@Disabled
-public class BlueSkyFirstAllAuto extends LinearOpMode {
+@Autonomous
+public class RedSkyOnlyAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -55,7 +54,7 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         int skydist = 0;
 
         if(pos == SkystoneVisual.SkystonePosition.LEFT){
-            skydist = -9;
+            skydist = -8;
         } else if (pos == SkystoneVisual.SkystonePosition.CENTER){
             skydist = 0;
         } else if (pos == SkystoneVisual.SkystonePosition.RIGHT){
@@ -75,9 +74,6 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         d.beginTranslation(Distance.fromInches(13), .125); //move slowly up to stone
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(-1), .125); //move slowly up to stone
-        while (d.isBusy() && !isStopRequested());
-
         telemetry.addLine("FINISHED MOVING TO STONE");
         telemetry.update();
 
@@ -93,62 +89,37 @@ public class BlueSkyFirstAllAuto extends LinearOpMode {
         telemetry.addLine("FINISHED CLAMPING");
         telemetry.update();
 
-        d.beginTranslation(Distance.fromInches(-7), .2); //back up from stones
+        sleep(300);
+
+        d.beginTranslation(Distance.fromInches(-8), .2); //back up from stones
         while (d.isBusy() && !isStopRequested());
 
         l.lowerLift(0);
-
-        d.beginRotation(Angle.fromDegrees(90), 1, .2);//turn left
-        while (d.isBusy() && !isStopRequested());
-
-        sleep(100);
-
-        d.beginTranslation(Distance.fromInches(85+skydist), .4);//move under bridge to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        l.raiseLift(1100);
 
         d.beginRotation(Angle.fromDegrees(90), -1, .2);//turn right
         while (d.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(12), .3);//move to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(2), .2);//move to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        m.holdFoundation();
-
-        d.beginTranslation(Distance.fromInches(2), .2);//move to foundation
-        while (d.isBusy() && !isStopRequested());
-
-        c.openToFull();
-
-        sleep(200);
-
-        l.raiseLift(2200);
-        while (l.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(-40), .4);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());
-
-        d.beginTranslation(Distance.fromInches(-6), .2);//drag foundation to zone
-        while (d.isBusy() && !isStopRequested());
-
-        m.releaseFoundation();
         sleep(300);
 
-
-        d.beginRotation(Angle.fromDegrees(90), -1, .25);//turn right
+        d.beginTranslation(Distance.fromInches(60+skydist), .4);//move under bridge to foundation
         while (d.isBusy() && !isStopRequested());
 
-        l.lowerLift(0);
 
+        c.openToFull();//release
+        sleep(300);
+
+        l.raiseLift(1100);// to clear stone
         while (l.isBusy() && !isStopRequested());
 
-        d.beginTranslation(Distance.fromInches(50), .4);//move to park
+
+        d.beginTranslation(Distance.fromInches(-12), .4);//move back
         while (d.isBusy() && !isStopRequested());
 
+        l.lowerLift(0);//to clear bridge
+        while (l.isBusy() && !isStopRequested());
+
+        d.beginTranslation(Distance.fromInches(-15), .4);//move back to park
+        while (d.isBusy() && !isStopRequested());
 
 
 

@@ -1,11 +1,9 @@
 package org.firstinspires.ftc.teamcode.autonomous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.clamp.Clamp;
-import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.AssemblyManager;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.drive.Drive;
@@ -13,8 +11,8 @@ import org.firstinspires.ftc.teamcode.lift.Lift;
 import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
-@Disabled
-public class TestAuto extends LinearOpMode {
+@Autonomous
+public class ParkOnlyBridgeAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -31,17 +29,16 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addLine("TRYING NEW THING");
+        telemetry.addLine("");
         telemetry.update();
 
 
-        d.beginTranslationSide(Distance.fromInches(20), 1, .7);
+        SkystoneVisual.SkystonePosition pos = SkystoneVisual.SkystonePosition.UNKNOWN;
+        d.beginTranslation(Distance.fromInches(18), .2);
+        d.setRunToPosition();
+        d.beginTranslation(Distance.fromInches(18), .2);
         while (d.isBusy() && !isStopRequested());
 
-
-
-
-        sleep(3000);
 
 
 

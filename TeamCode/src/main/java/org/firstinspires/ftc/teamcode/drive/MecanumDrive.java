@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive;
 import org.firstinspires.ftc.teamcode.mover.FoundationMover;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 
@@ -10,7 +11,7 @@ import org.firstinspires.ftc.teamcode.common.Config;
 
 import java.security.Policy;
 
-@TeleOp
+@Disabled
 public class MecanumDrive extends Drive {
 
     DcMotor fl;

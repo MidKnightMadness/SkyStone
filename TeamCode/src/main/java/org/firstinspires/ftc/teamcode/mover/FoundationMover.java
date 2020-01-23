@@ -1,16 +1,18 @@
 package org.firstinspires.ftc.teamcode.mover;
 
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.common.Config;
 
-@TeleOp
+@Disabled
 public class FoundationMover extends Mover {
 
     private Servo servoLeft;
     private Servo servoRight;
+    private int buttoncounter = 0;
 
     @Override
     public void init() {
@@ -21,12 +23,18 @@ public class FoundationMover extends Mover {
 
     @Override
     public void loop() {
-        if (gamepad1.left_trigger!=0){
+        if (gamepad1.dpad_left && buttoncounter == 0) {
             holdFoundation();
-        } else if (gamepad1.right_trigger!=0){
+            buttoncounter = 30;
+
+        } else if (gamepad1.dpad_right && buttoncounter == 0){
             releaseFoundation();
+            buttoncounter = 30;
         }
+
+        buttoncounter = Math.max(buttoncounter-1, 0);
     }
+
 
     @Override
     public void init_loop() {

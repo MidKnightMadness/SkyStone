@@ -38,9 +38,9 @@ public class ScissorLift extends Lift {
     @Override
     public void loop() {
         scissorpos = motor.getCurrentPosition();
-        tp = (double) Math.max(gamepad2.left_trigger, gamepad2.right_trigger);
+        tp = (double) Math.max(gamepad1.left_trigger, gamepad1.right_trigger);
         tp = SCISSOR_POWER*tp*tp;
-        if(gamepad2.right_trigger>gamepad2.left_trigger) {
+        if(gamepad1.right_trigger>gamepad1.left_trigger) {
             tp = -tp;
         }
 
@@ -71,12 +71,12 @@ public class ScissorLift extends Lift {
             motor.setPower(tp);
         }
 
-        if(gamepad2.a){
+        if(gamepad1.a){
             motor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
             motor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         }
-        if(gamepad2.b){
+        if(gamepad1.b){
             overriding = !overriding;
         }/*
 

@@ -13,8 +13,8 @@ import org.firstinspires.ftc.teamcode.lift.Lift;
 import org.firstinspires.ftc.teamcode.mover.Mover;
 import org.firstinspires.ftc.teamcode.skystonevisual.SkystoneVisual;
 
-@Disabled
-public class TestAuto extends LinearOpMode {
+@Autonomous
+public class ParkOnlyAuto extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -31,17 +31,16 @@ public class TestAuto extends LinearOpMode {
 
         waitForStart();
 
-        telemetry.addLine("TRYING NEW THING");
+        telemetry.addLine("");
         telemetry.update();
 
 
-        d.beginTranslationSide(Distance.fromInches(20), 1, .7);
+        SkystoneVisual.SkystonePosition pos = SkystoneVisual.SkystonePosition.UNKNOWN;
+        d.beginTranslation(Distance.fromInches(18), .2);
+        d.setRunToPosition();
+        d.beginTranslation(Distance.fromInches(18), .2);
         while (d.isBusy() && !isStopRequested());
 
-
-
-
-        sleep(3000);
 
 
 
