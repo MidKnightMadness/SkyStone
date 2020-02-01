@@ -1,20 +1,12 @@
 package org.firstinspires.ftc.teamcode.led;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
-import com.qualcomm.robotcore.hardware.I2cAddr;
-import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
-import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.RED;
 
 /**
  * This file contains an example of an iterative (Non-Linear) "OpMode".
@@ -37,9 +29,11 @@ public class LEDTest extends OpMode {
         Log.init();
         Log.out.println("Creating LEDs");
         try {
-            LEDStrip leds = hardwareMap.get(LEDStrip.class, "ledstrip");
+            I2cDeviceSynch leds = hardwareMap.get(I2cDeviceSynch.class, "ledstrip");
+
             Log.out.println("Init");
             LED.init(leds);
+
             Log.out.println("Modes");
             LED.ALL.set(LED.Modes.STATIC, new LED.Color(0xFF3030, 31));
             Log.out.println("update");
@@ -47,6 +41,10 @@ public class LEDTest extends OpMode {
             LED.update();
             Log.out.println("done");
             Log.out.flush();
+
+            LED.BACK.set(LED.Modes.RUNNING, LED.Colors.RED, GREEN, GREEN, RED, BLUE);
+            LED.BACK.set(BLUE);
+
 
         } catch (Exception e) {
             e.printStackTrace(Log.out);

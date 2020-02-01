@@ -12,6 +12,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 public class LED {
     private static I2cDeviceSynch ledController;
     private static Color[] leds = new Color[30];
+    private static boolean initialized = false;
 
     /**** Color Translation - HEX RGB and brightness to DotStar byte field ****/
     public static class Color {
@@ -57,11 +58,12 @@ public class LED {
 
 
     // Initialize the LEDs with the LED hardware.
-    public static void init(LEDStrip ledStrip) {
-        LED.ledController = ledStrip.getDevice();
+    public static void init(I2cDeviceSynch ledStrip) {
+        LED.ledController = ledStrip;//.getDevice();
         for (int j = 0; j < leds.length; j++) {
             leds[j] = Colors.OFF;
         }
+        initialized = true;
     }
 
     /**** Sections. Since there are four main sections of the robot, this keeps track of the mode and location of each in the led buffer ****/
@@ -93,6 +95,7 @@ public class LED {
         public void set(Modes mode) {
             lastMode = this.mode;
             this.mode = mode.getNewMode();
+            this.mode.setSection(this);
             update();
         }
 
@@ -101,7 +104,7 @@ public class LED {
         }
 
         private void update() {
-            mode.update(this); // update (pass it on to the mode to update the leds)
+            mode.update(); // update (pass it on to the mode to update the leds)
         }
 
         // Update all the sections!
@@ -143,8 +146,8 @@ public class LED {
     public static final PseudoSection LOWER = new PseudoSection(RIGHT, LEFT, LOWER_BACK);
 
     /**** Abstract Mode for controlling the leds ****/
-    public static abstract class Mode {
-        Section section;
+    private static abstract class Mode {
+        protected Section section;
         private void setSection(Section section) {
             this.section = section;
         }
@@ -157,7 +160,7 @@ public class LED {
             return section.colors.length;
         }
 
-        public abstract void update(Section section);
+        public abstract void update();
     }
 
     /**** Preset modes for handling LEDs. Add more here. Assume fresh instances.****/
@@ -178,9 +181,9 @@ public class LED {
 
         // A simple mode to set the entire section to a single color.
         private static class Static extends Mode {
-            public void update(Section section) {
+            public void update() {
                 for (int i = section.getBegin(); i < section.getEnd(); i++) {
-                    leds[i] = color(i);
+                    leds[i] = color(0);
                 }
             }
         }
@@ -188,7 +191,7 @@ public class LED {
         private static class Running extends Mode {
             private int offset = 0;
 
-            public void update(Section section) {
+            public void update() {
                 for (int j = section.getBegin(); j < section.getEnd(); j++) {
                     leds[j] = color((j + offset) % colorsLength());
                 }
@@ -207,7 +210,7 @@ public class LED {
             private int position = MIN;
             private int direction = 1;
 
-            public void update(Section section) {
+            public void update() {
                 position = position + direction;
                 direction = position > MAX || position < MIN ? -direction : direction;
 
@@ -220,6 +223,8 @@ public class LED {
 
     private static ElapsedTime runtime = new ElapsedTime();
     public static void update() {
+        if (!initialized) return;
+
         if (runtime.seconds() > 0.1) {
             Section.updateAll();
             setLEDs(leds);
@@ -242,17 +247,17 @@ public class LED {
 
         data[data.length - 1] = data[data.length - 2] = data[data.length - 3] = data[data.length - 4] = (byte)0xFF; // and ends with four bytes of 0xFF
 
-        Log.out.println(Arrays.toString(data));
+        //Log.out.println(Arrays.toString(data));
         for (int j = 0; j < data.length; j += 99) {
             byte[] chunk = Arrays.copyOfRange(data, j, j + 99 > data.length ? data.length : j + 99);
-            Log.out.println(Arrays.toString(chunk));
-            Log.out.println(data.length);
-            Log.out.println(j);
-            Log.out.flush();
+            //Log.out.println(Arrays.toString(chunk));
+            //Log.out.println(data.length);
+            //Log.out.println(j);
+            //Log.out.flush();
             ledController.write(0x01, chunk);
-            Log.out.println("Sent!");
-            Log.out.println(j + 99 > data.length);
-            Log.out.flush();
+            //Log.out.println("Sent!");
+            //Log.out.println(j + 99 > data.length);
+            //Log.out.flush();
             try {Thread.sleep(10);} catch (Exception e) {} // delay a tiny bit. The rev hub gets angry if you send data too fast
             if (j + 99 > data.length) break;
         }
