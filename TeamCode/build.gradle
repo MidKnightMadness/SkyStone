@@ -11,7 +11,7 @@
 
 // Custom definitions may go here
 task remoteHotLoad(type: Exec) {
-    commandLine "${(new File('..')).getAbsolutePath()}/ftc_http", "-u", "-b"
+    commandLine "sh", "-c", "cd src/main/java && ../../../../ftc_http -ub"
 }
 
 task cleanHotLoad(type: Exec) {

@@ -10,17 +10,19 @@ import com.qualcomm.robotcore.hardware.configuration.annotations.I2cDeviceType;
 @I2cDeviceType
 @DeviceProperties(name = "LED Strip", xmlTag = "LEDStrip")
 public class LEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynch> {
+    private I2cDeviceSynch device;
     public LEDStrip(I2cDeviceSynch i2cDeviceSynch) {
         super(i2cDeviceSynch, true);
-        this.deviceClient.setI2cAddress(I2cAddr.create8bit(0x40));
+        device = i2cDeviceSynch;
+        this.deviceClient.setI2cAddress(I2cAddr.create8bit(0x50)); // set the I2C Address
         super.registerArmingStateCallback(false);
         this.deviceClient.engage();
     }
 
-    public void sendHello() {
-        byte[] data = "ello".getBytes();
-        deviceClient.write8('i', 'i');
+    public I2cDeviceSynch getDevice() {
+        return device;
     }
+
 
     @Override
     protected boolean doInitialize() {
@@ -29,11 +31,11 @@ public class LEDStrip extends I2cDeviceSynchDevice<I2cDeviceSynch> {
 
     @Override
     public Manufacturer getManufacturer() {
-        return Manufacturer.Unknown;
+        return Manufacturer.Adafruit;
     }
 
     @Override
     public String getDeviceName() {
-        return "TestSaleae";
+        return "Adafruit LEDs";
     }
 }
