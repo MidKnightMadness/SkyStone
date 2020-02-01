@@ -41,7 +41,7 @@ public class LEDTest extends OpMode {
             Log.out.println("Init");
             LED.init(leds);
             Log.out.println("Modes");
-            LED.setAllModes(new LED.Modes.Static(new LED.Color(0xFF3030, 31)));
+            LED.ALL.set(LED.Modes.STATIC, new LED.Color(0xFF3030, 31));
             Log.out.println("update");
             Log.out.flush();
             LED.update();
@@ -68,10 +68,10 @@ public class LEDTest extends OpMode {
      */
     @Override
     public void start() {
-        LED.ALL.setMode(new LED.Modes.Running(
-                LED.Color.NAVY,
-                LED.Color.NAVY,
-                LED.Color.GOLD));
+        LED.ALL.set(LED.Modes.RUNNING,
+                LED.Colors.NAVY,
+                LED.Colors.NAVY,
+                LED.Colors.GOLD);
         LED.update();
 
     }
