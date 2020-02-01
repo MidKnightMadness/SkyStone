@@ -18,35 +18,38 @@ public class SkystoneAlignmentTest extends OpMode {
     public double getSkystoneOffset() {
         Bitmap realFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, false);
         //Bitmap currentFrame = Bitmap.createScaledBitmap(realFrame, 720, 10, false);
-        Bitmap currentFrame = Bitmap.createScaledBitmap(Bitmap.createBitmap(realFrame, 0, 240, 1280, 240), 1280, 1, false);
+        Bitmap currentFrame = Bitmap.createScaledBitmap(Bitmap.createBitmap(realFrame, 0, 240, 1280, 240), 320, 1, false);
         telemetry.addData("Height", realFrame.getHeight());
         telemetry.addData("Width", realFrame.getWidth());
         double[] hsv = new double[3];
-
         int lastYellow = -1; // keep track of the last yellow pixel seen
         int blackBounds[] = {-1, -1};
 
         // (DEBUG) show the skystone and black pixels a special color
         for (int x = 0; x < currentFrame.getWidth(); x++) {
             PhoneManager.colorToHSV(currentFrame.getPixel(x, 0), hsv);
-            if (30 < hsv[0] && hsv[0] < 50) {
-                if (lastYellow == -1 || x - lastYellow < 6) {
+            if (30 < hsv[0] && hsv[0] < 50 && hsv[1] > 0.7) {
+                if (lastYellow == -1 || x - lastYellow < 20) {
                     lastYellow = x;
                     currentFrame.setPixel(x, 0, 0x00FF00);
-                } else {
+                } else if (blackBounds[1] == -1){
                     blackBounds[0] = lastYellow - 1;
                     blackBounds[1] = x - 1;
                     lastYellow = x;
                 }
-            } else if (x - lastYellow < 6) {
+            } else if (lastYellow == -1) {
+                currentFrame.setPixel(x, 0, 0xFF00FF);
+            } else if (x - lastYellow < 20) {
                 currentFrame.setPixel(x, 0, 0x0000FF);
             } else {
                 currentFrame.setPixel(x, 0, 0xFF0000);
             }
         }
 
-        telemetry.addData("Left:", 640 - blackBounds[0]);
-        telemetry.addData("Right", blackBounds[1] - 640);
+        telemetry.addData("Left:", blackBounds[0]);
+        telemetry.addData("Image Center", currentFrame.getWidth() / 2);
+        telemetry.addData("Skystone Center", (blackBounds[1] + blackBounds[0]) / 2);
+        telemetry.addData("Right", blackBounds[1]);
 
 
         cameraManager.updatePreviewBitmap(currentFrame);
@@ -54,7 +57,7 @@ public class SkystoneAlignmentTest extends OpMode {
 
         // Now we need a proportion of left to right... Just subtracting might work...
 
-        return 0;
+        return ((blackBounds[1] + blackBounds[0]) / 2) - (currentFrame.getWidth() / 2);
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.drive;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -14,7 +15,7 @@ import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 import org.firstinspires.ftc.teamcode.navigation.Navigation;
 
-public class NewMechanumWheels extends Drive {
+public class PositionLoopTest extends Drive {
 
     private Angle initialRotation = Angle.fromDegrees(0);
     private Angle currentRotation = Angle.fromDegrees(0); // from same reference angle as initialRotation
@@ -23,6 +24,10 @@ public class NewMechanumWheels extends Drive {
     private double rotationalSpeed = 0;
     private static final double MAX_VELOCITY = 2380;
     private Position currentPosition = new Position(Distance.fromEncoderTicks(0), Distance.fromEncoderTicks(0), Angle.fromDegrees(0));
+    private double lastTime;
+    private double averageLoopTime;
+    private long loopCount;
+    private ElapsedTime runtime;
 
     private DcMotorEx wheelFL;
     private DcMotorEx wheelFR;
@@ -66,16 +71,21 @@ public class NewMechanumWheels extends Drive {
         wheelBR.resetDeviceConfigurationForOpMode();
         wheelFL.resetDeviceConfigurationForOpMode();
         wheelFR.resetDeviceConfigurationForOpMode();
-        
+
         wheelBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelFR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        wheelBL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelBR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelFL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        wheelFR.setMode(DcMotor.RunMode.RUN_USING_ENCODER); // changed to run using encoder...
+        wheelBL.setTargetPosition(0);
+        wheelBR.setTargetPosition(0);
+        wheelFL.setTargetPosition(0);
+        wheelFR.setTargetPosition(0);
+
+        wheelBL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelBR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelFL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        wheelFR.setMode(DcMotor.RunMode.RUN_TO_POSITION); // changed to run using encoder...
 
         wheelBL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         wheelBR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -103,7 +113,7 @@ public class NewMechanumWheels extends Drive {
         targetTranslation = theta;
         this.speed = speed;
         this.rotationalSpeed = rotation;
-        
+
         telemetry.addData("rotationalSpeed", rotationalSpeed);
     }
 
@@ -125,7 +135,7 @@ public class NewMechanumWheels extends Drive {
         return value < -1 ? -1 : value > 1 ? 1 : value;
     }
 
-    private static final double K_P_TRANSLATION = 20;  //threshold constant
+    private static final double K_P_TRANSLATION = 4;  //threshold constant
     private static final double K_P_ROTATION = 1000;
 
     private void updateTarget() {
@@ -137,24 +147,39 @@ public class NewMechanumWheels extends Drive {
             double fieldX = (targetPosition.getX().toInches() - navigation.getPosition().getX().toInches()) / K_P_TRANSLATION;
             double fieldY = (targetPosition.getY().toInches() - navigation.getPosition().getY().toInches()) / K_P_TRANSLATION;
             double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
-       
+
             telemetry.addData("fieldRot", fieldRot);
-       
-            if (Math.abs(fieldX) < 0.1 / K_P_TRANSLATION && Math.abs(fieldY) < 0.1 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {
+
+            if (Math.abs(fieldX) < 0.25 / K_P_TRANSLATION && Math.abs(fieldY) < 0.25 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {
                 targetPosition = null;
                 internalSetDirection(Angle.fromDegrees(0), 0, 0);
             } else {
                 internalSetDirection(
                         Angle.aTan(fieldX, fieldY),
-                        Math.pow(Math.abs(trim(fieldX + fieldY)) / 4, 1/2.0),
-                        Math.signum(fieldRot) * Math.pow(Math.abs(trim(fieldRot)), 1/2.0)
+                        Math.pow(Math.abs(trim(fieldX + fieldY)) / 4, 1 / 2.0),
+                        Math.signum(fieldRot) * Math.pow(Math.abs(trim(fieldRot)), 1 / 2.0)
                 );
             }
         }
     }
+
     @Override
     public void update() {
         super.update();
+
+        if (lastTime == 0)
+            lastTime = System.nanoTime() / 1000000000.0;
+        else {
+            double deltaTime = System.nanoTime() / 1000000000.0 - lastTime;
+            lastTime += deltaTime;
+
+            averageLoopTime = (averageLoopTime * loopCount + deltaTime) / (loopCount+1);
+            loopCount++;
+        
+            telemetry.addData("averageLoopTime", averageLoopTime);
+            telemetry.addData("deltaTime", deltaTime);
+        }
+
         updatePosition();
         updateTarget();
         updateSpeed();
@@ -186,17 +211,17 @@ public class NewMechanumWheels extends Drive {
         translateFR *= speed / maxSpeed;
         translateBL *= speed / maxSpeed;
         translateBR *= speed / maxSpeed;
-        
+
         double rotateFL = rotationalSpeed;
         double rotateFR = rotationalSpeed;
         double rotateBL = rotationalSpeed;
         double rotateBR = rotationalSpeed;
-        
-         double velocityFL = rotateFL + translateFL;
+
+        double velocityFL = rotateFL + translateFL;
         double velocityFR = rotateFR + translateFR;
         double velocityBL = rotateBL + translateBL;
         double velocityBR = rotateBR + translateBR;
-        
+
         if (Math.abs(velocityFL) > 1 || Math.abs(velocityFR) > 1 || Math.abs(velocityBL) > 1 || Math.abs(velocityBR) > 1) {
             double maxVelocity = Math.max(Math.max(Math.abs(translateFL), Math.abs(translateFR)), Math.max(Math.abs(translateBL), Math.abs(translateBR)));
 
@@ -211,10 +236,21 @@ public class NewMechanumWheels extends Drive {
         telemetry.addData("FL: ", velocityFL);
         telemetry.addData("FR: ", velocityFR);
 
-        wheelBL.setVelocity(velocityBL * MAX_VELOCITY);
-        wheelBR.setVelocity(velocityBR * MAX_VELOCITY);
-        wheelFL.setVelocity(velocityFL * MAX_VELOCITY);
-        wheelFR.setVelocity(velocityFR * MAX_VELOCITY);
+        wheelBL.setPower(Math.abs(velocityBL));
+        wheelBR.setPower(Math.abs(velocityBR));
+        wheelFL.setPower(Math.abs(velocityFL));
+        wheelFR.setPower(Math.abs(velocityFR));
+
+        wheelBL.setTargetPosition((int) (velocityBL * 100 * averageLoopTime) + wheelBL.getTargetPosition());
+        wheelBR.setTargetPosition((int) (velocityBR * 100 * averageLoopTime) + wheelBR.getTargetPosition());
+        wheelFL.setTargetPosition((int) (velocityFL * 100 * averageLoopTime) + wheelFL.getTargetPosition());
+        wheelFR.setTargetPosition((int) (velocityFR * 100 * averageLoopTime) + wheelFR.getTargetPosition());
+        
+        telemetry.addData("targetBL", wheelBL.getTargetPosition());
+        telemetry.addData("targetBR", wheelBR.getTargetPosition());
+        telemetry.addData("targetFL", wheelFL.getTargetPosition());
+        telemetry.addData("targetBR", wheelFR.getTargetPosition());
+        telemetry.addData("BRbusy", wheelBR.isBusy());
     }
 
     private void updatePosition() {
@@ -222,7 +258,7 @@ public class NewMechanumWheels extends Drive {
         double b = wheelBR.getCurrentPosition() - lastPositionBR;
         double c = wheelFL.getCurrentPosition() - lastPositionFL;
         double d = wheelFR.getCurrentPosition() - lastPositionFR;
-        
+
         telemetry.addData("wheelBL", wheelBL.getCurrentPosition());
         telemetry.addData("wheelBR", wheelBR.getCurrentPosition());
         telemetry.addData("wheelFL", wheelFL.getCurrentPosition());

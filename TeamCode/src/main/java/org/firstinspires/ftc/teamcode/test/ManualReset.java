@@ -21,7 +21,7 @@ public class ManualReset extends OpMode {
     private Drive drive = new NewMechanumWheels();
     private FoundationMover foundationMover = new ActualFoundationMover();
     private Grabber grabber = new Claw();
-
+    
     private double targetHeight;
     private double targetDepth;
 
@@ -31,8 +31,8 @@ public class ManualReset extends OpMode {
     private boolean xpressed;
     private boolean isGrabbed;
     private double targetGrabberRot;
-
-    @Override
+    
+      @Override
     public void init() {
         Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
     }
@@ -40,13 +40,14 @@ public class ManualReset extends OpMode {
     @Override
     public void loop() {
         //delivery
-        targetDepth += gamepad1.dpad_right ? 0.01 : 0;
-        targetDepth -= gamepad1.dpad_left ? 0.01 : 0;
+        targetDepth += gamepad1.dpad_right ? 0.001 : 0;
+        targetDepth -= gamepad1.dpad_left ? 0.001 : 0;
         targetHeight += gamepad1.dpad_up ? 0.01 : 0;
         targetHeight -= gamepad1.dpad_down ? 0.01 : 0;
         delivery.setDepth(targetDepth);
         delivery.setHeight(targetHeight);
         telemetry.addData("targetHeight", targetHeight);
+        telemetry.addData("targetDepth", targetDepth);
 
         //drive
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);

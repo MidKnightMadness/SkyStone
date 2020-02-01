@@ -5,7 +5,7 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.Servo;
 
 // press gamepad y to toggle between up and down
-//@TeleOp
+@TeleOp
 public class FoundationMoverTest extends OpMode {
     private ActualFoundationMover mover = new ActualFoundationMover();
     private double mode = 1;

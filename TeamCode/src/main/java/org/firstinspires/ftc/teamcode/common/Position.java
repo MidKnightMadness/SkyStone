@@ -17,6 +17,10 @@ public class Position {
         return this;
     }
 
+    public Position copy(){
+        return new Position(x.copy(),y.copy(),theta.copy());
+    }
+
     public Distance getX() {
         return x;
     }
@@ -27,6 +31,16 @@ public class Position {
 
     public Angle getTheta() {
         return theta;
+    }
+    
+    public void setY(Distance y)
+    {
+        this.y = y;
+    }
+
+    public void setX(Distance x)
+    {
+        this.x = x;
     }
 
     public void setTheta(Angle theta) {

@@ -24,7 +24,7 @@ public class LED {
 
     }
 
-    private void setLEDs(short[] leds) {
+    private void setLEDs(int[] leds) {
         byte[] data = new byte[(leds.length + 2) * 4];
         data[0] = data[1] = data[2] = data[3] = 0;
         for (int i = 0; i < leds.length; i++) {
@@ -33,8 +33,20 @@ public class LED {
             data[(i*4) + 6] = (byte) (leds[i] & 0x00FF0000);
             data[(i*4) + 7] = (byte) (leds[i] & 0xFF000000);
         }
+        
+        data[leds.length - 1] = data[leds.length - 2] = data[leds.length - 3] = data[leds.length - 4] = (byte)0xFF;
+        
+        ledController.write(0x01, data);
     }
-
+    
+    public void setReds(int length)
+    {
+        int[] leds = new int[length];
+        for(int i = 0; i < length; i++)
+            leds[i] = 0xFF0000FF;
+        setLEDs(leds);
+    }
+    
     public class Modee {
         private abstract class Generic {
              protected abstract void init();

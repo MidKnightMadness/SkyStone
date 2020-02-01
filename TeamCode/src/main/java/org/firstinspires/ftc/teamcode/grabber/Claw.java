@@ -17,7 +17,7 @@ public class Claw extends Grabber  {
     @Override
     public void grab() {
         telemetry.addLine("GRABBING!");
-        clawservo.setPosition(1);
+        clawservo.setPosition(0.65);
     }
 
     @Override

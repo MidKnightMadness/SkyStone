@@ -48,6 +48,8 @@ public class PhoneManager implements ImageReader.OnImageAvailableListener {
     private Context appContext; // the app context (from the hardwareMap)
     private TextureView preview;
 
+    public boolean isNew = true;
+
     private CameraDevice camera = null;
     private CameraCaptureSession captureSession = null;
     private Telemetry telemetry;
@@ -166,8 +168,8 @@ public class PhoneManager implements ImageReader.OnImageAvailableListener {
         byte[] bytes = new byte[buffer.capacity()];
         buffer.get(bytes);
         currentFrame = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);// The bitmap is ARGB_8888
-        telemetry.addLine(currentFrame.getConfig().name());
-
+        //telemetry.addLine(currentFrame.getConfig().name());
+        isNew = true;
 
 
         // If we need to show the view,
