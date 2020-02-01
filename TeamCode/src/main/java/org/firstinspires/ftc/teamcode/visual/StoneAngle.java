@@ -24,10 +24,27 @@ public class StoneAngle extends Assembly {
         telemetry.addData("left", leftDist);
         telemetry.addData("right", rightDist);
 
+        double distance = Math.abs(leftDist - rightDist) > 4 ? Math.min(leftDist, rightDist) : (leftDist + rightDist) / 2;
+
         //distance and angle
         return new double[] {
-            (leftDist + rightDist) / 2,
+            distance,
             Math.atan2(leftDist - rightDist, 12) / Math.PI * 180
         };
+    }
+    
+    public int sensorBlocked()
+    {
+        double leftDist = distSensorLeft.getDistance(DistanceUnit.INCH);
+        double rightDist = distSensorRight.getDistance(DistanceUnit.INCH);
+        telemetry.addData("left", leftDist);
+        telemetry.addData("right", rightDist);
+        if(Math.abs(leftDist - rightDist) > 2)
+            if(leftDist>rightDist)
+                return 1;
+            else
+                return -1;
+        else 
+            return 0;
     }
 }

@@ -13,6 +13,8 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.visual.webcam.PhoneManager;
+import java.io.PrintWriter;
+
 
 public class VuforiaPosition extends Visual {
     public PhoneManager cameraManager = new PhoneManager();
@@ -21,7 +23,7 @@ public class VuforiaPosition extends Visual {
     @Override
     public void init() {
         //initialize camera manager
-        cameraManager.startCaptureWithViews(telemetry, hardwareMap.appContext);
+        cameraManager.startCapture(telemetry, hardwareMap.appContext);
         //cameraManager.startCapture(telemetry, hardwareMap.appContext);
 
         //initialize vuforia sksytone
@@ -79,68 +81,70 @@ public class VuforiaPosition extends Visual {
         else
             return new Position(Distance.fromMillimeters(x / count), Distance.fromMillimeters(y / count), Angle.fromDegrees(theta / count));
     }
+    
+    public boolean[] isBlack(PrintWriter logging) {
+        while (!cameraManager.isNew);
+        Bitmap realFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, false);
+        cameraManager.isNew = false;
+        Bitmap currentFrame = Bitmap.createScaledBitmap(Bitmap.createBitmap(realFrame, 0, 0, 640, 240), 1, 1, false);
+        Bitmap currentFrame2 = Bitmap.createScaledBitmap(Bitmap.createBitmap(realFrame, 640, 0, 640, 240), 1, 1, false);
+
+        double[] hsv = new double[3];
+        PhoneManager.colorToHSV(currentFrame.getPixel(0, 0), hsv);
+        telemetry.addLine(hsv[0] + " " + hsv[1] + " " + hsv[2]);
+        double[] hsv2 = new double[3];
+        PhoneManager.colorToHSV(currentFrame2.getPixel(0, 0), hsv2);
+        telemetry.addLine(hsv2[0] + " " + hsv2[1] + " " + hsv2[2]);
+        telemetry.addLine(String.format("SATURATIONS! %f, %f", hsv[1], hsv2[1]));
+        logging.println(String.format("SATURATIONS! %f, %f", hsv[1], hsv2[1]));
+        return new boolean[] {hsv[1] < 0.6, hsv2[1] < 0.6};
+    }
 
     public double getSkystoneOffset() {
-        Bitmap currentFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, true);
-        Bitmap displayFrame = currentFrame.copy(Bitmap.Config.RGB_565, true);
+        cameraManager.isNew = false;
+        while (!cameraManager.isNew) ;
+        Bitmap realFrame = cameraManager.getCurrentFrame().copy(Bitmap.Config.RGB_565, false);
+        //Bitmap currentFrame = Bitmap.createScaledBitmap(realFrame, 720, 10, false);
+        Bitmap currentFrame = Bitmap.createScaledBitmap(Bitmap.createBitmap(realFrame, 0, 120, 1280, 240), 320, 1, false);
+        telemetry.addData("Height", realFrame.getHeight());
+        telemetry.addData("Width", realFrame.getWidth());
         double[] hsv = new double[3];
+        int lastYellow = -1; // keep track of the last yellow pixel seen
+        int blackBounds[] = {-1, -1};
 
         // (DEBUG) show the skystone and black pixels a special color
-        for (int y = 0; y < displayFrame.getHeight(); y++) {
-            for (int x = 0; x < displayFrame.getWidth(); x++) {
-                PhoneManager.colorToHSV(displayFrame.getPixel(x, y), hsv);
-                if (hsv[2] < 0.1) {
-                    displayFrame.setPixel(x, y, 0xFF0000);
-                } else if (
-                    Math.abs(hsv[0] - 33) < 5 && hsv[1] > 0.5) {
-                    displayFrame.setPixel(x, y, 0x00FF00);
-                }
-            }
-        }
-
-        int quarryRow = 0;
-
-        // Find the lower bound of the quarry (search for some yellow)
-        for (int y = currentFrame.getHeight() - 1; y >= 0; y--) {
-            for (int x = 0; x < currentFrame.getWidth(); x++) {
-                PhoneManager.colorToHSV(currentFrame.getPixel(x, y), hsv);
-                if (Math.abs(hsv[0] - 33) < 5 && hsv[1] > 0.5) { // if it's yellow
-                    // then we'll skip a few lines and check the x-offset from centered to the skystone
-                    quarryRow = y - 10;
-                    break;
-                }
-            }
-            if (quarryRow != 0) {
-                break;
-            }
-        }
-        quarryRow = Math.min(quarryRow, currentFrame.getHeight() - 1);  //prevent overflow
-        telemetry.addData("quarryRow", quarryRow);
-
-        int left = 0, right = 0;
-        boolean foundSkystone = false; // to know if we've hit the black yet...
-
         for (int x = 0; x < currentFrame.getWidth(); x++) {
-            PhoneManager.colorToHSV(currentFrame.getPixel(x, quarryRow), hsv);
-            if (Math.abs(hsv[0] - 33) < 5) {
-                if (foundSkystone) {
-                    displayFrame.setPixel(x, quarryRow, 0x0000FF);
-                    left++;
-                } else {
-                    displayFrame.setPixel(x, quarryRow, 0x00FFFF);
-                    right++;
+            PhoneManager.colorToHSV(currentFrame.getPixel(x, 0), hsv);
+            if (30 < hsv[0] && hsv[0] < 50 && hsv[1] > 0.7) {
+                if (lastYellow == -1 || x - lastYellow < 20) {
+                    lastYellow = x;
+                    currentFrame.setPixel(x, 0, 0x00FF00);
+                } else if (blackBounds[1] == -1){
+                    blackBounds[0] = lastYellow - 1;
+                    blackBounds[1] = x - 1;
+                    lastYellow = x;
                 }
-            } else if (hsv[2] < 0.1) {
-                displayFrame.setPixel(x, quarryRow, 0xFF00FF);
-                foundSkystone = true;
+            } else if (lastYellow == -1) {
+                currentFrame.setPixel(x, 0, 0xFF00FF);
+            } else if (x - lastYellow < 20) {
+                currentFrame.setPixel(x, 0, 0x0000FF);
+            } else {
+                currentFrame.setPixel(x, 0, 0xFF0000);
             }
         }
-        cameraManager.updatePreviewBitmap(displayFrame);
+
+        telemetry.addData("Left:", blackBounds[0]);
+        telemetry.addData("Image Center", currentFrame.getWidth() / 2);
+        telemetry.addData("Skystone Center", (blackBounds[1] + blackBounds[0]) / 2);
+        telemetry.addData("Right", blackBounds[1]);
+
+
+        cameraManager.updatePreviewBitmap(currentFrame);
 
 
         // Now we need a proportion of left to right... Just subtracting might work...
 
-        return right - left;
+        return ((blackBounds[1] + blackBounds[0]) / 2) - (currentFrame.getWidth() / 2);
     }
 
     @Override
@@ -186,7 +190,7 @@ public class VuforiaPosition extends Visual {
         }
 
         //display the modified bitmap
-        cameraManager.updatePreviewBitmap(scaledFrame);
+        //cameraManager.updatePreviewBitmap(scaledFrame);
         return result;
     }
 

@@ -28,7 +28,7 @@ import java.io.File;
 
 
 @Autonomous
-public class MainAutonomous extends LinearOpMode {
+public class MainAutonomousRed extends LinearOpMode {
 
     private Drive drive = new NewMechanumWheels();
     private Visual visual = new VuforiaPosition();
@@ -59,12 +59,12 @@ public class MainAutonomous extends LinearOpMode {
         drive.resetPosition(new Position(Distance.fromInches(0), Distance.fromInches(0), Angle.fromDegrees(90)));
 
         //move to stones
-        Position targetPos = new Position(Distance.fromInches(-10), Distance.fromInches(-10), Angle.fromDegrees(0));
+        Position targetPos = new Position(Distance.fromInches(10), Distance.fromInches(-10), Angle.fromDegrees(0));
         
         delivery.setHeight(0.15);
         boolean isAligned = false;
         runtime.reset(); 
-        while (runtime.seconds() < 2.5 && !isStopRequested()) {
+        while (runtime.seconds() < 3 && !isStopRequested()) {
             telemetry.addLine("moving to stone");
     
             targetPos.setY(navigation.getPosition().getY().copy().subtract(Distance.fromInches(stoneAngle.stonePosition()[0] - 2.5)));
@@ -82,7 +82,7 @@ public class MainAutonomous extends LinearOpMode {
         delivery.setDepthRaw(-3200);
         
         //move sideways and scan
-        drive.setDirection(Angle.aTan(1, 0), 0.25, 0);
+        drive.setDirection(Angle.aTan(-1, 0), 0.25, 0);
         try {
             PrintWriter writer = new PrintWriter(new File("/storage/self/primary/FIRST/java/src/org/firstinspires/ftc/teamcode/autonoumous/log.txt"));
         
@@ -96,7 +96,7 @@ public class MainAutonomous extends LinearOpMode {
             if (isBlack[0] || isBlack[1])
                 break;
 
-            drive.setDirection(Angle.aTan(1, -(stoneAngle.stonePosition()[0] - 2.9) * 0.6 + 0.6), 0.25, 0);
+            drive.setDirection(Angle.aTan(-1, -(stoneAngle.stonePosition()[0] - 2.9) * 0.6 + 0.6), 0.25, 0);
 
             idle();
             drive.update();
@@ -107,7 +107,7 @@ public class MainAutonomous extends LinearOpMode {
         
         //align distance to stone
         runtime.reset(); 
-        while (runtime.seconds() < 1.5 && !isStopRequested()) {
+        while (runtime.seconds() < 2 && !isStopRequested()) {
             telemetry.addLine("aligning distance to stone");
             
             targetPos.setX(navigation.getPosition().getX().copy());
@@ -158,7 +158,7 @@ public class MainAutonomous extends LinearOpMode {
         drive.setTarget(targetPos, navigation);
         drive.update();
         Thread.sleep(500);
-        drive.setDirection(Angle.fromDegrees(90), 0, 0);
+        drive.setDirection(Angle.fromDegrees(0), 0, 0);
         drive.update();
         //sensor blocked
         delivery.setHeight(0.02);
@@ -171,10 +171,10 @@ public class MainAutonomous extends LinearOpMode {
             drive.setDirection(Angle.fromDegrees(90 * -blocked), 0.3, 0);
         else
         {   
-            drive.setDirection(Angle.fromDegrees(-90), 0.35, 0);
+            drive.setDirection(Angle.fromDegrees(90), 0.35, 0);
             drive.update();
             Thread.sleep(500);
-            drive.setDirection(Angle.fromDegrees(90), 0.4, 0);
+            drive.setDirection(Angle.fromDegrees(-90), 0.4, 0);
         }
         drive.update();
         delivery.setHeight(0.00);
@@ -187,7 +187,7 @@ public class MainAutonomous extends LinearOpMode {
         Thread.sleep(500);
 
         //turn 90 degrees (left)
-        targetPos.setTheta(Angle.fromDegrees(90));
+        targetPos.setTheta(Angle.fromDegrees(-90));
         drive.setTarget(targetPos, navigation);
         runtime.reset(); 
         while (runtime.seconds() < 1.5 && !isStopRequested()) {
@@ -199,7 +199,7 @@ public class MainAutonomous extends LinearOpMode {
             telemetry.update();
         }
         //move sideways
-        targetPos.getY().subtract(Distance.fromInches(5));
+        targetPos.getY().subtract(Distance.fromInches(10));
         drive.setTarget(targetPos, navigation);
         runtime.reset(); 
         while (runtime.seconds() < 1.5 && !isStopRequested()) {
@@ -212,7 +212,7 @@ public class MainAutonomous extends LinearOpMode {
         }
         
         //move down field
-        targetPos.setX(Distance.fromInches(110));
+        targetPos.setX(Distance.fromInches(-110));
         drive.setTarget(targetPos, navigation);
         runtime.reset(); 
         while (runtime.seconds() < 3.5 && !isStopRequested()) {
@@ -294,15 +294,15 @@ public class MainAutonomous extends LinearOpMode {
         Thread.sleep(100);
         
         //move forwards
-        drive.setDirection(Angle.fromDegrees(-90), 0.75, 0);
+        drive.setDirection(Angle.fromDegrees(90), 0.75, 0);
         drive.update();
         Thread.sleep(250);
         drive.setDirection(Angle.fromDegrees(0), 0, 0);
         drive.update();
         
         targetPos.setY(navigation.getPosition().getY().copy());
-        targetPos.setX(navigation.getPosition().getX().copy());
-        targetPos.setTheta(Angle.fromDegrees(0));
+        targetPos.setX(navigation.getPosition().getX().copy().add(Distance.fromInches(12)));
+        targetPos.setTheta(Angle.fromDegrees(180));
         drive.setTarget(targetPos, navigation);
         runtime.reset(); 
         while (runtime.seconds() < 2.5 && !isStopRequested()) {
@@ -315,7 +315,7 @@ public class MainAutonomous extends LinearOpMode {
             telemetry.update();
         }
         
-        drive.setDirection(Angle.fromDegrees(20), 0.8, 0);
+        drive.setDirection(Angle.fromDegrees(-20), 0.7, 0);
         drive.update();
         Thread.sleep(1000);
         
@@ -325,8 +325,8 @@ public class MainAutonomous extends LinearOpMode {
         }
         
         foundationMover.reset();
-        targetPos.setTheta(Angle.fromDegrees(-90));
-        targetPos.getX().subtract(Distance.fromInches(15));
+        targetPos.setTheta(Angle.fromDegrees(90));
+        targetPos.getX().subtract(Distance.fromInches(-15));
         targetPos.getY().subtract(Distance.fromInches(6));
         drive.setTarget(targetPos, navigation);
         runtime.reset(); 
