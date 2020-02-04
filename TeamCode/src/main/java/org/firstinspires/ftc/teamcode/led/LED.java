@@ -8,6 +8,7 @@ import java.util.Arrays;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.led.util.LEDColor;
+import org.firstinspires.ftc.teamcode.led.util.LEDSection;
 
 
 // Control all the LEDs!!!
@@ -41,58 +42,9 @@ public class LED {
         initialized = true;
     }
 
-    /**** Sections. Since there are four main sections of the robot, this keeps track of the mode and location of each in the led buffer ****/
-    public static class Section {
-        private int begin, length; // the beginning index and the length of this section
-        private static int nextLED = 0; // the next available led not claimed yet
-        private static ArrayList<Section> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
-        private LEDColor[] colors;
-        private Mode mode; // Which mode this section is in. Defaults to static off.
-        private Mode lastMode;
-        // Construct a section from a length
-        Section(int length) {
-            this.begin = nextLED; // this should start at the next available led
-            this.length = length; // save the length
-            nextLED += length;    // and update the next available led
-            sections.add(this);   // and add this to the internal array for updating
-            set(Modes.STATIC, Colors.OFF);
-        }
-
-        // These are made specifically for for loops. Ex: for (int i = getBegin(); i < getEnd(); i++) {}
-        private int getBegin() { return begin; } // for looping: returns the first index
-        private int getEnd() { return begin + length; } // for looping: returns the last index (exclusive)
-
-        public void set(Modes mode, LEDColor...colors) {
-            set(colors);
-            set(mode);
-        }
-
-        public void set(Modes mode) {
-            lastMode = this.mode;
-            this.mode = mode.getNewMode();
-            this.mode.setSection(this);
-            update();
-        }
-
-        public void set(LEDColor...colors) {
-            this.colors = colors;
-        }
-
-        private void update() {
-            mode.update(); // update (pass it on to the mode to update the leds)
-        }
-
-        // Update all the sections!
-        private static void updateAll() {
-            for (int i = 0; i < sections.size(); i++) {
-                sections.get(i).update();
-            }
-        }
-    }
-
     public static class PseudoSection {
-        private Section[] sections;
-        private PseudoSection(Section ...sections) {
+        private LEDSection[] sections;
+        private PseudoSection(LEDSection...sections) {
             this.sections = sections;
         }
         public void set(Modes mode, LEDColor...colors) {
@@ -100,30 +52,30 @@ public class LED {
             set(mode);
         }
         public void set(Modes mode) {
-            for (Section section : sections) {
+            for (LEDSection section : sections) {
                 section.set(mode);
             }
         }
         public void set(LEDColor...colors) {
-            for (Section section : sections) {
+            for (LEDSection section : sections) {
                 section.set(colors);
             }
         }
     }
 
     /**** LED configuration. Set the lengths and make new sections as needed. Order matters. ****/
-    public static final Section BACK = new Section(7);
-    public static final Section RIGHT = new Section(8);
-    public static final Section LOWER_BACK = new Section( 7);
-    public static final Section LEFT = new Section(8);
+    public static final LEDSection BACK = new LEDSection(7);
+    public static final LEDSection RIGHT = new LEDSection(8);
+    public static final LEDSection LOWER_BACK = new LEDSection( 7);
+    public static final LEDSection LEFT = new LEDSection(8);
 
     public static final PseudoSection ALL = new PseudoSection(BACK, RIGHT, LEFT, LOWER_BACK);
     public static final PseudoSection LOWER = new PseudoSection(RIGHT, LEFT, LOWER_BACK);
 
     /**** Abstract Mode for controlling the leds ****/
-    private static abstract class Mode {
-        protected Section section;
-        private void setSection(Section section) {
+    public static abstract class Mode {
+        protected LEDSection section;
+        public void setSection(LEDSection section) {
             this.section = section;
         }
 
@@ -144,7 +96,7 @@ public class LED {
         RUNNING,
         BOUNCING;
 
-        private Mode getNewMode() {
+        public Mode getNewMode() {
             switch (this) {
                 case STATIC:
                 default: return new Static();
@@ -201,7 +153,7 @@ public class LED {
         if (!initialized) return;
 
         if (runtime.seconds() > 0.1) {
-            Section.updateAll();
+            LEDSection.updateAll();
             setLEDs(leds);
             runtime.reset();
         }
