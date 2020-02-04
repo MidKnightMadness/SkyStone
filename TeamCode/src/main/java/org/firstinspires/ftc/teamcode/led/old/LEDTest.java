@@ -1,9 +1,11 @@
-package org.firstinspires.ftc.teamcode.led;
+package org.firstinspires.ftc.teamcode.led.old;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
+import org.firstinspires.ftc.teamcode.led.LED;
+import org.firstinspires.ftc.teamcode.led.LEDColor;
 import org.firstinspires.ftc.teamcode.led.util.LEDColor;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;

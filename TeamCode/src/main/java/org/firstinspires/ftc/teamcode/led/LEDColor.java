@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.led.util;
+package org.firstinspires.ftc.teamcode.led;
 
 public class LEDColor {
     byte[] bytes = new byte[4];

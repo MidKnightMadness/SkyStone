@@ -1,6 +1,4 @@
-package org.firstinspires.ftc.teamcode.led.util;
-
-import org.firstinspires.ftc.teamcode.led.LED;
+package org.firstinspires.ftc.teamcode.led;
 
 import java.util.ArrayList;
 
@@ -10,8 +8,8 @@ public class LEDSection {
     private static int nextLED = 0; // the next available led not claimed yet
     private static ArrayList<LEDSection> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
     public LEDColor[] colors;
-    private LED.Mode mode; // Which mode this section is in. Defaults to static off.
-    private LED.Mode lastMode;
+    private LEDMode mode; // Which mode this section is in. Defaults to static off.
+    private LEDMode lastMode;
     // Construct a section from a length
     public LEDSection(int length) {
         this.begin = nextLED; // this should start at the next available led

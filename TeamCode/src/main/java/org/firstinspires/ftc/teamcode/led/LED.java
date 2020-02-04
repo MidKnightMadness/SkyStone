@@ -3,20 +3,14 @@ package org.firstinspires.ftc.teamcode.led;
 import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.led.util.LEDColor;
-import org.firstinspires.ftc.teamcode.led.util.LEDSection;
+import org.firstinspires.ftc.teamcode.led.old.Log;
 
 
 // Control all the LEDs!!!
 public class LED {
-    private static I2cDeviceSynch ledController;
-    private static LEDColor[] leds = new LEDColor[30];
-
-    private static boolean initialized = false;
 
     /**** LEDColor Translation - HEX RGB and brightness to DotStar byte field ****/
     public static class Colors {
@@ -29,6 +23,38 @@ public class LED {
         public static final LEDColor GOLD = new LEDColor(0xEEEE00, 31);
     }
 
+    /**** Preset modes for handling LEDs. Add more here. Assume fresh instances.****/
+    public enum Modes {
+        STATIC,
+        RUNNING,
+        BOUNCING;
+
+        LEDMode getNewMode() {
+            switch (this) {
+                case STATIC:
+                default: return new LEDModes.Static();
+                case RUNNING: return new LEDModes.Running();
+                case BOUNCING: return new LEDModes.Bouncing();
+
+            }
+        }
+    }
+
+    /**** LED configuration. Set the lengths and make new sections as needed. Order matters. ****/
+    public static final LEDSection BACK = new LEDSection(7);
+    public static final LEDSection RIGHT = new LEDSection(8);
+    public static final LEDSection LOWER_BACK = new LEDSection( 7);
+    public static final LEDSection LEFT = new LEDSection(8);
+
+    public static final LEDPseudoSection ALL = new LEDPseudoSection(BACK, RIGHT, LEFT, LOWER_BACK);
+    public static final LEDPseudoSection LOWER = new LEDPseudoSection(RIGHT, LEFT, LOWER_BACK);
+
+
+
+    private static I2cDeviceSynch ledController;
+    static LEDColor[] leds = new LEDColor[30];
+    private static boolean initialized = false;
+    private static ElapsedTime runtime = new ElapsedTime();
 
     // Initialize the LEDs with the LED hardware.
     public static void init(I2cDeviceSynch ledStrip) {
@@ -42,113 +68,6 @@ public class LED {
         initialized = true;
     }
 
-    public static class PseudoSection {
-        private LEDSection[] sections;
-        private PseudoSection(LEDSection...sections) {
-            this.sections = sections;
-        }
-        public void set(Modes mode, LEDColor...colors) {
-            set(colors);
-            set(mode);
-        }
-        public void set(Modes mode) {
-            for (LEDSection section : sections) {
-                section.set(mode);
-            }
-        }
-        public void set(LEDColor...colors) {
-            for (LEDSection section : sections) {
-                section.set(colors);
-            }
-        }
-    }
-
-    /**** LED configuration. Set the lengths and make new sections as needed. Order matters. ****/
-    public static final LEDSection BACK = new LEDSection(7);
-    public static final LEDSection RIGHT = new LEDSection(8);
-    public static final LEDSection LOWER_BACK = new LEDSection( 7);
-    public static final LEDSection LEFT = new LEDSection(8);
-
-    public static final PseudoSection ALL = new PseudoSection(BACK, RIGHT, LEFT, LOWER_BACK);
-    public static final PseudoSection LOWER = new PseudoSection(RIGHT, LEFT, LOWER_BACK);
-
-    /**** Abstract Mode for controlling the leds ****/
-    public static abstract class Mode {
-        protected LEDSection section;
-        public void setSection(LEDSection section) {
-            this.section = section;
-        }
-
-        protected LEDColor color(int i) { // prevent null unset colors
-            return section.colors != null && i < section.colors.length && section.colors[i] != null ? section.colors[i] : Colors.OFF;
-        }
-
-        protected int colorsLength() {
-            return section.colors.length;
-        }
-
-        public abstract void update();
-    }
-
-    /**** Preset modes for handling LEDs. Add more here. Assume fresh instances.****/
-    public enum Modes {
-        STATIC,
-        RUNNING,
-        BOUNCING;
-
-        public Mode getNewMode() {
-            switch (this) {
-                case STATIC:
-                default: return new Static();
-                case RUNNING: return new Running();
-                case BOUNCING: return new Bouncing();
-
-            }
-        }
-
-        // A simple mode to set the entire section to a single color.
-        private static class Static extends Mode {
-            public void update() {
-                for (int i = section.getBegin(); i < section.getEnd(); i++) {
-                    leds[i] = color(0);
-                }
-            }
-        }
-
-        private static class Running extends Mode {
-            private int offset = 0;
-
-            public void update() {
-                for (int j = section.getBegin(); j < section.getEnd(); j++) {
-                    leds[j] = color((j + offset) % colorsLength());
-                }
-                offset = (offset + 1) % colorsLength();
-                Log.out.println("Updated!" + offset);
-            }
-        }
-
-        private static class Bouncing extends Mode {
-            // Only use on LOWER
-            private final int MIN = RIGHT.getBegin();
-            private final int MAX = LEFT.getEnd() - 1;
-            private final int ACCENT = 0;
-            private final int BACKGROUND = 1;
-
-            private int position = MIN;
-            private int direction = 1;
-
-            public void update() {
-                position = position + direction;
-                direction = position > MAX || position < MIN ? -direction : direction;
-
-                for (int i = section.getBegin(); i < section.getEnd(); i++) {
-                    leds[i] = i == position ? color(ACCENT) : color(BACKGROUND);
-                }
-            }
-        }
-    }
-
-    private static ElapsedTime runtime = new ElapsedTime();
     public static void update() {
         if (!initialized) return;
 
@@ -157,7 +76,6 @@ public class LED {
             setLEDs(leds);
             runtime.reset();
         }
-
     }
 
     // Push the internal led buffer to the LEDs
