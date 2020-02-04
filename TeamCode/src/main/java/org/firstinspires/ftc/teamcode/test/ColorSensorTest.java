@@ -2,12 +2,14 @@ package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.hardware.adafruit.AdafruitI2cColorSensor;
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cColorSensor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 
 import org.firstinspires.ftc.teamcode.visual.webcam.PhoneManager;
 
+@Disabled
 @TeleOp
 public class ColorSensorTest extends OpMode {
     ModernRoboticsI2cColorSensor colorSensor;

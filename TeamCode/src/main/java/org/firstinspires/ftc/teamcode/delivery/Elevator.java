@@ -3,7 +3,8 @@ package org.firstinspires.ftc.teamcode.delivery;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.PIDCoefficients;
+import com.qualcomm.robotcore.hardware.MotorControlAlgorithm;
+import com.qualcomm.robotcore.hardware.PIDFCoefficients;
 
 import org.firstinspires.ftc.teamcode.common.Assembly;
 import org.firstinspires.ftc.teamcode.common.Config;
@@ -14,6 +15,7 @@ public class Elevator extends Delivery {
     private static final double NEW_P = 1.0;
     private static final double NEW_I = 0.1;
     private static final double NEW_D = 0.0;
+    private static final double NEW_F = 0.0;
 
     private DcMotorEx vertical;
     private int initHeight;
@@ -31,7 +33,8 @@ public class Elevator extends Delivery {
         vertical.setPower(1);
         vertical.setDirection(DcMotor.Direction.REVERSE);
         vertical.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        vertical.setPIDCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDCoefficients(NEW_P, NEW_I, NEW_D));
+        //noinspection deprecation
+        vertical.setPIDFCoefficients(DcMotor.RunMode.RUN_TO_POSITION, new PIDFCoefficients(NEW_P, NEW_I, NEW_D, NEW_F, MotorControlAlgorithm.LegacyPID));
 
         horizontal = hardwareMap.dcMotor.get(HardwareConfig.HORIZONTAL);
         horizontal.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -125,6 +128,7 @@ public class Elevator extends Delivery {
             vertical.setPower(1);
         }
         telemetry.addData("height", getHeight());
+        telemetry.addData("initHeight", initHeight);
     }
     
     @Override

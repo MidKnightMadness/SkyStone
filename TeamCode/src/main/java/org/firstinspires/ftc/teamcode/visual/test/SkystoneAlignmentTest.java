@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.visual.test;
 
 import android.graphics.Bitmap;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.RobotLog;
@@ -10,6 +11,7 @@ import org.firstinspires.ftc.teamcode.common.Assembly;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 import org.firstinspires.ftc.teamcode.visual.webcam.PhoneManager;
 
+@Disabled
 @TeleOp
 public class SkystoneAlignmentTest extends OpMode {
     VuforiaPosition position = new VuforiaPosition();
