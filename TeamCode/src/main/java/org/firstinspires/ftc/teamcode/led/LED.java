@@ -7,54 +7,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.led.util.LEDColor;
 
 
 // Control all the LEDs!!!
 public class LED {
     private static I2cDeviceSynch ledController;
-    private static Color[] leds = new Color[30];
+    private static LEDColor[] leds = new LEDColor[30];
+
     private static boolean initialized = false;
 
-    /**** Color Translation - HEX RGB and brightness to DotStar byte field ****/
-    public static class Color {
-        byte[] bytes = new byte[4];
-        // raw: 111(5 bit brightness) R G B
-        /*public Color(long raw) {
-            bytes[0] = (byte) (raw & 0xFF);
-            bytes[1] = (byte) (( raw >> 8) & 0xFF);
-            bytes[2] = (byte) (( raw >> 16) & 0xFF);
-            bytes[3] = (byte) (( raw >> 24) & 0xFF);
-        }*/
-
-        // brightness 0-31, standard hex color (0xFF00FF)
-        public Color(int color, int brightness) {
-            bytes[0] = (byte) (brightness | 0xE0);
-            bytes[1] = (byte) (color & 0xFF); // R
-            bytes[2] = (byte) (( color >> 8) & 0xFF); // G
-            bytes[3] = (byte) (( color >> 16) & 0xFF); // B
-        }
-
-        private byte[] getBytes() {
-            return bytes;
-        }
-
-        public int getColor() {
-            return ((int) bytes[1] & 0xFF) | (((int) bytes[2] & 0xFF) << 8) | (((int) bytes[3] & 0xFF) << 16);
-        }
-
-        public int getBrightness() {
-            return ((int) bytes[0]) & 0x1F;
-        }
-    }
-
+    /**** LEDColor Translation - HEX RGB and brightness to DotStar byte field ****/
     public static class Colors {
-        /**** Color Presets. Add new colors here. ****/
-        public static final Color OFF = new Color(0, 0);
-        public static final Color RED = new Color(0xFF0000, 31);
-        public static final Color GREEN = new Color(0x00FF00, 31);
-        public static final Color BLUE = new Color(0x0000FF, 31);
-        public static final Color NAVY = new Color(0x000090, 31);
-        public static final Color GOLD = new Color(0xEEEE00, 31);
+        /**** LEDColor Presets. Add new colors here. ****/
+        public static final LEDColor OFF = new LEDColor(0, 0);
+        public static final LEDColor RED = new LEDColor(0xFF0000, 31);
+        public static final LEDColor GREEN = new LEDColor(0x00FF00, 31);
+        public static final LEDColor BLUE = new LEDColor(0x0000FF, 31);
+        public static final LEDColor NAVY = new LEDColor(0x000090, 31);
+        public static final LEDColor GOLD = new LEDColor(0xEEEE00, 31);
     }
 
 
@@ -75,7 +46,7 @@ public class LED {
         private int begin, length; // the beginning index and the length of this section
         private static int nextLED = 0; // the next available led not claimed yet
         private static ArrayList<Section> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
-        private Color[] colors;
+        private LEDColor[] colors;
         private Mode mode; // Which mode this section is in. Defaults to static off.
         private Mode lastMode;
         // Construct a section from a length
@@ -91,7 +62,7 @@ public class LED {
         private int getBegin() { return begin; } // for looping: returns the first index
         private int getEnd() { return begin + length; } // for looping: returns the last index (exclusive)
 
-        public void set(Modes mode, Color ...colors) {
+        public void set(Modes mode, LEDColor...colors) {
             set(colors);
             set(mode);
         }
@@ -103,7 +74,7 @@ public class LED {
             update();
         }
 
-        public void set(Color ...colors) {
+        public void set(LEDColor...colors) {
             this.colors = colors;
         }
 
@@ -124,7 +95,7 @@ public class LED {
         private PseudoSection(Section ...sections) {
             this.sections = sections;
         }
-        public void set(Modes mode, Color ...colors) {
+        public void set(Modes mode, LEDColor...colors) {
             set(colors);
             set(mode);
         }
@@ -133,7 +104,7 @@ public class LED {
                 section.set(mode);
             }
         }
-        public void set(Color ...colors) {
+        public void set(LEDColor...colors) {
             for (Section section : sections) {
                 section.set(colors);
             }
@@ -156,7 +127,7 @@ public class LED {
             this.section = section;
         }
 
-        protected Color color(int i) { // prevent null unset colors
+        protected LEDColor color(int i) { // prevent null unset colors
             return section.colors != null && i < section.colors.length && section.colors[i] != null ? section.colors[i] : Colors.OFF;
         }
 
@@ -238,7 +209,7 @@ public class LED {
     }
 
     // Push the internal led buffer to the LEDs
-    private static void setLEDs(Color[] leds) {
+    private static void setLEDs(LEDColor[] leds) {
         byte[] data = new byte[(leds.length + 2) * 4];
         byte[] bytes;
         for (int i = 0; i < leds.length; i++) { // an LED update frame starts with four bytes of zeroes followed by frames of four bytes for each led.

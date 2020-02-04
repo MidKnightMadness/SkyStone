@@ -35,7 +35,7 @@ public class LEDTest extends OpMode {
             LED.init(leds);
 
             Log.out.println("Modes");
-            LED.ALL.set(LED.Modes.STATIC, new LED.Color(0xFF3030, 31));
+            LED.ALL.set(LED.Modes.STATIC, new LED.LEDColor(0xFF3030, 31));
             Log.out.println("update");
             Log.out.flush();
             LED.update();
