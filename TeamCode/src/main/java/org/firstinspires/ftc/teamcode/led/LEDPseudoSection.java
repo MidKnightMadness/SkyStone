@@ -5,10 +5,29 @@ public class LEDPseudoSection {
     public LEDPseudoSection(LEDSection...sections) {
         this.sections = sections;
     }
+
+    public void set(LED.Modes mode, int param, LEDColor...colors) {
+        setParam(param);
+        set(colors);
+        set(mode);
+    }
+
     public void set(LED.Modes mode, LEDColor...colors) {
         set(colors);
         set(mode);
     }
+
+    public void set(LED.Modes mode, int param) {
+        setParam(param);
+        set(mode);
+    }
+
+    public void setParam(int param) {
+        for (LEDSection section : sections) {
+            section.setParam(param);
+        }
+    }
+
     public void set(LED.Modes mode) {
         for (LEDSection section : sections) {
             section.set(mode);

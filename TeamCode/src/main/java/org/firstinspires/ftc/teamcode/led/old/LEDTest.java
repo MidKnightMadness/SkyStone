@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
 import org.firstinspires.ftc.teamcode.led.LED;
 import org.firstinspires.ftc.teamcode.led.LEDColor;
-import org.firstinspires.ftc.teamcode.led.util.LEDColor;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
@@ -39,7 +38,8 @@ public class LEDTest extends OpMode {
             LED.init(leds);
 
             Log.out.println("Modes");
-            LED.ALL.set(LED.Modes.STATIC, new LEDColor(0xFF3030, 31));
+            LED.ALL.set(LED.Modes.STATIC, 9, new LEDColor(0xFF3030, 31));
+
             Log.out.println("update");
             Log.out.flush();
             LED.update();

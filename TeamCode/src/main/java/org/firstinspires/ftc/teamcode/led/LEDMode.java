@@ -15,5 +15,9 @@ public abstract class LEDMode {
         return section.colors.length;
     }
 
+    protected int getParam() {
+        return section.param;
+    }
+
     public abstract void update();
 }

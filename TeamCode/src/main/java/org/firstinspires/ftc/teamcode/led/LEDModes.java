@@ -43,4 +43,11 @@ public class LEDModes {
             }
         }
     }
+
+    static class Progress extends LEDMode {
+        @Override
+        public void update() {
+            getParam();
+        }
+    }
 }
