@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.led;
 
+import com.qualcomm.robotcore.hardware.I2cAddr;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
 import java.util.ArrayList;
@@ -60,6 +61,9 @@ public class LED {
     // Initialize the LEDs with the LED hardware.
     public static void init(I2cDeviceSynch ledStrip) {
         LED.ledController = ledStrip;//.getDevice();
+        ledStrip.disengage();
+        ledStrip.setI2cAddress(I2cAddr.create8bit(0x50));
+        ledStrip.engage();
         for (int j = 0; j < leds.length; j++) {
             leds[j] = Colors.OFF;
         }
@@ -88,8 +92,8 @@ public class LED {
         private int getEnd() { return begin + length; } // for looping: returns the last index (exclusive)
 
         public void set(Modes mode, Color ...colors) {
-            set(mode);
             set(colors);
+            set(mode);
         }
 
         public void set(Modes mode) {
@@ -121,8 +125,8 @@ public class LED {
             this.sections = sections;
         }
         public void set(Modes mode, Color ...colors) {
-            set(mode);
             set(colors);
+            set(mode);
         }
         public void set(Modes mode) {
             for (Section section : sections) {
@@ -153,7 +157,7 @@ public class LED {
         }
 
         protected Color color(int i) { // prevent null unset colors
-            return i < section.colors.length && section.colors[i] != null ? section.colors[i] : Colors.OFF;
+            return section.colors != null && i < section.colors.length && section.colors[i] != null ? section.colors[i] : Colors.OFF;
         }
 
         protected int colorsLength() {
