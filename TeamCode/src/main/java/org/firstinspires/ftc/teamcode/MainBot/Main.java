@@ -15,8 +15,10 @@ import org.firstinspires.ftc.teamcode.foundationMover.FoundationMover;
 import org.firstinspires.ftc.teamcode.grabber.Claw;
 import org.firstinspires.ftc.teamcode.grabber.Grabber;
 import org.firstinspires.ftc.teamcode.led.LED;
+import org.firstinspires.ftc.teamcode.led.LEDColor;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.PINK;
 
 @TeleOp
@@ -37,6 +39,9 @@ public class Main extends OpMode {
     private boolean isGrabbed;
     private double targetGrabberRot;
 
+    private int progress = 3;
+    private boolean y2Down;
+
     @Override
     public void init() {
         Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
@@ -52,9 +57,22 @@ public class Main extends OpMode {
         LED.update();
     }
 
+    public void start()
+    {
+        LED.ALL.set(LED.Modes.PROGRESS, progress, BLUE, GREEN);
+    }
+
     @Override
     public void loop() {
         LED.update();
+
+        if (gamepad2.y && !y2Down) {
+            y2Down = true;
+        } else if (!gamepad2.y && y2Down) {
+            y2Down = false;
+            progress++;
+            LED.ALL.setParam(progress);
+        }
         
         delivery.setOverride(gamepad2.b);
         //delivery

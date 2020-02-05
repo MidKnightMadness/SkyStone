@@ -29,7 +29,8 @@ public class LED {
     public enum Modes {
         STATIC,
         RUNNING,
-        BOUNCING;
+        BOUNCING,
+        PROGRESS;
 
         LEDMode getNewMode() {
             switch (this) {
@@ -37,6 +38,7 @@ public class LED {
                 default: return new LEDModes.Static();
                 case RUNNING: return new LEDModes.Running();
                 case BOUNCING: return new LEDModes.Bouncing();
+                case PROGRESS: return new LEDModes.Progress();
 
             }
         }
