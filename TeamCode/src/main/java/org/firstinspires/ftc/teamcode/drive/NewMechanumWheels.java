@@ -136,8 +136,8 @@ public class NewMechanumWheels extends Drive {
 
             double fieldX = (targetPosition.getX().toInches() - navigation.getPosition().getX().toInches()) / K_P_TRANSLATION;
             double fieldY = (targetPosition.getY().toInches() - navigation.getPosition().getY().toInches()) / K_P_TRANSLATION;
-            double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
-       
+            double fieldRot = -targetPosition.getTheta().copy().getDegrees() / K_P_ROTATION;
+
             telemetry.addData("fieldRot", fieldRot);
        
             if (Math.abs(fieldX) < 0.1 / K_P_TRANSLATION && Math.abs(fieldY) < 0.1 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {

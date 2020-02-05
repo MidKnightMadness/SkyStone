@@ -17,6 +17,7 @@ public class LED {
         /**** LEDColor Presets. Add new colors here. ****/
         public static final LEDColor OFF = new LEDColor(0, 0);
         public static final LEDColor RED = new LEDColor(0xFF0000, 31);
+        public static final LEDColor ORANGE = new LEDColor(0xFF8300, 31);
         public static final LEDColor GREEN = new LEDColor(0x00FF00, 31);
         public static final LEDColor BLUE = new LEDColor(0x0000FF, 31);
         public static final LEDColor NAVY = new LEDColor(0x000090, 31);

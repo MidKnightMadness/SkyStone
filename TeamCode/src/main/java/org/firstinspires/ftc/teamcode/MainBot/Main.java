@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.MainBot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Assembly;
@@ -19,7 +20,9 @@ import org.firstinspires.ftc.teamcode.led.LEDColor;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.ORANGE;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.PINK;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.RED;
 
 @TeleOp
 public class Main extends OpMode {
@@ -39,8 +42,8 @@ public class Main extends OpMode {
     private boolean isGrabbed;
     private double targetGrabberRot;
 
-    private int progress = 3;
-    private boolean y2Down;
+    private ElapsedTime runtime = new ElapsedTime();
+    private int LEDState;
 
     @Override
     public void init() {
@@ -59,19 +62,26 @@ public class Main extends OpMode {
 
     public void start()
     {
-        LED.ALL.set(LED.Modes.PROGRESS, progress, BLUE, GREEN);
+        LED.ALL.set(LED.Modes.STATIC, GREEN);
+        runtime.reset();
     }
 
     @Override
     public void loop() {
         LED.update();
 
-        if (gamepad2.y && !y2Down) {
-            y2Down = true;
-        } else if (!gamepad2.y && y2Down) {
-            y2Down = false;
-            progress++;
-            LED.ALL.setParam(progress);
+        //LEDs
+        if (runtime.seconds() > 80 && LEDState == 0) {
+            LED.ALL.set(BLUE);
+            LEDState = 1;
+        }
+        if (runtime.seconds() > 90 && LEDState == 1) {
+            LED.ALL.set(ORANGE);
+            LEDState = 2;
+        }
+        if (runtime.seconds() > 110 && LEDState == 2) {
+            LED.ALL.set(RED);
+            LEDState = 3;
         }
         
         delivery.setOverride(gamepad2.b);
@@ -127,11 +137,13 @@ public class Main extends OpMode {
             if(isGrabbed)
             {
                 grabber.release();
+                LEDState = -1;
                 isGrabbed = false;
             }
             else
             {
                 grabber.grab();
+                LEDState = 0;
                 isGrabbed = true;
             }
         } else if (!gamepad2.x && xpressed) {
@@ -141,5 +153,11 @@ public class Main extends OpMode {
         targetGrabberRot = gamepad2.left_trigger - gamepad2.right_trigger;
         grabber.rotate(((targetGrabberRot / 1.4) + 1) / 2);
         grabber.update();
+    }
+
+    public void stop()
+    {
+        LED.ALL.set(LED.Modes.RUNNING, LED.Colors.NAVY, LED.Colors.GOLD);
+        LED.update();
     }
 }
