@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.MainBot;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Assembly;
@@ -13,6 +14,10 @@ import org.firstinspires.ftc.teamcode.foundationMover.ActualFoundationMover;
 import org.firstinspires.ftc.teamcode.foundationMover.FoundationMover;
 import org.firstinspires.ftc.teamcode.grabber.Claw;
 import org.firstinspires.ftc.teamcode.grabber.Grabber;
+import org.firstinspires.ftc.teamcode.led.LED;
+
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.PINK;
 
 @TeleOp
 public class Main extends OpMode {
@@ -35,14 +40,21 @@ public class Main extends OpMode {
     @Override
     public void init() {
         Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
+        I2cDeviceSynch leds = hardwareMap.get(I2cDeviceSynch.class, "ledstrip");
+        LED.init(leds);
+        LED.LOWER.set(LED.Modes.BOUNCING, BLUE, PINK);
         telemetry.addLine("I AM INITIALIZED!");
         telemetry.addLine(" -- Just for Chris...");
         telemetry.update();
-        
+    }
+
+    public void init_loop() {
+        LED.update();
     }
 
     @Override
     public void loop() {
+        LED.update();
         
         delivery.setOverride(gamepad2.b);
         //delivery

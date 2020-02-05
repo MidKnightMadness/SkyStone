@@ -38,7 +38,7 @@ public class LEDTest extends OpMode {
             LED.init(leds);
 
             Log.out.println("Modes");
-            LED.ALL.set(LED.Modes.STATIC, 9, new LEDColor(0xFF3030, 31));
+            LED.ALL.set(LED.Modes.BOUNCING,  new LEDColor(0xFF3030, 31), BLUE);
 
             Log.out.println("update");
             Log.out.flush();

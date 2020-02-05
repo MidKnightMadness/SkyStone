@@ -21,6 +21,8 @@ public class LED {
         public static final LEDColor BLUE = new LEDColor(0x0000FF, 31);
         public static final LEDColor NAVY = new LEDColor(0x000090, 31);
         public static final LEDColor GOLD = new LEDColor(0xEEEE00, 31);
+        public static final LEDColor PINK = new LEDColor(0xFF3030, 31);
+
     }
 
     /**** Preset modes for handling LEDs. Add more here. Assume fresh instances.****/
@@ -65,6 +67,7 @@ public class LED {
         for (int j = 0; j < leds.length; j++) {
             leds[j] = Colors.OFF;
         }
+        ALL.set(Modes.STATIC, Colors.OFF);
         initialized = true;
     }
 

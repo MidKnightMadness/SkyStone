@@ -19,7 +19,6 @@ public class LEDSection {
         this.length = length; // save the length
         nextLED += length;    // and update the next available led
         sections.add(this);   // and add this to the internal array for updating
-        set(LED.Modes.STATIC, LED.Colors.OFF);
     }
 
     // These are made specifically for for loops. Ex: for (int i = getBegin(); i < getEnd(); i++) {}
