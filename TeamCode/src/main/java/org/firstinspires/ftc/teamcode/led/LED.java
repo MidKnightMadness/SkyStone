@@ -60,6 +60,7 @@ public class LED {
 
     // Initialize the LEDs with the LED hardware.
     public static void init(I2cDeviceSynch ledStrip) {
+        Log.init();
         LED.ledController = ledStrip;//.getDevice();
         ledStrip.disengage();
         ledStrip.setI2cAddress(I2cAddr.create8bit(0x50));
