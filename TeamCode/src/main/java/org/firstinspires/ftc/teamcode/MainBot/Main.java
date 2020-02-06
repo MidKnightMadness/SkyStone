@@ -86,7 +86,7 @@ public class Main extends OpMode {
             slow = !slow;
         }
         
-        delivery.setOverride(gamepad2.b);
+        delivery.setOverride(gamepad2.back);
         //delivery
         if (gamepad2.right_stick_y == 0) {
             delivery.holdDepth();
