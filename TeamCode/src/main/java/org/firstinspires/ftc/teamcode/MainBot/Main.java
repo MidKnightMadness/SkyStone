@@ -41,6 +41,9 @@ public class Main extends OpMode {
     private boolean xpressed;
     private boolean isGrabbed;
     private double targetGrabberRot;
+    private boolean ddpressed;
+    private boolean dupressed;
+    private boolean slow;
 
     private ElapsedTime runtime = new ElapsedTime();
     private int LEDState;
@@ -51,6 +54,7 @@ public class Main extends OpMode {
         I2cDeviceSynch leds = hardwareMap.get(I2cDeviceSynch.class, "ledstrip");
         LED.init(leds);
         LED.LOWER.set(LED.Modes.BOUNCING, BLUE, PINK);
+        LED.BACK.setBrightness(0.1);
         telemetry.addLine("I AM INITIALIZED!");
         telemetry.addLine(" -- Just for Chris...");
         telemetry.update();
@@ -83,6 +87,13 @@ public class Main extends OpMode {
             LED.ALL.set(RED);
             LEDState = 3;
         }
+
+        if (gamepad1.dpad_down && !ddpressed) {
+            ddpressed = true;
+        } else if (!gamepad1.dpad_down && ddpressed) {
+            ddpressed = false;
+            slow = !slow;
+        }
         
         delivery.setOverride(gamepad2.b);
         //delivery
@@ -101,8 +112,8 @@ public class Main extends OpMode {
 
         //drive
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);
-        double speed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y) * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger);
-        double rotation = gamepad1.right_stick_x * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger);
+        double speed = Math.hypot(gamepad1.left_stick_x, -gamepad1.left_stick_y) * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger) * (slow ? 0.3 : 1);
+        double rotation = gamepad1.right_stick_x * (1 - gamepad1.right_trigger) * (1 - gamepad1.left_trigger) * (slow ? 0.3 : 1);
         drive.setDirection(direction, speed, rotation);
         drive.update();
 

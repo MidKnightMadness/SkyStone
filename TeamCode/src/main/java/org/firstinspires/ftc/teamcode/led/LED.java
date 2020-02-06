@@ -75,10 +75,15 @@ public class LED {
         initialized = true;
     }
 
+    private static double updateInterval = 0.1;
+    public static void setUpdateInterval(double seconds) {
+        updateInterval = 0.1;
+    }
+
     public static void update() {
         if (!initialized) return;
 
-        if (runtime.seconds() > 0.1) {
+        if (runtime.seconds() > updateInterval) {
             LEDSection.updateAll();
             setLEDs(leds);
             runtime.reset();
@@ -89,12 +94,15 @@ public class LED {
     private static void setLEDs(LEDColor[] leds) {
         byte[] data = new byte[(leds.length + 2) * 4];
         byte[] bytes;
-        for (int i = 0; i < leds.length; i++) { // an LED update frame starts with four bytes of zeroes followed by frames of four bytes for each led.
-            bytes = leds[i].getBytes();
-            data[(i*4) + 4] = bytes[0];
-            data[(i*4) + 5] = bytes[1];
-            data[(i*4) + 6] = bytes[2];
-            data[(i*4) + 7] = bytes[3];
+        int i = 0;
+        for (LEDSection section : LEDSection.sections) { // an LED update frame starts with four bytes of zeroes followed by frames of four bytes for each led.
+            for (; i < section.getEnd(); i++) {
+                bytes = leds[i].getDimmed(section.getBrightness()).getBytes();
+                data[(i * 4) + 4] = bytes[0];
+                data[(i * 4) + 5] = bytes[1];
+                data[(i * 4) + 6] = bytes[2];
+                data[(i * 4) + 7] = bytes[3];
+            }
         }
 
         data[data.length - 1] = data[data.length - 2] = data[data.length - 3] = data[data.length - 4] = (byte)0xFF; // and ends with four bytes of 0xFF

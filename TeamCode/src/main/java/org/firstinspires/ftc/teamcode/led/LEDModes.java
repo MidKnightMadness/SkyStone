@@ -6,8 +6,17 @@ public class LEDModes {
     // A simple mode to set the entire section to a single color.
     static class Static extends LEDMode {
         public void update() {
-            for (int i = section.getBegin(); i < section.getEnd(); i++) {
-                LED.leds[i] = color(0);
+            for (int j = section.getBegin(); j < section.getEnd(); j++) {
+                LED.leds[j] = color(j % colorsLength());
+            }
+        }
+    }
+
+    // A simple mode to set the entire section to a single color.
+    static class Flashing extends LEDMode {
+        public void update() {
+            for (int j = section.getBegin(); j < section.getEnd(); j++) {
+                LED.leds[j] = color(j % colorsLength());
             }
         }
     }
@@ -20,7 +29,6 @@ public class LEDModes {
                 LED.leds[j] = color((j + offset) % colorsLength());
             }
             offset = (offset + 1) % colorsLength();
-            Log.out.println("Updated!" + offset);
         }
     }
 

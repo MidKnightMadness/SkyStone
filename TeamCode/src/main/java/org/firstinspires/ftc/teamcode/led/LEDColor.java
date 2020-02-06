@@ -18,6 +18,10 @@ public class LEDColor {
         bytes[3] = (byte) (( color >> 16) & 0xFF); // B
     }
 
+    public LEDColor getDimmed(double brightness) {
+        return new LEDColor(getColor(), (int) (getBrightness() * brightness));
+    }
+
     public byte[] getBytes() {
         return bytes;
     }

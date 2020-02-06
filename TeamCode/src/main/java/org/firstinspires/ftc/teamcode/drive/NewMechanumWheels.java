@@ -161,7 +161,7 @@ public class NewMechanumWheels extends Drive {
     }
 
     private void updateSpeed() {
-        currentRotation = Angle.fromDegrees(imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        currentRotation = Angle.fromDegrees(0); //Angle.fromDegrees(imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         Angle theta = targetTranslation.copy().add(currentRotation).subtract(initialRotation);
 
         double vX = Math.sin(theta.toRadians());

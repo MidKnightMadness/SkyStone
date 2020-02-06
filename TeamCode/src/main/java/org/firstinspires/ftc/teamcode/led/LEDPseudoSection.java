@@ -28,6 +28,12 @@ public class LEDPseudoSection {
         }
     }
 
+    public void setBrightness(double brightness) {
+        for (LEDSection section : sections) {
+            section.setBrightness(brightness);
+        }
+    }
+
     public void set(LED.Modes mode) {
         for (LEDSection section : sections) {
             section.set(mode);

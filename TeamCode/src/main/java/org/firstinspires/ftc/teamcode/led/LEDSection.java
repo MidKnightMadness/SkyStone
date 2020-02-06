@@ -6,9 +6,10 @@ import java.util.ArrayList;
 public class LEDSection {
     private int begin, length; // the beginning index and the length of this section
     private static int nextLED = 0; // the next available led not claimed yet
-    private static ArrayList<LEDSection> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
+    static ArrayList<LEDSection> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
     LEDColor[] colors;
     private LEDMode mode; // Which mode this section is in. Defaults to static off.
+    private double brightness = 1;
     int param = 0;
 
     //private LEDMode lastMode;
@@ -43,6 +44,15 @@ public class LEDSection {
 
     public void setParam(int param) {
         this.param = param;
+    }
+
+    // brightness percentage for all the colors in this section...
+    public void setBrightness(double brightness) {
+        this.brightness = brightness;
+    }
+
+    public double getBrightness() {
+        return brightness;
     }
 
     public void set(LED.Modes mode) {
