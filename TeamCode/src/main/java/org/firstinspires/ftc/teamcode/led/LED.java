@@ -31,7 +31,8 @@ public class LED {
         STATIC,
         RUNNING,
         BOUNCING,
-        PROGRESS;
+        PROGRESS,
+        FLASHING;
 
         LEDMode getNewMode() {
             switch (this) {
@@ -40,7 +41,7 @@ public class LED {
                 case RUNNING: return new LEDModes.Running();
                 case BOUNCING: return new LEDModes.Bouncing();
                 case PROGRESS: return new LEDModes.Progress();
-
+                case FLASHING: return new LEDModes.Flashing();
             }
         }
     }

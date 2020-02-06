@@ -14,9 +14,12 @@ public class LEDModes {
 
     // A simple mode to set the entire section to a single color.
     static class Flashing extends LEDMode {
+        private int delay = 0;
+
         public void update() {
+            delay = (delay + 1) % 10;
             for (int j = section.getBegin(); j < section.getEnd(); j++) {
-                LED.leds[j] = color(j % colorsLength());
+                LED.leds[j] = delay < 3 ? color(j % colorsLength()) : LED.Colors.OFF;
             }
         }
     }
