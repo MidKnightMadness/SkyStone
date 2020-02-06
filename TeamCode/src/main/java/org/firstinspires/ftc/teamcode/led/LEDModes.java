@@ -17,9 +17,9 @@ public class LEDModes {
         private int delay = 0;
 
         public void update() {
-            delay = (delay + 1) % 10;
+            delay = (delay + 1) % 4;
             for (int j = section.getBegin(); j < section.getEnd(); j++) {
-                LED.leds[j] = delay < 3 ? color(j % colorsLength()) : LED.Colors.OFF;
+                LED.leds[j] = delay < 2 ? color(j % colorsLength()) : LED.Colors.OFF;
             }
         }
     }

@@ -17,6 +17,7 @@ import org.firstinspires.ftc.teamcode.grabber.Claw;
 import org.firstinspires.ftc.teamcode.grabber.Grabber;
 import org.firstinspires.ftc.teamcode.led.LED;
 import org.firstinspires.ftc.teamcode.led.LEDColor;
+import org.firstinspires.ftc.teamcode.led.LEDState;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
@@ -46,7 +47,6 @@ public class Main extends OpMode {
     private boolean slow;
 
     private ElapsedTime runtime = new ElapsedTime();
-    private int LEDState;
 
     @Override
     public void init() {
@@ -72,21 +72,9 @@ public class Main extends OpMode {
 
     @Override
     public void loop() {
-        LED.update();
-
         //LEDs
-        if (runtime.seconds() > 80 && LEDState == 0) {
-            LED.ALL.set(BLUE);
-            LEDState = 1;
-        }
-        if (runtime.seconds() > 90 && LEDState == 1) {
-            LED.ALL.set(ORANGE);
-            LEDState = 2;
-        }
-        if (runtime.seconds() > 110 && LEDState == 2) {
-            LED.ALL.set(RED);
-            LEDState = 3;
-        }
+        LEDState.update(slow,isGrabbed,runtime.seconds());
+        LED.update();
 
         if (gamepad1.dpad_down && !ddpressed) {
             ddpressed = true;
@@ -148,13 +136,11 @@ public class Main extends OpMode {
             if(isGrabbed)
             {
                 grabber.release();
-                LEDState = -1;
                 isGrabbed = false;
             }
             else
             {
                 grabber.grab();
-                LEDState = 0;
                 isGrabbed = true;
             }
         } else if (!gamepad2.x && xpressed) {
@@ -169,6 +155,6 @@ public class Main extends OpMode {
     public void stop()
     {
         LED.ALL.set(LED.Modes.RUNNING, LED.Colors.NAVY, LED.Colors.GOLD);
-        LED.update();
+        LED.forceUpdate();
     }
 }

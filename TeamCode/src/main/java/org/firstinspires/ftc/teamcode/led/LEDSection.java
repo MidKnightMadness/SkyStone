@@ -9,6 +9,7 @@ public class LEDSection {
     static ArrayList<LEDSection> sections = new ArrayList<>(); // the internal array for looping over all the sections to update
     LEDColor[] colors;
     private LEDMode mode; // Which mode this section is in. Defaults to static off.
+    private LED.Modes modeEnum;
     private double brightness = 1;
     int param = 0;
 
@@ -59,11 +60,16 @@ public class LEDSection {
         //lastMode = this.mode;
         this.mode = mode.getNewMode();
         this.mode.setSection(this);
-        update();
+        modeEnum = mode;
     }
 
     public void set(LEDColor...colors) {
         this.colors = colors;
+    }
+
+    public LED.Modes getModeEnum()
+    {
+        return modeEnum;
     }
 
     private void update() {
