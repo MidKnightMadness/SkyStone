@@ -20,6 +20,7 @@ import org.firstinspires.ftc.teamcode.led.LEDColor;
 import org.firstinspires.ftc.teamcode.led.LEDState;
 
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.BLUE;
+import static org.firstinspires.ftc.teamcode.led.LED.Colors.GOLD;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.GREEN;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.ORANGE;
 import static org.firstinspires.ftc.teamcode.led.LED.Colors.PINK;
@@ -50,11 +51,13 @@ public class Main extends OpMode {
 
     @Override
     public void init() {
-        Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
         I2cDeviceSynch leds = hardwareMap.get(I2cDeviceSynch.class, "ledstrip");
         LED.init(leds);
-        LED.LOWER.set(LED.Modes.BOUNCING, BLUE, PINK);
         LED.BACK.setBrightness(0.1);
+        LED.ALL.set(LED.Modes.PROGRESS, 1, BLUE, GOLD);
+        LED.forceUpdate();
+        Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
+        LED.LOWER.set(LED.Modes.BOUNCING, BLUE, GOLD);
         telemetry.addLine("I AM INITIALIZED!");
         telemetry.addLine(" -- Just for Chris...");
         telemetry.update();

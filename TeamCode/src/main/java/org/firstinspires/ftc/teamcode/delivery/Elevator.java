@@ -125,7 +125,7 @@ public class Elevator extends Delivery {
             if (pos < 0) pos = 0;
             vertical.setTargetPosition(pos + initHeight);
             vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            vertical.setPower(1);
+            vertical.setPower(0.5);
         }
         telemetry.addData("height", getHeight());
         telemetry.addData("initHeight", initHeight);
