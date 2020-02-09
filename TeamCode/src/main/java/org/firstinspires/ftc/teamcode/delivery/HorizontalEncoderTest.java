@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 
-@Disabled
 @TeleOp
 public class HorizontalEncoderTest extends OpMode{
 

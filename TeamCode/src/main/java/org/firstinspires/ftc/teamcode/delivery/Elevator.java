@@ -53,6 +53,11 @@ public class Elevator extends Delivery {
     }
 
     @Override
+    public void setHeightRaw(int encoderTicks) {
+        vertical.setTargetPosition(encoderTicks + initHeight);
+    }
+
+    @Override
     public void setDepth(double inches) {
         int targetPos = (int) (inches * 10);  //change later
 
