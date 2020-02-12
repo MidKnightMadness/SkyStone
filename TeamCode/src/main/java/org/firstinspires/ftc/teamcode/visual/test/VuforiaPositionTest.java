@@ -9,7 +9,6 @@ import org.firstinspires.ftc.teamcode.common.Position;
 import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
-@Disabled
 @TeleOp
 public class VuforiaPositionTest extends OpMode {
 

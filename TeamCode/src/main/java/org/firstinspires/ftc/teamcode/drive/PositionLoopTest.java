@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.drive;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -57,6 +58,11 @@ public class PositionLoopTest extends Drive {
 
     public void resetHeading() {
         initialRotation = currentRotation;
+    }
+
+    @Override
+    public void setThreshold(double tThreshold, double rThreshold) {
+
     }
 
     @Override

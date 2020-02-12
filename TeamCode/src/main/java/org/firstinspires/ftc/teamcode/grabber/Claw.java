@@ -4,7 +4,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.teamcode.config.HardwareConfig;
 
-public class Claw extends Grabber  {
+public class Claw extends Grabber {
     private Servo clawservo;
     private Servo rotateservo;
 
@@ -21,10 +21,12 @@ public class Claw extends Grabber  {
     }
 
     @Override
-    public void release() { clawservo.setPosition(0.6);}
+    public void release() {
+        clawservo.setPosition(0.6);
+    }
 
     @Override
-    public void rotate(double angle) { rotateservo.setPosition(angle);}
+    public void rotate(double angle) { rotateservo.setPosition(((angle / 1.4) + 1) / 2); }
 
     @Override
     public double getangle() {

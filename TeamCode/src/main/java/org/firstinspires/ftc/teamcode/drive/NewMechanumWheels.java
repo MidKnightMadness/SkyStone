@@ -36,6 +36,9 @@ public class NewMechanumWheels extends Drive {
     private Position targetPosition;
     private Navigation navigation;
 
+    private double tThreshold;
+    private double rThreshold;
+
     @Override
     public Position getPosition() {
         return currentPosition;
@@ -136,11 +139,11 @@ public class NewMechanumWheels extends Drive {
 
             double fieldX = (targetPosition.getX().toInches() - navigation.getPosition().getX().toInches()) / K_P_TRANSLATION;
             double fieldY = (targetPosition.getY().toInches() - navigation.getPosition().getY().toInches()) / K_P_TRANSLATION;
-            double fieldRot = -targetPosition.getTheta().copy().getDegrees() / K_P_ROTATION;
+            double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
 
             telemetry.addData("fieldRot", fieldRot);
        
-            if (Math.abs(fieldX) < 0.1 / K_P_TRANSLATION && Math.abs(fieldY) < 0.1 / K_P_TRANSLATION && Math.abs(fieldRot) < 2 / K_P_ROTATION) {
+            if (Math.abs(fieldX) < tThreshold / K_P_TRANSLATION && Math.abs(fieldY) < tThreshold / K_P_TRANSLATION && Math.abs(fieldRot) < rThreshold / K_P_ROTATION) {
                 targetPosition = null;
                 internalSetDirection(Angle.fromDegrees(0), 0, 0);
             } else {
@@ -266,5 +269,11 @@ public class NewMechanumWheels extends Drive {
         telemetry.addData("fieldX", currentPosition.getX().toInches());
         telemetry.addData("fieldY", currentPosition.getY().toInches());
         telemetry.addData("theta", theta.toDegrees());
+    }
+
+    public void setThreshold(double tThreshold,double rThreshold)
+    {
+        this.tThreshold = tThreshold;
+        this.rThreshold = rThreshold;
     }
 }

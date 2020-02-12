@@ -151,7 +151,7 @@ public class Main extends OpMode {
         }
         
         targetGrabberRot = gamepad2.left_trigger - gamepad2.right_trigger;
-        grabber.rotate(((targetGrabberRot / 1.4) + 1) / 2);
+        grabber.rotate(targetGrabberRot);
         grabber.update();
     }
 

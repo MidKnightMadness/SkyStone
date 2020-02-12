@@ -17,4 +17,6 @@ public abstract class Drive extends Assembly {
     public abstract boolean isComplete();
 
     public abstract void resetHeading();
+
+    public abstract void setThreshold(double tThreshold, double rThreshold);
 }

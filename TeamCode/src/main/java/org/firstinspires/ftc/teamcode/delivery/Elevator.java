@@ -30,7 +30,7 @@ public class Elevator extends Delivery {
         initHeight = vertical.getCurrentPosition();
         vertical.setTargetPosition(initHeight);
         vertical.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        vertical.setPower(1);
+        vertical.setPower(0.5);
         vertical.setDirection(DcMotor.Direction.REVERSE);
         vertical.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         //noinspection deprecation
@@ -41,7 +41,7 @@ public class Elevator extends Delivery {
         initDepth = horizontal.getCurrentPosition();
         horizontal.setTargetPosition(initDepth);
         horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        horizontal.setPower(0.5);
+        horizontal.setPower(1);
         horizontal.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
@@ -71,8 +71,8 @@ public class Elevator extends Delivery {
 
     @Override
     public boolean isComplete() {
-        return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 100 ;//&&
-                //Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 1000;
+        return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 100 &&
+                Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 100;
     }
     
     private boolean override = false;

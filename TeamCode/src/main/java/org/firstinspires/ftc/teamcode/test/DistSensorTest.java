@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode.visual.test;
+package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
