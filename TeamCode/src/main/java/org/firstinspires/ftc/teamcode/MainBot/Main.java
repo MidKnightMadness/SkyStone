@@ -43,6 +43,9 @@ public class Main extends OpMode {
     private boolean xpressed;
     private boolean isGrabbed;
     private double targetGrabberRot;
+    private int grabberDefaultRotation;
+    private boolean dlpressed;
+    private boolean drpressed;
     private boolean ddpressed;
     private boolean dupressed;
     private boolean slow;
@@ -51,6 +54,14 @@ public class Main extends OpMode {
 
     @Override
     public void init() {
+        telemetry.addLine("------------------------------");
+        telemetry.addLine("        |     |   -----   |");
+        telemetry.addLine("        |----|      |     |");
+        telemetry.addLine("        |     |   -----   .");
+        telemetry.addLine("------------------------------");
+        telemetry.addLine(" \"Please get better text art\"");
+        telemetry.update();
+
         I2cDeviceSynch leds = hardwareMap.get(I2cDeviceSynch.class, "ledstrip");
         LED.init(leds);
         LED.BACK.setBrightness(0.1);
@@ -58,6 +69,8 @@ public class Main extends OpMode {
         LED.forceUpdate();
         Assembly.initialize(telemetry, hardwareMap, delivery, drive, foundationMover, grabber);
         LED.LOWER.set(LED.Modes.BOUNCING, BLUE, GOLD);
+        //drive.setDriveMode(Drive.DRIVEMODE.RELATIVE);
+
         telemetry.addLine("I AM INITIALIZED!");
         telemetry.addLine(" -- Just for Chris...");
         telemetry.update();
@@ -85,7 +98,7 @@ public class Main extends OpMode {
             ddpressed = false;
             slow = !slow;
         }
-        
+
         delivery.setOverride(gamepad2.back);
         //delivery
         if (gamepad2.right_stick_y == 0) {
@@ -93,13 +106,13 @@ public class Main extends OpMode {
         } else {
             delivery.setDepthPower(-gamepad2.right_stick_y);
         }
-        
+
         if (gamepad2.left_stick_y == 0) {
             delivery.holdHeight();
         } else {
             delivery.setHeightPower(-gamepad2.left_stick_y);
         }
-        
+
 
         //drive
         Angle direction = Angle.aTan(gamepad1.left_stick_x, -gamepad1.left_stick_y);
@@ -120,17 +133,17 @@ public class Main extends OpMode {
         } else if (mode == -1) {
             foundationMover.grab();
         }
-        
+
         if (gamepad1.a) {
             drive.resetHeading();
         }
-        
+
         if (gamepad2.left_bumper) {
-            delivery.setHeight(0.04);
+            delivery.setHeight(0.06);
         }
-        
+
         if (gamepad2.right_bumper) {
-            delivery.setHeight(0);
+            delivery.setHeight(0.17);
         }
 
         //grabber
@@ -149,8 +162,32 @@ public class Main extends OpMode {
         } else if (!gamepad2.x && xpressed) {
             xpressed = false;
         }
-        
-        targetGrabberRot = gamepad2.left_trigger - gamepad2.right_trigger;
+
+        if(gamepad2.dpad_left) {
+            if (!dlpressed)
+            {
+                dlpressed = true;
+                if (grabberDefaultRotation == -1)
+                    grabberDefaultRotation = 0;
+                else
+                    grabberDefaultRotation = -1;
+            }
+        } else
+            dlpressed = false;
+
+        if(gamepad2.dpad_right) {
+            if (!drpressed)
+            {
+                drpressed = true;
+                if (grabberDefaultRotation == 1)
+                    grabberDefaultRotation = 0;
+                else
+                    grabberDefaultRotation = 1;
+            }
+        } else
+            drpressed = false;
+
+        targetGrabberRot = grabberDefaultRotation + gamepad2.left_trigger - gamepad2.right_trigger;
         grabber.rotate(targetGrabberRot);
         grabber.update();
     }

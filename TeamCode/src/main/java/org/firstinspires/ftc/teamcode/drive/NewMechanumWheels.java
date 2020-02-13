@@ -39,6 +39,8 @@ public class NewMechanumWheels extends Drive {
     private double tThreshold;
     private double rThreshold;
 
+    private DRIVEMODE driveMode = DRIVEMODE.ABSOLUTE;
+
     @Override
     public Position getPosition() {
         return currentPosition;
@@ -69,7 +71,7 @@ public class NewMechanumWheels extends Drive {
         wheelBR.resetDeviceConfigurationForOpMode();
         wheelFL.resetDeviceConfigurationForOpMode();
         wheelFR.resetDeviceConfigurationForOpMode();
-        
+
         wheelBL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelBR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         wheelFL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -106,7 +108,7 @@ public class NewMechanumWheels extends Drive {
         targetTranslation = theta;
         this.speed = speed;
         this.rotationalSpeed = rotation;
-        
+
         telemetry.addData("rotationalSpeed", rotationalSpeed);
     }
 
@@ -142,19 +144,20 @@ public class NewMechanumWheels extends Drive {
             double fieldRot = -targetPosition.getTheta().copy().subtract(getCurrentRotation()).getDegrees() / K_P_ROTATION;
 
             telemetry.addData("fieldRot", fieldRot);
-       
+
             if (Math.abs(fieldX) < tThreshold / K_P_TRANSLATION && Math.abs(fieldY) < tThreshold / K_P_TRANSLATION && Math.abs(fieldRot) < rThreshold / K_P_ROTATION) {
                 targetPosition = null;
                 internalSetDirection(Angle.fromDegrees(0), 0, 0);
             } else {
                 internalSetDirection(
                         Angle.aTan(fieldX, fieldY),
-                        Math.pow(Math.abs(trim(fieldX + fieldY)) / 4, 1/2.0),
-                        Math.signum(fieldRot) * Math.pow(Math.abs(trim(fieldRot)), 1/2.0)
+                        Math.pow(Math.abs(trim(fieldX + fieldY)) / 4, 1 / 2.0),
+                        Math.signum(fieldRot) * Math.pow(Math.abs(trim(fieldRot)), 1 / 2.0)
                 );
             }
         }
     }
+
     @Override
     public void update() {
         super.update();
@@ -164,7 +167,10 @@ public class NewMechanumWheels extends Drive {
     }
 
     private void updateSpeed() {
-        currentRotation = Angle.fromDegrees(imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
+        if (driveMode == DRIVEMODE.RELATIVE)
+            currentRotation = Angle.fromDegrees(0);
+        else
+            currentRotation = Angle.fromDegrees(imu.getAngularOrientation(AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES).thirdAngle);
         Angle theta = targetTranslation.copy().add(currentRotation).subtract(initialRotation);
 
         double vX = Math.sin(theta.toRadians());
@@ -189,17 +195,17 @@ public class NewMechanumWheels extends Drive {
         translateFR *= speed / maxSpeed;
         translateBL *= speed / maxSpeed;
         translateBR *= speed / maxSpeed;
-        
+
         double rotateFL = rotationalSpeed;
         double rotateFR = rotationalSpeed;
         double rotateBL = rotationalSpeed;
         double rotateBR = rotationalSpeed;
-        
-         double velocityFL = rotateFL + translateFL;
+
+        double velocityFL = rotateFL + translateFL;
         double velocityFR = rotateFR + translateFR;
         double velocityBL = rotateBL + translateBL;
         double velocityBR = rotateBR + translateBR;
-        
+
         if (Math.abs(velocityFL) > 1 || Math.abs(velocityFR) > 1 || Math.abs(velocityBL) > 1 || Math.abs(velocityBR) > 1) {
             double maxVelocity = Math.max(Math.max(Math.abs(translateFL), Math.abs(translateFR)), Math.max(Math.abs(translateBL), Math.abs(translateBR)));
 
@@ -225,7 +231,7 @@ public class NewMechanumWheels extends Drive {
         double b = wheelBR.getCurrentPosition() - lastPositionBR;
         double c = wheelFL.getCurrentPosition() - lastPositionFL;
         double d = wheelFR.getCurrentPosition() - lastPositionFR;
-        
+
         telemetry.addData("wheelBL", wheelBL.getCurrentPosition());
         telemetry.addData("wheelBR", wheelBR.getCurrentPosition());
         telemetry.addData("wheelFL", wheelFL.getCurrentPosition());
@@ -271,9 +277,12 @@ public class NewMechanumWheels extends Drive {
         telemetry.addData("theta", theta.toDegrees());
     }
 
-    public void setThreshold(double tThreshold,double rThreshold)
-    {
+    public void setThreshold(double tThreshold, double rThreshold) {
         this.tThreshold = tThreshold;
         this.rThreshold = rThreshold;
+    }
+
+    public void setDriveMode(DRIVEMODE driveMode) {
+        this.driveMode = driveMode;
     }
 }

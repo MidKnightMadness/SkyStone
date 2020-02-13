@@ -19,4 +19,12 @@ public abstract class Drive extends Assembly {
     public abstract void resetHeading();
 
     public abstract void setThreshold(double tThreshold, double rThreshold);
+
+    public enum DRIVEMODE
+    {
+        ABSOLUTE,
+        RELATIVE,
+    }
+
+    public abstract void setDriveMode(NewMechanumWheels.DRIVEMODE driveMode);
 }
