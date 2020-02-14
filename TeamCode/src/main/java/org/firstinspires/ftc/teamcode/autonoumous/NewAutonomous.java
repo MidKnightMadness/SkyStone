@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonoumous;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -55,7 +56,7 @@ public class NewAutonomous extends LinearOpMode {
             idle();
 
         //check position
-        Visual.SkystoneSetup skystone = Visual.SkystoneSetup.Right;
+        Visual.SkystoneSetup skystone = visual.findSkystone();
 
         //move to skystone
         Position targetPos;
@@ -91,7 +92,7 @@ public class NewAutonomous extends LinearOpMode {
         first = true;
         while ((!delivery.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("extending");
-            delivery.setDepthRaw(Math.max(-2450 - (int) (230 * stoneAngle.stonePosition()[0]), -4000));
+            delivery.setDepthRaw(Math.max(-2650 - (int) (180 * stoneAngle.stonePosition()[0]), -4000));
 
             idle();
             visual.update();
@@ -131,7 +132,7 @@ public class NewAutonomous extends LinearOpMode {
         //turn left
         targetPos.setTheta(Angle.fromDegrees(90));
         drive.setTarget(targetPos, navigation);
-        while (/*!drive.isComplete() &&*/ !isStopRequested()) {
+        while (!drive.isComplete() && !isStopRequested()) {
             telemetry.addLine("turning left");
 
             idle();
@@ -140,6 +141,75 @@ public class NewAutonomous extends LinearOpMode {
             navigation.update();
             telemetry.update();
         }
+
+        //move right
+        targetPos.getY().subtract(Distance.fromInches(4));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving right");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        //move forwards
+        targetPos.setX(Distance.fromInches(60));        //foundation position at 80
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving forwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        //drop stone
+        /*
+        delivery.setHeight(0.17);
+        grabber.release();
+        while (!delivery.isComplete() && !isStopRequested()) {
+            idle();
+        }
+        */
+
+        //move backwards to get another stone
+        if (skystone == Visual.SkystoneSetup.Center)
+            targetPos.setX(Distance.fromInches(0));
+        else if (skystone == Visual.SkystoneSetup.Right)
+            targetPos.setX(Distance.fromInches(15.5));
+        else
+            targetPos.setX(Distance.fromInches(-32.5));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving backwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        /*
+        //move backwards and park
+        delivery.setHeight(0);
+        targetPos.getX().add(Distance.fromInches(-10));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving forwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+        */
 
         visual.stop();
     }

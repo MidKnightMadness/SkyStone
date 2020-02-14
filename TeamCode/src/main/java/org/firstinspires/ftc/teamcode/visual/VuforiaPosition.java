@@ -23,10 +23,11 @@ public class VuforiaPosition extends Visual {
     @Override
     public void init() {
         //initialize camera manager
-        cameraManager.startCapture(telemetry, hardwareMap.appContext);
+        cameraManager.startCaptureWithViews(telemetry, hardwareMap.appContext);
         //cameraManager.startCapture(telemetry, hardwareMap.appContext);
 
         //initialize vuforia sksytone
+        /*
         vuforia.initialize(
                 // Vuforia License key (developer.vuforia.com):
                 "Ae7oRjb/////AAABmV3pkVnpEU9Pv3XaN0o2EZ5ttngvTMliTd5nX0843lAXhah50oPXg63sdsiK9/BFMjXkw9lMippdx4bHQo5kycWr1GcFcv+QlVNEpSclUqu9Zzj4FYVl+J2ScSAXSyuCRWMRWd3AikCfhAtlwFe7dnMIfpVniU8Yr8o3YumS2/5LjNU2wIkiJak5IHlnugT414wsrzyqemO63BHn0Olbi3REkd61RxW3cE4lbSts3OI0GfnT57/Nw6/YfLAZQ69eCz0eEckVjPmbt7evb8lYo5gEpzm+wf5LVPaAzZWVj/gSQywzPKA8zoz4q6hl4zuAd3647Y3smuWVI8PpQzRwt5vP8d07Qt39p+/zEOrcGRDo",
@@ -49,6 +50,7 @@ public class VuforiaPosition extends Visual {
         );
         vuforia.activate();
         Vuforia.setHint(HINT.HINT_MAX_SIMULTANEOUS_IMAGE_TARGETS, 4);
+        */
     }
 
     @Override
@@ -59,6 +61,7 @@ public class VuforiaPosition extends Visual {
         int count = 0;
 
         //find average position on the field according to each visible trackable
+        /*
         for (String name : VuforiaSkyStone.TRACKABLE_NAMES) {
             VuforiaBase.TrackingResults track = vuforia.track(name);
             if (track.isVisible) {
@@ -68,6 +71,7 @@ public class VuforiaPosition extends Visual {
                 count++;
             }
         }
+        */
 
         //debugging for now since the Distance class is not finished
         //telemetry.addData("x", x);
@@ -160,37 +164,42 @@ public class VuforiaPosition extends Visual {
         for (int i = 0; i < 3; i++) {
             for (int x = 0; x < 3; x++)
                 for (int y = 0; y < 3; y++) {
-                    PhoneManager.colorToHSV(scaledFrame.getPixel(29 + i * 20 + x, 24 + y), hsv);
+                    PhoneManager.colorToHSV(scaledFrame.getPixel(27 + i * 25 + x, 4 + y), hsv);
 
                     blackPixels[i] += hsv[1];
                 }
         }
+
+        telemetry.addData("right", blackPixels[0]);
+        telemetry.addData("center", blackPixels[1]);
+        telemetry.addData("left", blackPixels[2]);
+
         //set other stones magenta
-        scaledFrame.setPixel(30, 25, 0xFF00FF);
-        scaledFrame.setPixel(50, 25, 0xFF00FF);
-        scaledFrame.setPixel(70, 25, 0xFF00FF);
+        scaledFrame.setPixel(27, 5, 0xFF00FF);
+        scaledFrame.setPixel(52, 5, 0xFF00FF);
+        scaledFrame.setPixel(77, 5, 0xFF00FF);
 
         SkystoneSetup result;
 
         //set the blacker stone green
         if (blackPixels[0] < blackPixels[1]) {
             if (blackPixels[0] < blackPixels[2]) {
-                scaledFrame.setPixel(30, 25, 0x00FF00);
-                result = SkystoneSetup.Left;  //1st stone
+                scaledFrame.setPixel(27, 5, 0x00FF00);
+                result = SkystoneSetup.Right;  //1st stone
             } else {
-                scaledFrame.setPixel(50, 25, 0x00FF00);
-                result = SkystoneSetup.Center;  //2nd stone
+                scaledFrame.setPixel(77, 5, 0x00FF00);
+                result = SkystoneSetup.Left;  //3nd stone
             }
         } else if (blackPixels[1] < blackPixels[2]) {
-            scaledFrame.setPixel(50, 25, 0x00FF00);
+            scaledFrame.setPixel(52, 5, 0x00FF00);
             result = SkystoneSetup.Center;  //2nd stone
         } else {
-            scaledFrame.setPixel(70, 25, 0x00FF00);
-            result = SkystoneSetup.Right;  //3rd stone
+            scaledFrame.setPixel(77, 5, 0x00FF00);
+            result = SkystoneSetup.Left;  //3rd stone
         }
 
         //display the modified bitmap
-        //cameraManager.updatePreviewBitmap(scaledFrame);
+        cameraManager.updatePreviewBitmap(scaledFrame);
         return result;
     }
 

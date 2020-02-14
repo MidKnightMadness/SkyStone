@@ -28,6 +28,6 @@ public class DistanceGrabbingTest extends OpMode {
 
     @Override
     public void loop() {
-        delivery.setDepthRaw(Math.max(-2600 - (int)(230 * stoneAngle.stonePosition()[0]), -4000));
+        delivery.setDepthRaw(Math.max(-2650 - (int)(180 * stoneAngle.stonePosition()[0]), -4000));
     }
 }
