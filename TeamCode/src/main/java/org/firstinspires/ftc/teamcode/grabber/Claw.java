@@ -17,16 +17,16 @@ public class Claw extends Grabber {
     @Override
     public void grab() {
         telemetry.addLine("GRABBING!");
-        clawservo.setPosition(1);
+        clawservo.setPosition(0.9);
     }
 
     @Override
     public void release() {
-        clawservo.setPosition(0.3);
+        clawservo.setPosition(0.1);
     }
 
     @Override
-    public void rotate(double angle) { rotateservo.setPosition(((angle / 1.4) + 1) / 2); }
+    public void rotate(double angle) { rotateservo.setPosition(((angle / 1.4) + 1) / 2 + 0.02); }
 
     @Override
     public double getangle() {

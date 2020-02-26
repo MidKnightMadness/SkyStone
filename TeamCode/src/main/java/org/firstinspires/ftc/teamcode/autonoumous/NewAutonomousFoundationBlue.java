@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonoumous;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -22,8 +23,9 @@ import org.firstinspires.ftc.teamcode.visual.StoneAngle;
 import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
+@Disabled
 @Autonomous
-public class NewAutonomousFoundation extends LinearOpMode {
+public class NewAutonomousFoundationBlue extends LinearOpMode {
 
     private Drive drive = new NewMechanumWheels();
     private Visual visual = new VuforiaPosition();
@@ -54,7 +56,7 @@ public class NewAutonomousFoundation extends LinearOpMode {
         while (!isStarted() && !isStopRequested())
             idle();
 
-        Position targetPos = new Position(Distance.fromInches(0), Distance.fromInches(-10), Angle.fromDegrees(0));
+        Position targetPos = new Position(Distance.fromInches(0), Distance.fromInches(-12), Angle.fromDegrees(0));
         drive.setTarget(targetPos, navigation);
         drive.setThreshold(2, 2);
 
@@ -74,9 +76,9 @@ public class NewAutonomousFoundation extends LinearOpMode {
         }
 
         foundationMover.grab();
-        targetPos = new Position(Distance.fromInches(0), Distance.fromInches(-20), Angle.fromDegrees(0));
+    targetPos = new Position(Distance.fromInches(0), Distance.fromInches(24), Angle.fromDegrees(0));
         drive.setTarget(targetPos, navigation);
-        while ((!drive.isComplete() || first) && !isStopRequested()) {
+        while ((!drive.isComplete()) && !isStopRequested()) {
             telemetry.addLine("moving foundation");
 
             idle();
@@ -84,9 +86,42 @@ public class NewAutonomousFoundation extends LinearOpMode {
             visual.update();
             navigation.update();
             telemetry.update();
-            first = false;
         }
+        foundationMover.reset();
 
         //park
+        targetPos.getX().add(Distance.fromInches(12));
+        drive.setTarget(targetPos, navigation);
+        while ((!drive.isComplete()) && !isStopRequested()) {
+            telemetry.addLine("moving forwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+        targetPos.getY().add(Distance.fromInches(12));
+        drive.setTarget(targetPos, navigation);
+        while ((!drive.isComplete()) && !isStopRequested()) {
+            telemetry.addLine("moving left");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+        targetPos.getX().add(Distance.fromInches(12));
+        drive.setTarget(targetPos, navigation);
+        while ((!drive.isComplete()) && !isStopRequested()) {
+            telemetry.addLine("moving forwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
     }
 }

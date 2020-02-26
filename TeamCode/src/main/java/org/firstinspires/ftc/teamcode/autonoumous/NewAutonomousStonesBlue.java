@@ -24,7 +24,7 @@ import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
 @Autonomous
-public class NewAutonomous extends LinearOpMode {
+public class NewAutonomousStonesBlue extends LinearOpMode {
 
     private Drive drive = new NewMechanumWheels();
     private Visual visual = new VuforiaPosition();
@@ -48,7 +48,7 @@ public class NewAutonomous extends LinearOpMode {
         telemetry.update();
         distanceSensorLeft = hardwareMap.get(Rev2mDistanceSensor.class, "distanceleftside");
         distanceSensorRight = hardwareMap.get(Rev2mDistanceSensor.class, "distancerightside");
-        grabber.rotate(-1);
+        grabber.rotate(0);
 
         drive.resetPosition(new Position(Distance.fromInches(0), Distance.fromInches(0), Angle.fromDegrees(90)));
 
@@ -90,6 +90,7 @@ public class NewAutonomous extends LinearOpMode {
 
         //extend arm
         first = true;
+        grabber.release();
         while ((!delivery.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("extending");
             delivery.setDepthRaw(Math.max(-2650 - (int) (180 * stoneAngle.stonePosition()[0]), -4000));
@@ -109,7 +110,7 @@ public class NewAutonomous extends LinearOpMode {
             idle();
         }
         //grab
-        //grabber.grab();
+        grabber.grab();
         delivery.setHeight(0.04);
 
         //move back
@@ -118,7 +119,7 @@ public class NewAutonomous extends LinearOpMode {
         targetPos.getY().add(Distance.fromInches(4));
         drive.setTarget(targetPos, navigation);
         delivery.setDepthRaw(-2730);
-        while ((!drive.isComplete() || first) && isStopRequested()) {
+        while ((!drive.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("moving back");
 
             idle();
@@ -169,7 +170,7 @@ public class NewAutonomous extends LinearOpMode {
         }
 
         //drop stone
-        delivery.setHeight(0.17);
+        //delivery.setHeight(0.17);
         grabber.release();
         while (!delivery.isComplete() && !isStopRequested()) {
             idle();
@@ -177,16 +178,16 @@ public class NewAutonomous extends LinearOpMode {
         //move backwards
         targetPos.getX().subtract(Distance.fromInches(6));
         drive.setTarget(targetPos, navigation);
-        delivery.setHeight(0);
-        while (!drive.isComplete() && !isStopRequested()) {
-            telemetry.addLine("moving backwards");
+        //delivery.setHeight(0);
+        //while (!drive.isComplete() && !isStopRequested()) {
+        //    telemetry.addLine("moving backwards");
 
-            idle();
-            drive.update();
-            visual.update();
-            navigation.update();
-            telemetry.update();
-        }
+        //    idle();
+        //    drive.update();
+        //    visual.update();
+        //    navigation.update();
+        //    telemetry.update();
+        //}
 
         //move backwards to get another stone
         if (skystone == Visual.SkystoneSetup.Center)
@@ -207,6 +208,7 @@ public class NewAutonomous extends LinearOpMode {
         }
 
         //turn right to get another stone
+        delivery.setHeight(0.04);
         targetPos.setTheta(Angle.fromDegrees(0));
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
@@ -240,7 +242,7 @@ public class NewAutonomous extends LinearOpMode {
             idle();
         }
         //grab
-        //grabber.grab();
+        grabber.grab();
         delivery.setHeight(0.04);
 
         //move back
@@ -249,7 +251,7 @@ public class NewAutonomous extends LinearOpMode {
         targetPos.getY().add(Distance.fromInches(4));
         drive.setTarget(targetPos, navigation);
         delivery.setDepthRaw(-2730);
-        while ((!drive.isComplete() || first) && isStopRequested()) {
+        while ((!drive.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("moving back");
 
             idle();

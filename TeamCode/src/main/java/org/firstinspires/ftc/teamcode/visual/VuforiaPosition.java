@@ -143,7 +143,7 @@ public class VuforiaPosition extends Visual {
         telemetry.addData("Right", blackBounds[1]);
 
 
-        cameraManager.updatePreviewBitmap(currentFrame);
+        //cameraManager.updatePreviewBitmap(currentFrame);
 
 
         // Now we need a proportion of left to right... Just subtracting might work...

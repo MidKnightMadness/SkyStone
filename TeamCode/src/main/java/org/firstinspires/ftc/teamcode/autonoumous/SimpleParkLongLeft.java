@@ -8,16 +8,14 @@ import org.firstinspires.ftc.teamcode.common.Angle;
 import org.firstinspires.ftc.teamcode.common.Assembly;
 import org.firstinspires.ftc.teamcode.common.Distance;
 import org.firstinspires.ftc.teamcode.common.Position;
+import org.firstinspires.ftc.teamcode.delivery.Delivery;
+import org.firstinspires.ftc.teamcode.delivery.Elevator;
 import org.firstinspires.ftc.teamcode.drive.Drive;
 import org.firstinspires.ftc.teamcode.drive.NewMechanumWheels;
 import org.firstinspires.ftc.teamcode.navigation.Navigation;
-import org.firstinspires.ftc.teamcode.visual.Visual;
-import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
-import org.firstinspires.ftc.teamcode.delivery.Delivery;
-import org.firstinspires.ftc.teamcode.delivery.Elevator;
 
 @Autonomous
-public class SimplePark extends LinearOpMode {
+public class SimpleParkLongLeft extends LinearOpMode {
     private Drive drive = new NewMechanumWheels();
     //private Visual visual = new VuforiaPosition();
     private Navigation navigation = new Navigation(null, drive);
@@ -38,8 +36,31 @@ public class SimplePark extends LinearOpMode {
         runtime.reset();
         while(runtime.seconds() < 0)
             idle();
-        delivery.setDepthRaw(2000);
-        while (!delivery.isComplete() && !isStopRequested()) {
+
+        drive.setThreshold(2, 2);
+
+        Position targetPos = new Position(Distance.fromInches(0), Distance.fromInches(25), Angle.fromDegrees(0));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            navigation.update();
+            drive.update();
+            telemetry.update();
+        }
+
+        targetPos.setTheta(Angle.fromDegrees(-90));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            navigation.update();
+            drive.update();
+            telemetry.update();
+        }
+
+        targetPos.setX(Distance.fromInches(32));
+        drive.setTarget(targetPos, navigation);
+        //delivery.setDepthRaw(2000);
+        while (!drive.isComplete() && !isStopRequested()) {
+            navigation.update();
+            drive.update();
             telemetry.update();
         }
     }

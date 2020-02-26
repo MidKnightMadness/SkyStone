@@ -189,6 +189,7 @@ public class Main extends OpMode {
 
         targetGrabberRot = grabberDefaultRotation + gamepad2.left_trigger - gamepad2.right_trigger;
         grabber.rotate(targetGrabberRot);
+        telemetry.addData("targetrotateposition", targetGrabberRot);
         grabber.update();
     }
 

@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.autonoumous;
 
 import com.qualcomm.hardware.rev.Rev2mDistanceSensor;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
@@ -26,7 +27,7 @@ import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 import java.io.PrintWriter;
 import java.io.File;
 
-
+@Disabled
 @Autonomous
 public class MainAutonomous extends LinearOpMode {
 

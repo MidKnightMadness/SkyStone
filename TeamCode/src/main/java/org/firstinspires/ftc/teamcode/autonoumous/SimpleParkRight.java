@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.autonoumous;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
 import org.firstinspires.ftc.teamcode.common.Angle;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
 // I hate these robots that can only park, but I might as well...
+@Disabled
 @Autonomous
 public class SimpleParkRight extends LinearOpMode {
     private Drive drive = new NewMechanumWheels();

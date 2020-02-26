@@ -21,14 +21,13 @@ public class ActualFoundationMover extends FoundationMover {
 
     @Override
     public void reset() {
-        servo1.setPosition(0.425);
-        servo2.setPosition(0.575);
-
+        servo1.setPosition(0.36);
+        servo2.setPosition(0.62);
     }
 
     @Override
     public void grab() {
-        servo1.setPosition(0.8);
-        servo2.setPosition(0.2);
+        servo1.setPosition(0.74);
+        servo2.setPosition(0.25);
     }
 }

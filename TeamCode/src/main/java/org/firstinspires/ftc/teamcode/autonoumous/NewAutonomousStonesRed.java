@@ -22,7 +22,7 @@ import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
 @Autonomous
-public class NewAutonomousFull extends LinearOpMode {
+public class NewAutonomousStonesRed extends LinearOpMode {
 
     private Drive drive = new NewMechanumWheels();
     private Visual visual = new VuforiaPosition();
@@ -46,7 +46,7 @@ public class NewAutonomousFull extends LinearOpMode {
         telemetry.update();
         distanceSensorLeft = hardwareMap.get(Rev2mDistanceSensor.class, "distanceleftside");
         distanceSensorRight = hardwareMap.get(Rev2mDistanceSensor.class, "distancerightside");
-        grabber.rotate(-1);
+        grabber.rotate(0);
 
         drive.resetPosition(new Position(Distance.fromInches(0), Distance.fromInches(0), Angle.fromDegrees(90)));
 
@@ -88,6 +88,7 @@ public class NewAutonomousFull extends LinearOpMode {
 
         //extend arm
         first = true;
+        grabber.release();
         while ((!delivery.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("extending");
             delivery.setDepthRaw(Math.max(-2650 - (int) (180 * stoneAngle.stonePosition()[0]), -4000));
@@ -107,7 +108,7 @@ public class NewAutonomousFull extends LinearOpMode {
             idle();
         }
         //grab
-        //grabber.grab();
+        grabber.grab();
         delivery.setHeight(0.04);
 
         //move back
@@ -115,8 +116,8 @@ public class NewAutonomousFull extends LinearOpMode {
         targetPos = navigation.getPosition().copy();
         targetPos.getY().add(Distance.fromInches(4));
         drive.setTarget(targetPos, navigation);
-        delivery.setDepthRaw(-2730);
-        while ((!drive.isComplete() || first) && isStopRequested()) {
+        delivery.setDepthRaw(-2760);
+        while ((!drive.isComplete() || first) && !isStopRequested()) {
             telemetry.addLine("moving back");
 
             idle();
@@ -127,11 +128,11 @@ public class NewAutonomousFull extends LinearOpMode {
             first = false;
         }
 
-        //turn left
-        targetPos.setTheta(Angle.fromDegrees(90));
+        //turn right
+        targetPos.setTheta(Angle.fromDegrees(-90));
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
-            telemetry.addLine("turning left");
+            telemetry.addLine("turning right");
 
             idle();
             drive.update();
@@ -140,11 +141,11 @@ public class NewAutonomousFull extends LinearOpMode {
             telemetry.update();
         }
 
-        //move right
+        //move left
         targetPos.getY().subtract(Distance.fromInches(4));
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
-            telemetry.addLine("moving right");
+            telemetry.addLine("moving left");
 
             idle();
             drive.update();
@@ -154,10 +155,10 @@ public class NewAutonomousFull extends LinearOpMode {
         }
 
         //move forwards
-        targetPos.setX(Distance.fromInches(80));        //foundation position at 80
+        targetPos.setX(Distance.fromInches(-55));        //foundation position at 80
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
-            telemetry.addLine("moving forwards to foundation");
+            telemetry.addLine("moving forwards");
 
             idle();
             drive.update();
@@ -166,9 +167,46 @@ public class NewAutonomousFull extends LinearOpMode {
             telemetry.update();
         }
 
-        //turn right to place stone
-        delivery.setHeight(0.17);
-        delivery.setDepth(-4000);
+        //drop stone
+        //delivery.setHeight(0.17);
+        grabber.release();
+        //while (!delivery.isComplete() && !isStopRequested()) {
+        //    idle();
+        //}
+        //move backwards
+        targetPos.getX().subtract(Distance.fromInches(6));
+        drive.setTarget(targetPos, navigation);
+        //delivery.setHeight(0);
+        //while (!drive.isComplete() && !isStopRequested()) {
+        //    telemetry.addLine("moving backwards");
+
+        //    idle();
+        //    drive.update();
+        //    visual.update();
+        //    navigation.update();
+        //    telemetry.update();
+        //}
+
+        //move backwards to get another stone
+        if (skystone == Visual.SkystoneSetup.Center)
+            targetPos.setX(Distance.fromInches(25));
+        else if (skystone == Visual.SkystoneSetup.Right)
+            targetPos.setX(Distance.fromInches(17.5));
+        else
+            targetPos.setX(Distance.fromInches(25));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving backwards under bridge");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        //turn left to get another stone
+        delivery.setHeight(0.04);
         targetPos.setTheta(Angle.fromDegrees(0));
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
@@ -181,18 +219,52 @@ public class NewAutonomousFull extends LinearOpMode {
             telemetry.update();
         }
 
-        //drop stone
-        grabber.release();
-        delivery.setHeight(0.2);
+        //extend arm
+        first = true;
+        while ((!delivery.isComplete() || first) && !isStopRequested()) {
+            telemetry.addLine("extending");
+            delivery.setDepthRaw(Math.max(-2650 - (int) (180 * stoneAngle.stonePosition()[0]), -4000));
+
+            idle();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+            first = false;
+        }
+
+        //lower arm
+        delivery.setHeight(0);
+        telemetry.addLine("lowering arm");
+        telemetry.update();
         while (!delivery.isComplete() && !isStopRequested()) {
             idle();
         }
+        //grab
+        grabber.grab();
+        delivery.setHeight(0.04);
 
-        //turn right to move foundation
+        //move back
+        first = true;
+        targetPos = navigation.getPosition().copy();
+        targetPos.getY().add(Distance.fromInches(4));
+        drive.setTarget(targetPos, navigation);
+        delivery.setDepthRaw(-2760);
+        while ((!drive.isComplete() || first) && !isStopRequested()) {
+            telemetry.addLine("moving back");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+            first = false;
+        }
+
+        //turn left
         targetPos.setTheta(Angle.fromDegrees(-90));
         drive.setTarget(targetPos, navigation);
         while (!drive.isComplete() && !isStopRequested()) {
-            telemetry.addLine("turning right again");
+            telemetry.addLine("turning left");
 
             idle();
             drive.update();
@@ -200,5 +272,49 @@ public class NewAutonomousFull extends LinearOpMode {
             navigation.update();
             telemetry.update();
         }
+
+        //move left
+        targetPos.getY().subtract(Distance.fromInches(4));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving left");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        //move forwards
+        targetPos.setX(Distance.fromInches(-55));        //foundation position at 80
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving forwards");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        grabber.release();
+
+        //move backwards and park
+        delivery.setHeight(0);
+        targetPos.getX().add(Distance.fromInches(16));
+        drive.setTarget(targetPos, navigation);
+        while (!drive.isComplete() && !isStopRequested()) {
+            telemetry.addLine("moving backwards to park");
+
+            idle();
+            drive.update();
+            visual.update();
+            navigation.update();
+            telemetry.update();
+        }
+
+        visual.stop();
     }
 }
