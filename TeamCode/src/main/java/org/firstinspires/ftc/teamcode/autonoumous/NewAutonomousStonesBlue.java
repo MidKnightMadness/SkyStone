@@ -301,7 +301,7 @@ public class NewAutonomousStonesBlue extends LinearOpMode {
             telemetry.update();
         }
 
-        grabber.release();
+        //grabber.release();
 
         //move backwards and park
         delivery.setHeight(0);

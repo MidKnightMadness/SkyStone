@@ -56,7 +56,7 @@ public class NewMechanumWheels extends Drive {
     }
 
     public void resetHeading() {
-        initialRotation = currentRotation;
+        initialRotation = currentRotation.add(Angle.fromDegrees(180));
     }
 
     @Override
