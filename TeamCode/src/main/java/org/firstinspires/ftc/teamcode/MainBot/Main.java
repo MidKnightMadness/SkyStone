@@ -134,7 +134,7 @@ public class Main extends OpMode {
             foundationMover.grab();
         }
 
-        if (gamepad1.a) {
+        if (gamepad1.b) {
             drive.resetHeading();
         }
 

@@ -22,7 +22,7 @@ public class Claw extends Grabber {
 
     @Override
     public void release() {
-        clawservo.setPosition(0.1);
+        clawservo.setPosition(0.4);
     }
 
     @Override
