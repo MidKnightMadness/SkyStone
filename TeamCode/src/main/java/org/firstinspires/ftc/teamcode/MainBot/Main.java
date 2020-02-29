@@ -56,7 +56,7 @@ public class Main extends OpMode {
     public void init() {
         telemetry.addLine("------------------------------");
         telemetry.addLine("        |     |   -----   |");
-        telemetry.addLine("        |----|      |     |");
+        telemetry.addLine("        |-----|     |     |");
         telemetry.addLine("        |     |   -----   .");
         telemetry.addLine("------------------------------");
         telemetry.addLine(" \"Please get better text art\"");
