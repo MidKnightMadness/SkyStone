@@ -71,8 +71,8 @@ public class Elevator extends Delivery {
 
     @Override
     public boolean isComplete() {
-        return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 100 &&
-                Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 100;
+        return Math.abs(vertical.getCurrentPosition() - vertical.getTargetPosition()) < 75 &&
+                Math.abs(horizontal.getCurrentPosition() - horizontal.getTargetPosition()) < 75;
     }
     
     private boolean override = false;
@@ -135,7 +135,12 @@ public class Elevator extends Delivery {
         telemetry.addData("height", getHeight());
         telemetry.addData("initHeight", initHeight);
     }
-    
+
+    public boolean isDown()
+    {
+        return getHeight() < 0;
+    }
+
     @Override
     public void update()
     {

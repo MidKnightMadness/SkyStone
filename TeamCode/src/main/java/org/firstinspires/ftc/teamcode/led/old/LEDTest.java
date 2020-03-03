@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.led.old;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.I2cDeviceSynch;
@@ -21,6 +22,7 @@ import static org.firstinspires.ftc.teamcode.led.LED.Colors.RED;
  * Remove a @Disabled the on the next line or two (if present) to add this opmode to the Driver Station OpMode list,
  * or add a @Disabled annotation to prevent this OpMode from being added to the Driver Station
  */
+@Disabled
 @TeleOp
 
 public class LEDTest extends OpMode {

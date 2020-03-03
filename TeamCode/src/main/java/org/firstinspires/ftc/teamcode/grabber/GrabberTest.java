@@ -1,10 +1,12 @@
 package org.firstinspires.ftc.teamcode.grabber;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.config.GamepadController;
 
+@Disabled
 @TeleOp
 public class GrabberTest extends OpMode {
     private Grabber grabber = new Claw();

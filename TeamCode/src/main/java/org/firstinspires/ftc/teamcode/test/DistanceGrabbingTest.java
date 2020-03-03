@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
@@ -8,6 +9,7 @@ import org.firstinspires.ftc.teamcode.delivery.Delivery;
 import org.firstinspires.ftc.teamcode.delivery.Elevator;
 import org.firstinspires.ftc.teamcode.visual.StoneAngle;
 
+@Disabled
 @TeleOp
 public class DistanceGrabbingTest extends OpMode {
     StoneAngle stoneAngle = new StoneAngle();
