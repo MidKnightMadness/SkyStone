@@ -148,7 +148,8 @@ public class Judging extends OpMode {
         //y button grab
         if(gamepad1.y)
             doGrab = 3;
-        if(!gamepad1.atRest())
+        if(gamepad2.left_stick_x != 0f || gamepad2.left_stick_y != 0f ||
+                gamepad2.right_stick_x != 0f || gamepad2.right_stick_y != 0f)
             doGrab = 0;
         switch (doGrab)
         {

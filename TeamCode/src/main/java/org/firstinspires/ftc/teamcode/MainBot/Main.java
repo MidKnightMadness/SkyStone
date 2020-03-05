@@ -106,7 +106,7 @@ public class Main extends OpMode {
         if (gamepad2.right_stick_y == 0) {
             delivery.holdDepth();
         } else {
-            delivery.setDepthPower(-gamepad2.right_stick_y);
+            delivery.setDepthPower(gamepad2.right_stick_y);
         }
 
         if(doGrab == 0)
@@ -168,7 +168,8 @@ public class Main extends OpMode {
         //y button grab
         if(gamepad2.y)
             doGrab = 3;
-        if(!gamepad2.atRest())
+        if(gamepad2.left_stick_x != 0f || gamepad2.left_stick_y != 0f ||
+                gamepad2.right_stick_x != 0f || gamepad2.right_stick_y != 0f)
             doGrab = 0;
         switch (doGrab)
         {

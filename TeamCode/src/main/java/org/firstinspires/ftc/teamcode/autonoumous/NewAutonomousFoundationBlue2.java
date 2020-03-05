@@ -22,6 +22,7 @@ import org.firstinspires.ftc.teamcode.visual.StoneAngle;
 import org.firstinspires.ftc.teamcode.visual.Visual;
 import org.firstinspires.ftc.teamcode.visual.VuforiaPosition;
 
+@Disabled
 @Autonomous
 public class NewAutonomousFoundationBlue2 extends LinearOpMode {
 
